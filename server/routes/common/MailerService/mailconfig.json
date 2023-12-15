@@ -1,0 +1,16 @@
+{
+    "mailconf": {
+        "host": "myhomeimmo.hu",
+        "port": 465,
+        "secure": true,
+        "auth": {
+            "user": "info@myhomeimmo.hu",
+            "pass": "LegjobbaK03"
+        },
+        "tls": {
+            "rejectUnauthorized": false
+        },
+        "logger": true,
+        "transactionLog": true
+    }
+}

@@ -1,0 +1,187 @@
+@use "../variables/colors";
+@use "../functions/var" as *;
+
+.undernav {
+  min-width: 100% !important;
+  /*     min-height: 400px; */
+  margin: 0px !important;
+  /* position: relative; */
+  /*   top: 110px; */
+  padding: 0px;
+  background-color: #000000;
+  overflow: hidden !important;
+
+  @media screen and (min-width: 992px) {
+    /* top: 140px; */
+    padding: 0px 7vw;
+  }
+
+  &__carousel {
+    // max-height: 400px;
+    // min-height: 400px;
+    height: 200px;
+    width: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
+    border-radius: 15px;
+    background-color: rgba(57, 214, 197, 1);
+
+    @media screen and (min-width: 992px) {
+      height: 500px;
+    }
+  }
+
+  &__kereso {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 0px; */
+    margin: 3% 0px;
+    background-color: var(themes-public-sidebarbg);
+    padding: 0px !important;
+    border-radius: 15px;
+
+    @media screen and (min-width: 992px) {
+      margin: 3% 0px;
+    }
+  }
+
+  .accordion {
+    width: 100%;
+  }
+
+  .accordion-item {
+    border: none;
+  }
+
+  .accordion-header {
+    display: block;
+
+    @media screen and (min-width: 992px) {
+      display: none;
+    }
+  }
+
+  .accordion-collapse {
+    @media screen and (min-width: 992px) {
+      display: flex !important;
+    }
+  }
+
+  .accordion-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(themes-public-sidebarbg);
+    padding: 0px;
+    width: 100%;
+    border-radius: none;
+
+    @media screen and (min-width: 992px) {
+      border-radius: 15px;
+    }
+
+    & .btn.btn-success {
+      background-color: var(themes-public-viewbutton);
+      color: var(themes-public-newfont);
+    }
+  }
+
+  .accordion-button {
+    background-color: var(themes-public-collapsebg);
+    color: var(themes-public-collapsefontcolor);
+    z-index: 1 !important;
+
+    &::after {
+      color: var(themes-public-collapsefontcolor) !important;
+      border: none;
+      z-index: 1 !important;
+    }
+  }
+
+  .image-gallery {
+    display: flex;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 500px;
+    max-height: 500px;
+
+    @media screen and (min-width: 992px) {
+      min-height: 100%;
+      max-height: 100%;
+    }
+
+    .image-gallery-content,
+    .image-gallery-slide-wrapper,
+    .image-gallery-slide,
+    .image-gallery-slides,
+    .carousel_image {
+      display: flex;
+      /*   min-width: 100%;
+            max-width: 100%; */
+      /* height: 400px; */
+      /*   justify-content: center;
+            align-items: center; */
+      min-width: 100%;
+      max-width: 100%;
+      /* min-height: 200px;
+            max-height: 200px; */
+      border-radius: none;
+
+      @media screen and (min-width: 992px) {
+        min-width: 100%;
+        max-width: 100%;
+        min-height: 500px;
+        max-height: 500px;
+        border-radius: 15px;
+      }
+
+      img {
+        /* height: 200px; */
+        width: 100%;
+        margin: 0px;
+        object-fit: unset;
+        display: flex;
+
+        @media screen and (min-width: 992px) {
+          /* height: 400px; */
+          width: 70vw;
+          min-height: 500px;
+          margin: 0px auto;
+          display: block;
+          /*  width: 100%; */
+        }
+
+        @media screen and (min-width: 1800px) {
+          /* height: 400px; */
+          width: 50vw;
+          min-height: 500px;
+          margin: 0px auto;
+          display: block;
+          /*  width: 100%; */
+        }
+      }
+
+      .image-gallery-bullets-container {
+        display: none;
+
+        @media screen and (min-width: 992px) {
+          display: block;
+        }
+      }
+
+      @media screen and (min-width: 992px) {
+        display: flex !important;
+      }
+    }
+  }
+
+  .image-gallery-description {
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    height: fit-content;
+    width: 100%;
+    position: absolute;
+    bottom: 35px;
+    font-size: 1.2em;
+  }
+}

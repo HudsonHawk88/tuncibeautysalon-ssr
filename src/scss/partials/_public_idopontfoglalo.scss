@@ -1,0 +1,24 @@
+.idopontfoglalo__idopontok {
+  display: flex;
+  flex-wrap: wrap;
+
+  .idopontfoglalo__ido {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(50% - 10px);
+    height: 20px;
+    padding: 20px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid rgba(241, 24, 24, 1);
+    background-color: black;
+    color: rgba(241, 24, 24, 1);
+  }
+
+  .idopontfoglalo__ido.active {
+    border: 2px solid rgba(241, 24, 24, 1);
+    background-color: rgba(241, 24, 24, 1);
+    color: black;
+  }
+}

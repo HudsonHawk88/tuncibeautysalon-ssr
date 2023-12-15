@@ -1,0 +1,13 @@
+{
+    "routes": [
+        "/",
+        "/api/admin",
+        "/api/login",
+        "/api/szolgaltatasok",
+        "/api/admin/szolgaltatasok",
+        "/api/admin/szolgaltataskategoria",
+        "/api/szolgaltataskategoria",
+        "/api/admin/kapcsolat",
+        "/api/kapcsolat"
+    ]
+}

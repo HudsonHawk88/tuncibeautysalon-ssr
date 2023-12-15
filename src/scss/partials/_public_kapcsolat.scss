@@ -1,0 +1,84 @@
+@use "../variables/colors";
+@use "../functions/var" as *;
+
+.public_kapcsolat {
+  height: 100%;
+  /* margin: 20px 5%; */
+  /* background-color: var(themes-public-bgcolor2); */
+  /*     margin: 0px; */
+  display: flex;
+  flex-wrap: wrap;
+
+  /* @media screen and (min-width: 950px) {
+        margin: 20px 5%;
+    } */
+
+  .kapcsolati_adatok {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .kapcsolat_nev {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    min-height: 60px;
+    font-size: 1.2em;
+    background-color: var(themes-public-mainColor);
+    color: white;
+  }
+
+  .kapcsolat_alapadatok {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /*  background-color: var(themes-public-bgcolor); */
+  }
+
+  .kapcsolat_kep {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px 0px;
+    gap: 10px;
+
+    @media screen and (min-width: 992px) {
+      width: calc(50% - 5px);
+      flex-wrap: nowrap;
+      display: block;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .kapcsolat_elerhetosegek {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+
+    .kapcsolat_terkep {
+      display: flex;
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .kapcsolat_form {
+    width: 100%;
+    padding: 10px 0px;
+    text-align: center;
+
+    @media screen and (min-width: 992px) {
+      width: calc(50% - 5px);
+    }
+
+    .btn.btn-success {
+      background-color: black;
+      color: white;
+    }
+  }
+}
