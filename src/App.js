@@ -40,6 +40,20 @@ function App() {
 
   const isAdmin = __isBrowser__ && location.pathname.startsWith("/admin");
 
+  const toggleLang = (value) => {
+    setLang(value);
+    localStorage.setItem('lang', value);
+  }
+
+  const setDefaultLang = () => {
+    const language = localStorage.getItem('lang') ? localStorage.getItem('lang') : "ch";
+    console.log(language)
+    if (!localStorage.getItem('lang')) {
+      localStorage.setItem('lang', language);
+    }
+    toggleLang(language);
+  }
+
   useEffect(() => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";
     if (token && isAdmin) {
@@ -104,7 +118,7 @@ function App() {
 
   useEffect(() => {
     if (__isBrowser__) {
-      setLang(process.env.lang);
+      setDefaultLang()
       if (
         (location && location.pathname.startsWith("/admin")) ||
         window.location.pathname === "/login"
@@ -158,7 +172,7 @@ function App() {
           user={user}
           logout={logout}
           lang={lang}
-          setLang={setLang}
+          setLang={toggleLang}
         />
       ) : (
         <React.Fragment>
@@ -169,7 +183,7 @@ function App() {
             reCaptchaKey={process.env.reachaptchaApiKey}
             addNotification={createNotification}
             lang={lang}
-            setLang={setLang}
+            setLang={toggleLang}
           />
         </React.Fragment>
       )}

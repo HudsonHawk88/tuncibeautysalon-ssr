@@ -1,14 +1,15 @@
 import { Microservices } from "../../../../shared/MicroServices";
 const location = typeof window !== "undefined" ? window.location : {};
-const idopontUrl = location.origin + "/api/idopont";
 const szolgaltatasokUrl = location.origin + "/api/szolgaltatasok";
+const idopontokUrl = location.origin + "/api/idopontok";
+const unnepnapokUrl = location.origin + "/api/unnepnapok";
 
 export default class Services {
   // IDOPONTOK START
 
-  static listIdopontok = (fnDone) => {
+  static listSzolgaltatasok = (fnDone) => {
     let result = Microservices.fetchApi(
-      idopontUrl,
+      szolgaltatasokUrl,
       {
         method: "GET",
         mode: "cors",
@@ -24,9 +25,9 @@ export default class Services {
     return result;
   };
 
-  static listSzolgaltatasok = (fnDone) => {
+  static getIdopontok = (nap, szolgaltatas, lang, fnDone) => {
     let result = Microservices.fetchApi(
-      szolgaltatasokUrl,
+      idopontokUrl + `?nap=${nap}&szolgaltatas=${szolgaltatas}`,
       {
         method: "GET",
         mode: "cors",
@@ -34,6 +35,64 @@ export default class Services {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          lang: lang,
+        },
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static foglalas = (foglalasObj, lang, fnDone) => {
+    let result = Microservices.fetchApi(
+      idopontokUrl,
+      {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          lang: lang,
+        },
+        body: JSON.stringify(foglalasObj),
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static getUnnepnapok = (fnDone) => {
+    let result = Microservices.fetchApi(
+      unnepnapokUrl,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+        },
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static deleteFoglalas = (id, fnDone) => {
+    let result = Microservices.fetchApi(
+      idopontokUrl,
+      {
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          id: id
         },
       },
       fnDone

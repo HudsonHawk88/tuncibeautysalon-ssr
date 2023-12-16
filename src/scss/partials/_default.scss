@@ -17,6 +17,10 @@ html body {
   /*  scrollbar-width: thin; */
 }
 
+.rw-calendar-btn-today.rw-calendar-btn.rw-btn {
+  display: none;
+}
+
 html body::-webkit-scrollbar {
   display: none;
   width: 10px;

@@ -9,16 +9,18 @@ import {
   DropdownMenu,
   DropdownItem, */
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { HU, CH } from "country-flag-icons/react/3x2";
 import PropTypes from "prop-types";
 
 const PublicHeader = (props) => {
-  const { setLang } = props;
+  const { setLang, lang } = props;
 
   const toggleNavbar = (id) => {
     const collapse = document.getElementById(id);
-    collapse.classList.toggle("show");
+    if (collapse) {
+      collapse.classList.toggle("show");
+    }
   };
 
   return (
@@ -38,18 +40,18 @@ const PublicHeader = (props) => {
               <a className="nav-link public-navbar__nav-link" href="/">
                 {/* <i className="far fa-bookmark"></i> */}
                 <i aria-hidden className="fas fa-home" />
-                &nbsp; Home
+                &nbsp; {lang === 'hu' ? 'Főoldal' : 'Home'}
               </a>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
-              <Link
+              <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/terminbuchen"
                 onClick={toggleNavbar}
               >
                 <i className="fa-solid fa-calendar-check" />
-                &nbsp; Termin buchen
-              </Link>
+                &nbsp; {lang === 'hu' ? 'Időpontfoglaló' : 'Termin buchen'}
+              </NavLink>
             </NavItem>
             {/* <UncontrolledDropdown
               className="nav-item public-navbar__nav-item"
@@ -104,34 +106,34 @@ const PublicHeader = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>*/}
             <NavItem className="nav-item public-navbar__nav-item">
-              <Link
+              <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/dienstleistungen"
                 onClick={toggleNavbar}
               >
                 <i className="fa-regular fa-images" />
-                &nbsp; Dienstleistungen
-              </Link>
+                &nbsp; {lang === 'hu' ? 'Szolgáltatások' : 'Dienstleistungen'}
+              </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
-              <Link
+              <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/gallerie"
                 onClick={toggleNavbar}
               >
                 <i className="fa-regular fa-images" />
-                &nbsp; Gallerie
-              </Link>
+                &nbsp; {lang === 'hu' ? 'Galéria' : 'Gallerie'}
+              </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
-              <Link
+              <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/kontakt"
                 onClick={toggleNavbar}
               >
                 <i aria-hidden className="fas fa-phone-alt"></i>
-                &nbsp; Kontakt
-              </Link>
+                &nbsp; {lang === 'hu' ? 'Kapcsolat' : 'Kontakt'}
+              </NavLink>
             </NavItem>
             <div>
               <CH
@@ -168,6 +170,7 @@ const PublicHeader = (props) => {
 
 PublicHeader.propTypes = {
   setLang: PropTypes.func.isRequired,
+  lang: PropTypes.string.isRequired
 };
 
 export default PublicHeader;

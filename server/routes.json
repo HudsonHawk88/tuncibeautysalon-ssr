@@ -8,6 +8,8 @@
         "/api/admin/szolgaltataskategoria",
         "/api/szolgaltataskategoria",
         "/api/admin/kapcsolat",
-        "/api/kapcsolat"
+        "/api/kapcsolat",
+        "/api/idopontok",
+        "/api/unnepnapok"
     ]
 }
