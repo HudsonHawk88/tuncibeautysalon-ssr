@@ -118,7 +118,11 @@ function App() {
 
   useEffect(() => {
     if (__isBrowser__) {
-      setDefaultLang()
+      setDefaultLang();
+      const navbar = document.getElementById('public_navbar_collapse');
+      if (navbar && navbar.classList.contains('show')) {
+        navbar.classList.toggle('show')
+      }
       if (
         (location && location.pathname.startsWith("/admin")) ||
         window.location.pathname === "/login"

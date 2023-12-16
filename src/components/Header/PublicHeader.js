@@ -47,7 +47,6 @@ const PublicHeader = (props) => {
               <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/terminbuchen"
-                onClick={toggleNavbar}
               >
                 <i className="fa-solid fa-calendar-check" />
                 &nbsp; {lang === 'hu' ? 'Időpontfoglaló' : 'Termin buchen'}
@@ -68,40 +67,40 @@ const PublicHeader = (props) => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
-                  <Link
+                  <NavLink
                     className="nav-link public-navbar__nav-link"
                     to="/kosmetik"
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
                     &nbsp; Kosmetic
-                  </Link>
+                  </NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <Link
+                  <NavLink
                     className="nav-link public-navbar__nav-link"
                     to="/manikure"
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
                     &nbsp; Maniküre
-                  </Link>
+                  </NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <Link
+                  <NavLink
                     className="nav-link public-navbar__nav-link"
                     to="/falschewimpern"
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
                     &nbsp; Falsche Wimpern
-                  </Link>
+                  </NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <Link
+                  <NavLink
                     className="nav-link public-navbar__nav-link"
                     to="/makeup"
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
                     &nbsp; Make-Up
-                  </Link>
+                  </NavLink>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>*/}
@@ -109,7 +108,6 @@ const PublicHeader = (props) => {
               <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/dienstleistungen"
-                onClick={toggleNavbar}
               >
                 <i className="fa-regular fa-images" />
                 &nbsp; {lang === 'hu' ? 'Szolgáltatások' : 'Dienstleistungen'}
@@ -119,7 +117,6 @@ const PublicHeader = (props) => {
               <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/gallerie"
-                onClick={toggleNavbar}
               >
                 <i className="fa-regular fa-images" />
                 &nbsp; {lang === 'hu' ? 'Galéria' : 'Gallerie'}
@@ -129,7 +126,6 @@ const PublicHeader = (props) => {
               <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/kontakt"
-                onClick={toggleNavbar}
               >
                 <i aria-hidden className="fas fa-phone-alt"></i>
                 &nbsp; {lang === 'hu' ? 'Kapcsolat' : 'Kontakt'}
@@ -140,26 +136,26 @@ const PublicHeader = (props) => {
                 width={50}
                 height={30}
                 style={{ cursor: "pointer" }}
-                onClick={() => {
+                onMouseDown={() => {
                   setLang("ch");
-                  toggleNavbar();
+                  toggleNavbar("public_navbar_collapse");
                 }}
               />
               <HU
                 width={50}
                 height={30}
                 style={{ cursor: "pointer" }}
-                onClick={() => {
+                onMouseDown={() => {
                   setLang("hu");
-                  toggleNavbar();
+                  toggleNavbar("public_navbar_collapse");
                 }}
               />
             </div>
             {/*<NavItem className="nav-item public-navbar__nav-item">
-              <Link className="nav-link public-navbar__nav-link" to="/ubermich">
+              <NavLink className="nav-link public-navbar__nav-link" to="/ubermich">
                 <i aria-hidden className="fas fa-info-circle"></i>
                 &nbsp; Über mich
-              </Link>
+              </NavLink>
             </NavItem>*/}
           </Nav>
         </Collapse>
