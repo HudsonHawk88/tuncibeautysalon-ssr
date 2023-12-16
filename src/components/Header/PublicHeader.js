@@ -40,7 +40,7 @@ const PublicHeader = (props) => {
               <a className="nav-link public-navbar__nav-link" href="/">
                 {/* <i className="far fa-bookmark"></i> */}
                 <i aria-hidden className="fas fa-home" />
-                &nbsp; {lang === 'hu' ? 'Főoldal' : 'Home'}
+                &nbsp; {lang === "hu" ? "Főoldal" : "Home"}
               </a>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
@@ -49,7 +49,7 @@ const PublicHeader = (props) => {
                 to="/terminbuchen"
               >
                 <i className="fa-solid fa-calendar-check" />
-                &nbsp; {lang === 'hu' ? 'Időpontfoglaló' : 'Termin buchen'}
+                &nbsp; {lang === "hu" ? "Időpontfoglaló" : "Termin buchen"}
               </NavLink>
             </NavItem>
             {/* <UncontrolledDropdown
@@ -110,7 +110,7 @@ const PublicHeader = (props) => {
                 to="/dienstleistungen"
               >
                 <i className="fa-regular fa-images" />
-                &nbsp; {lang === 'hu' ? 'Szolgáltatások' : 'Dienstleistungen'}
+                &nbsp; {lang === "hu" ? "Szolgáltatások" : "Dienstleistungen"}
               </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
@@ -119,7 +119,7 @@ const PublicHeader = (props) => {
                 to="/gallerie"
               >
                 <i className="fa-regular fa-images" />
-                &nbsp; {lang === 'hu' ? 'Galéria' : 'Gallerie'}
+                &nbsp; {lang === "hu" ? "Galéria" : "Gallerie"}
               </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
@@ -128,7 +128,7 @@ const PublicHeader = (props) => {
                 to="/kontakt"
               >
                 <i aria-hidden className="fas fa-phone-alt"></i>
-                &nbsp; {lang === 'hu' ? 'Kapcsolat' : 'Kontakt'}
+                &nbsp; {lang === "hu" ? "Kapcsolat" : "Kontakt"}
               </NavLink>
             </NavItem>
             <div>
@@ -166,7 +166,7 @@ const PublicHeader = (props) => {
 
 PublicHeader.propTypes = {
   setLang: PropTypes.func.isRequired,
-  lang: PropTypes.string.isRequired
+  lang: PropTypes.string.isRequired,
 };
 
 export default PublicHeader;

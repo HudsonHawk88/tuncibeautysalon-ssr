@@ -4,7 +4,7 @@ module.exports = {
     max_memory_restart: '2048M',
     apps: [
         {
-            name: 'myhome',
+            name: 'tbs',
             script: path.resolve(__dirname, 'bundle.js'),
             instances: 'max',
             exec_mode: 'cluster'
@@ -12,7 +12,7 @@ module.exports = {
     ],
     env: {
         NODE_ENV: 'production',
-        PORT: 8080,
+        PORT: 7000,
         HOST: '127.0.0.1' // default
     }
 };

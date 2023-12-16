@@ -41,7 +41,7 @@ const Idopontfoglalo = (props) => {
     });
 
     setGroups([...new Set(groups.map((g) => g))]);
-    console.log(szolgArr)
+    console.log(szolgArr);
     setSzolgaltatasok(szolgArr);
   };
 
@@ -86,8 +86,11 @@ const Idopontfoglalo = (props) => {
           if (res.length > 0) {
             setSzabadIdopontok(res);
           } else {
-            const msg = lang === 'hu' ? 'Ezen a napon nem foglalható időpont!' : 'An diesem Tag sind keine Terminbuchungen möglich!';
-            setMessage(msg)
+            const msg =
+              lang === "hu"
+                ? "Ezen a napon nem foglalható időpont!"
+                : "An diesem Tag sind keine Terminbuchungen möglich!";
+            setMessage(msg);
           }
         }
       }
@@ -95,10 +98,10 @@ const Idopontfoglalo = (props) => {
   };
 
   const getOpts = (szolg, szolgIdx) => {
-    console.log(szolgIdx + '_szolgId_ ' + szolg.id)
+    console.log(szolgIdx + "_szolgId_ " + szolg.id);
     return (
       <Fragment>
-        <option key={szolgIdx + '_szolgId_ ' + szolg.id} value={szolg.id}>
+        <option key={szolgIdx + "_szolgId_ " + szolg.id} value={szolg.id}>
           {lang === "hu" ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev}
         </option>
       </Fragment>
@@ -131,7 +134,7 @@ const Idopontfoglalo = (props) => {
 
   const foglal = () => {
     let submitObj = idopont;
-    submitObj.nap = moment(submitObj.nap).format('YYYY-MM-DD')
+    submitObj.nap = moment(submitObj.nap).format("YYYY-MM-DD");
     Services.foglalas(idopont, lang, (err) => {
       if (!err) {
         /* window.setTimeout(() => {
@@ -181,37 +184,45 @@ const Idopontfoglalo = (props) => {
               {groups.map((group) => {
                 return (
                   <optgroup key={group} label={group}>
-                    {szolgaltatasok.filter((sz) => sz.szolgkategoria === group).map((szolg, szolgIdx) => {
-                        return getOpts(szolg, szolgIdx)
+                    {szolgaltatasok
+                      .filter((sz) => sz.szolgkategoria === group)
+                      .map((szolg, szolgIdx) => {
+                        return getOpts(szolg, szolgIdx);
                       })}
                   </optgroup>
-                )
+                );
               })}
             </RVInput>
           </div>
         )}
         <div className="col-md-3" hidden={!idopont.szolgaltatas}>
           <Label htmlFor="szolgaltatas">{lang === "hu" ? "Nap" : "Tage"}</Label>
-          { console.log(moment().month(6).format('MMMM'))}
+          {console.log(moment().month(6).format("MMMM"))}
           <Calendar
             min={new Date(moment().add(1, "days"))}
             value={idopont.nap ? new Date(idopont.nap) : null}
             onChange={(v) => {
-              const selectedMonth = moment(v).get('month');
-              const selectedDay = moment(v).format('DD')
-              console.log(selectedDay, selectedMonth)
-              const found = unnepnapok.find((un) => ((un.honap - 1) === selectedMonth) && un.nap === parseInt(selectedDay, 10))
+              const selectedMonth = moment(v).get("month");
+              const selectedDay = moment(v).format("DD");
+              console.log(selectedDay, selectedMonth);
+              const found = unnepnapok.find(
+                (un) =>
+                  un.honap - 1 === selectedMonth &&
+                  un.nap === parseInt(selectedDay, 10)
+              );
               console.log(found);
               setIdopont({ ...idopont, nap: v, kezdete: null });
-              setSzabadIdopontok([])
+              setSzabadIdopontok([]);
               if (found) {
-                const msg = lang === 'hu' ? 'Ezen a napon nem foglalható időpont!' : 'An diesem Tag sind keine Terminbuchungen möglich!';
+                const msg =
+                  lang === "hu"
+                    ? "Ezen a napon nem foglalható időpont!"
+                    : "An diesem Tag sind keine Terminbuchungen möglich!";
                 setMessage(msg);
                 addNotification.success(msg);
-                
               } else {
                 setMessage(null);
-               
+
                 getIdopontok(v);
               }
             }}
@@ -220,13 +231,13 @@ const Idopontfoglalo = (props) => {
         <div className="col-md-3" hidden={!idopont.nap && !message}>
           <Label>{lang === "hu" ? "Időpont" : "Termin"}</Label>
           <div className="idopontfoglalo__idopontok">
-            {message ? message : 
-              idopont.nap &&
-                szabadIdopontok.length > 0 ?
-                szabadIdopontok.map((szi, idx) => {
+            {message
+              ? message
+              : idopont.nap && szabadIdopontok.length > 0
+              ? szabadIdopontok.map((szi, idx) => {
                   return (
                     <div
-                      key={szi + '_szolgido_' + idx}
+                      key={szi + "_szolgido_" + idx}
                       onClick={(e) => setActive(e.target.id)}
                       className="idopontfoglalo__ido"
                       id={szi}
@@ -234,15 +245,22 @@ const Idopontfoglalo = (props) => {
                       {szi}
                     </div>
                   );
-              }) : message}
-            
+                })
+              : message}
           </div>
         </div>
         <div
           className="col-md-3"
-          hidden={!idopont.szolgaltatas || !idopont.nap || !idopont.kezdete || message || szabadIdopontok.length === 0 || idopont.kezdete === ''}
+          hidden={
+            !idopont.szolgaltatas ||
+            !idopont.nap ||
+            !idopont.kezdete ||
+            message ||
+            szabadIdopontok.length === 0 ||
+            idopont.kezdete === ""
+          }
         >
-          <Label>{lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}</Label> 
+          <Label>{lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}</Label>
           <div className="idopontfoglalo__ugyfeladatok">
             <div style={{ margin: "0 0 10px 0" }}>
               <RVInput

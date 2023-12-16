@@ -42,17 +42,19 @@ function App() {
 
   const toggleLang = (value) => {
     setLang(value);
-    localStorage.setItem('lang', value);
-  }
+    localStorage.setItem("lang", value);
+  };
 
   const setDefaultLang = () => {
-    const language = localStorage.getItem('lang') ? localStorage.getItem('lang') : "ch";
-    console.log(language)
-    if (!localStorage.getItem('lang')) {
-      localStorage.setItem('lang', language);
+    const language = localStorage.getItem("lang")
+      ? localStorage.getItem("lang")
+      : "ch";
+    console.log(language);
+    if (!localStorage.getItem("lang")) {
+      localStorage.setItem("lang", language);
     }
     toggleLang(language);
-  }
+  };
 
   useEffect(() => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";
@@ -119,9 +121,9 @@ function App() {
   useEffect(() => {
     if (__isBrowser__) {
       setDefaultLang();
-      const navbar = document.getElementById('public_navbar_collapse');
-      if (navbar && navbar.classList.contains('show')) {
-        navbar.classList.toggle('show')
+      const navbar = document.getElementById("public_navbar_collapse");
+      if (navbar && navbar.classList.contains("show")) {
+        navbar.classList.toggle("show");
       }
       if (
         (location && location.pathname.startsWith("/admin")) ||

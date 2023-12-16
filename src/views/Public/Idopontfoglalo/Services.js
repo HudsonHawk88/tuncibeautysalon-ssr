@@ -92,7 +92,7 @@ export default class Services {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-          id: id
+          id: id,
         },
       },
       fnDone
