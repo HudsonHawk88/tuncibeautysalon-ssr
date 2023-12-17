@@ -400,7 +400,7 @@ router.post("/", async (req, res) => {
             <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
             <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}</li></ul><br>
             Sie können über den folgenden Link kündigen:<br>
-            ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
+            ${process.env.REACT_APP_mainUrl + `terminstreichung?terminId=${r.insertId}`}<br>
             <strong>Wenn Sie den Termin weniger als 2 Tage im Voraus stornieren, können Sie in unserem System 30 Tage nach der 3. Absage keinen Termin mehr buchen!</strong><br>
             Aufrichtig:<br>
             Tünci Beauty Salon<br>`;
