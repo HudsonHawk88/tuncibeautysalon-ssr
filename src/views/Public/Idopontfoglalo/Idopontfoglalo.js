@@ -33,14 +33,11 @@ const Idopontfoglalo = (props) => {
     array.forEach((szolg) => {
       const szolgObj = Object.assign({}, szolg);
       szolgArr.push(szolgObj);
-      if (lang === "ch") {
-        groups.push(szolgObj.szolgkategoria);
-      } else if (lang === "hu") {
-        groups.push(szolgObj.magyarszolgkategoria);
-      }
+      groups.push({ nemetnev: szolgObj.szolgkategoria, magyarnev: szolgObj.magyarszolgkategoria });
+  
     });
 
-    setGroups([...new Set(groups.map((g) => g))]);
+    setGroups([...new Map(groups.map(item => [item.nemetnev, item])).values()]);
     console.log(szolgArr);
     setSzolgaltatasok(szolgArr);
   };
@@ -182,14 +179,10 @@ const Idopontfoglalo = (props) => {
                   : "Bitte wählen Sie eine Dienstleistung aus"}
               </option>
               {groups.map((group) => {
+                const szolgok = szolgaltatasok.filter((sz) => sz.szolgkategoria === group.nemetnev);
                 return (
-                  <optgroup key={group} label={group}>
-                    {/* {szolgaltatasok
-                      .filter((sz) => sz.szolgkategoria === group)
-                      .map((szolg, szolgIdx) => {
-                        return getOpts(szolg, szolgIdx);
-                      })}*/}
-                    {szolgaltatasok.map((szolg, szolgIdx) => {
+                  <optgroup key={lang === 'hu' ? group.magyarnev : group.nemetnev} label={lang === 'hu' ? group.magyarnev : group.nemetnev}>
+                    {szolgok.map((szolg, szolgIdx) => {
                       return getOpts(szolg, szolgIdx);
                     })}
                   </optgroup>
