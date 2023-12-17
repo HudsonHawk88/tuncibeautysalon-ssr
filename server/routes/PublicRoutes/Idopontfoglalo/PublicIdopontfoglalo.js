@@ -468,70 +468,74 @@ router.delete("/", async (req, res) => {
 
         if (selIdopont) {
             const idopont = selIdopont[0];
-            const nev = idopont.ugyfelnev;
-            const tel = idopont.ugyfeltelefon;
-            const email = idopont.ugyfelemail;
-            const ido = moment(idopont.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(idopont.vege).format('HH:mm');
-            const id = idopont.id;
+            if (idopont) {
 
-            if (idopont && nev && tel && email && ido && id) {
-              const ugyfeluzenetmagyar = `<b>Kedves ${nev}!</b><br><br>
-              A foglalását sikeresen törölte!<br>
-              Név: ${nev}.<br>
-              Telefonszám: ${tel}.<br><br>
-              Időpont: ${ido}<br><br>
-              Tisztelettel:<br>
-              Tünci Beauty Salon<br>`;
-              const ugyfeluzenetnemet = `<b>Liebe ${nev},</b><br><br>
-              Sie haben Ihre Reservierung erfolgreich storniert!<br>
-                <ul><li>Name: ${nev}</li>
-              <li>Telefonnummer: ${tel}</li>
-              <li>Termin: ${ido}</li></ul><br>
-              Aufrichtig:<br>
-              Tünci Beauty Salon<br>`;
-              const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
-              A(z) #${id} foglalás törölve lett<br>
-              <ul><li>Név: ${nev}</li>
-              <li>Telefonszám: ${tel}.</li>
-              <li>Időpont: ${ido}</li></ul><br><br>
-              Tisztelettel:<br>
-              Tünci Beauty Salon<br>`;
-
-            const deleteSql = `DELETE FROM idopontok WHERE id = '${id}';`;
-
-            idopontok.query(deleteSql, (errrr) => {
-                if (!errrr) {
-                    transporter.sendMail({
-                        from: process.env.REACT_APP_noreplyemail, // sender address
-                        to: `${process.env.foEmail}`, // list of receivers
-                        subject: `A(z) #${id} foglalás törölve lett`,
-                        html: tulajuzenet // html body
-                    }, (tulerr) => {
-                        if (!tulerr) {
-                            transporter.sendMail({
-                                from: process.env.REACT_APP_noreplyemail, // sender address
-                                to: email, // list of receivers
-                                subject: `A(z) #${id} foglalás törölve lett`,
-                                html: lang === 'hu' ? ugyfeluzenetmagyar : ugyfeluzenetnemet // html body
-                            }, (ugyferr) => {
-                                if (ugyferr) {
-                                    log('DEL /api/idopontok ugyfelemaill', ugyferr)
-                                }
-                            })
-                        } else {
-                            log('DEL /api/idopontok tulajmail', tulerr)
-                        }
-                    });
-
-                    res.status(200).send({ err: null, msg: lang === 'hu' ? 'Foglalt időpont sikeresen törölve!' : 'Gebuchter Termin erfolgreich storniert!' })
-                } else {
-                    res.status(500).send({ err: errrr, msg: lang === 'hu' ? 'Foglalás törlése sikertelen!' : 'Stornierung der Reservierung fehlgeschlagen!' })
-                }
-            })
-          } else {
-            res.status(500).send({ err: lang === 'hu' ? 'Nincs ilyen időpont' : 'Ein solches Datum gibt es nicht' })
-          }
-
+              const nev = idopont.ugyfelnev;
+              const tel = idopont.ugyfeltelefon;
+              const email = idopont.ugyfelemail;
+              const ido = moment(idopont.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(idopont.vege).format('HH:mm');
+              const id = idopont.id;
+  
+              if (idopont && nev && tel && email && ido && id) {
+                const ugyfeluzenetmagyar = `<b>Kedves ${nev}!</b><br><br>
+                A foglalását sikeresen törölte!<br>
+                Név: ${nev}.<br>
+                Telefonszám: ${tel}.<br><br>
+                Időpont: ${ido}<br><br>
+                Tisztelettel:<br>
+                Tünci Beauty Salon<br>`;
+                const ugyfeluzenetnemet = `<b>Liebe ${nev},</b><br><br>
+                Sie haben Ihre Reservierung erfolgreich storniert!<br>
+                  <ul><li>Name: ${nev}</li>
+                <li>Telefonnummer: ${tel}</li>
+                <li>Termin: ${ido}</li></ul><br>
+                Aufrichtig:<br>
+                Tünci Beauty Salon<br>`;
+                const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
+                A(z) #${id} foglalás törölve lett<br>
+                <ul><li>Név: ${nev}</li>
+                <li>Telefonszám: ${tel}.</li>
+                <li>Időpont: ${ido}</li></ul><br><br>
+                Tisztelettel:<br>
+                Tünci Beauty Salon<br>`;
+  
+              const deleteSql = `DELETE FROM idopontok WHERE id = '${id}';`;
+  
+              idopontok.query(deleteSql, (errrr) => {
+                  if (!errrr) {
+                      transporter.sendMail({
+                          from: process.env.REACT_APP_noreplyemail, // sender address
+                          to: `${process.env.foEmail}`, // list of receivers
+                          subject: `A(z) #${id} foglalás törölve lett`,
+                          html: tulajuzenet // html body
+                      }, (tulerr) => {
+                          if (!tulerr) {
+                              transporter.sendMail({
+                                  from: process.env.REACT_APP_noreplyemail, // sender address
+                                  to: email, // list of receivers
+                                  subject: `A(z) #${id} foglalás törölve lett`,
+                                  html: lang === 'hu' ? ugyfeluzenetmagyar : ugyfeluzenetnemet // html body
+                              }, (ugyferr) => {
+                                  if (ugyferr) {
+                                      log('DEL /api/idopontok ugyfelemaill', ugyferr)
+                                  }
+                              })
+                          } else {
+                              log('DEL /api/idopontok tulajmail', tulerr)
+                          }
+                      });
+  
+                      res.status(200).send({ err: null, msg: lang === 'hu' ? 'Foglalt időpont sikeresen törölve!' : 'Gebuchter Termin erfolgreich storniert!' })
+                  } else {
+                      res.status(500).send({ err: errrr, msg: lang === 'hu' ? 'Foglalás törlése sikertelen!' : 'Stornierung der Reservierung fehlgeschlagen!' })
+                  }
+              })
+            } else {
+              res.status(500).send({ err: lang === 'hu' ? 'Nincs ilyen időpont' : 'Ein solches Datum gibt es nicht' })
+            }
+  
+            }
+           
             
 
             
