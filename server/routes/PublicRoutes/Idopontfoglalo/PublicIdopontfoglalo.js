@@ -385,9 +385,11 @@ router.post("/", async (req, res) => {
         if (!e) {
             const ugyfeluzenetmagyar = `<b>Kedves ${foglalasObj.ugyfelnev}!</b><br><br>
             A lefoglalt időpont adatai: <br>
-            Név: ${foglalasObj.ugyfelnev}.<br>
-            Telefonszám: ${foglalasObj.ugyfeltelefon}.<br><br>
-            Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}<br>
+            <ul><li>Név: ${foglalasObj.ugyfelnev}</li>
+            <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
+            <li></li>
+            <li>Szolgaltatás: ${lang === 'hu' ? magyarszolgnev : szolgrovidnev}</li>
+            <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}</li><br>
             Lemondani az alábbi linken tudja: <br>
             ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
             <strong>Amennyiben kevesebb, mint 2 nappal mondja le az időpontot, úgy rendszerünk a 3. lemondást követően nem engedi időpontot foglalni 30 napig!</strong><br> 
