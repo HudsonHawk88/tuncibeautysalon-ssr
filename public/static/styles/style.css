@@ -1405,8 +1405,8 @@ html body::-webkit-scrollbar {
 }
 @media screen and (min-width: 992px) {
   .public-navbar .nav-link.active {
-    border-bottom: 5px solid rgb(241, 24, 24);
-    background-color: unset;
+    /* border-bottom: 5px solid var(themes-public-navlinkhoveractive); */
+    background-color: rgb(241, 24, 24);
   }
 }
 @media screen and (min-width: 992px) {
@@ -1648,6 +1648,74 @@ html body::-webkit-scrollbar {
   position: absolute;
   bottom: 35px;
   font-size: 1.2em;
+}
+
+.fooldalszolgok {
+  min-width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.fooldalszolgok .szolgkatblokk {
+  min-width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 10px;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 5px;
+  border: 2px solid grey;
+  padding: 10px 20px;
+  text-align: center;
+  height: 500px;
+}
+@media screen and (min-width: 950px) {
+  .fooldalszolgok .szolgkatblokk .szolg_kartya {
+    width: calc(33% - 10px);
+  }
+}
+@media screen and (min-width: 1250px) {
+  .fooldalszolgok .szolgkatblokk .szolg_kartya {
+    width: calc(25% - 10px);
+  }
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container {
+  width: 100%;
+  height: 100%;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_logo {
+  height: 150px;
+  width: 100%;
+  border-radius: 50%;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_rovidnev {
+  font-weight: bold;
+  font-size: 1.2em;
+  height: 30px;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_leiras {
+  font-size: 0.9em;
+  height: 215px;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_ar {
+  height: 30px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button {
+  background-color: rgb(241, 24, 24);
+  color: black;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  height: 50px;
+  width: 100%;
 }
 
 .ingat_card {

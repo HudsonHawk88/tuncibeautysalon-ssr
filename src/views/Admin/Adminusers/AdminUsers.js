@@ -5,17 +5,16 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Input,
   Label,
   Card,
   CardTitle,
   CardBody,
   CardFooter,
-  Form,
 } from "reactstrap";
 import Select from "react-select";
 import { DataTable } from "@inftechsol/react-data-table";
 import { useDropzone } from "react-dropzone";
+import PropTypes from "prop-types";
 
 import { handleInputChange } from "../../../commons/InputHandlers";
 import Services from "./Services";
@@ -685,7 +684,7 @@ const AdminUsers = (props) => {
   };
 
   const deleteUser = () => {
-    Services.deleteAdminUser(currentId, (err, res) => {
+    Services.deleteAdminUser(currentId, (err) => {
       if (!err) {
         toggleDeleteModal();
         listAdminUsers();
@@ -818,6 +817,10 @@ const AdminUsers = (props) => {
       </div>
     </div>
   );
+};
+
+AdminUsers.propTypes = {
+  addNotification: PropTypes.func.isRequired
 };
 
 export default AdminUsers;

@@ -57,6 +57,7 @@ const Szolgaltatasok = (props) => {
     });
   };
 
+
   /* const renderSzolgaltatasok = () => {
     const columns = [
       {

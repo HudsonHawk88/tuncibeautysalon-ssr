@@ -37,11 +37,11 @@ const PublicHeader = (props) => {
         <Collapse navbar id="public_navbar_collapse">
           <Nav navbar className="me-auto public-navbar__nav">
             <NavItem className="nav-item public-navbar__nav-item">
-              <a className="nav-link public-navbar__nav-link" href="/">
+              <NavLink to="/" className="nav-link public-navbar__nav-link">
                 {/* <i className="far fa-bookmark"></i> */}
                 <i aria-hidden className="fas fa-home" />
                 &nbsp; {lang === "hu" ? "Főoldal" : "Home"}
-              </a>
+              </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">
               <NavLink

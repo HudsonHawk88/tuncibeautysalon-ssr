@@ -168,8 +168,8 @@
       color: black !important;
 
       @media screen and (min-width: 992px) {
-        border-bottom: 5px solid var(themes-public-navlinkhoveractive);
-        background-color: unset;
+        /* border-bottom: 5px solid var(themes-public-navlinkhoveractive); */
+        background-color: rgba(241, 24, 24, 1);
       }
     }
 
