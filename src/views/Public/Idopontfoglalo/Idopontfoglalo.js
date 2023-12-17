@@ -184,11 +184,14 @@ const Idopontfoglalo = (props) => {
               {groups.map((group) => {
                 return (
                   <optgroup key={group} label={group}>
-                    {szolgaltatasok
+                    {/* {szolgaltatasok
                       .filter((sz) => sz.szolgkategoria === group)
                       .map((szolg, szolgIdx) => {
                         return getOpts(szolg, szolgIdx);
-                      })}
+                      })}*/}
+                    {szolgaltatasok.map((szolg, szolgIdx) => {
+                      return getOpts(szolg, szolgIdx);
+                    })}
                   </optgroup>
                 );
               })}

@@ -2,16 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SzolgaltatasCard = (props) => {
-  const { data } = props;
+  const { data, lang } = props;
 
   const renderSzolgaltatas = () => {
-    /* <DataTable
-            columns={}
-            datas={}
-        /> */
+      <div className="szolg_kartya">
+        <div className="szolg_container">
+          <div className="szolg_logo"></div>
+          <div className="szolg_leiras"></div>
+          <div className="idopont_button">
+            {lang === 'hu' ? 'Időpotfoglalás' : 'Termin buchen'}
+          </div>
+        </div>
+      </div>
   };
-
-  console.log(data);
 
   return <div>{renderSzolgaltatas()}</div>;
 };

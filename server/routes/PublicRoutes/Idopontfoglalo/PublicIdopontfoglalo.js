@@ -27,6 +27,8 @@ const idopontok = pool;
     return obj;
 } */
 
+
+
 router.get("/", (req, res) => {
   const id = req.headers.id;
   if (id) {
@@ -58,6 +60,7 @@ router.get("/", (req, res) => {
           const szabadIdopontok = [];
           if (nyitva && szolg) {
             let nyitvatartas = nyitva[0].nyitvatartas;
+            console.log('SZOLG: ', szolg);
             let total = szolg[0].total;
             const dayname = moment(nap).format("dddd");
             const capitalized = "is" + dayname;
@@ -301,6 +304,39 @@ router.get("/", (req, res) => {
               }
             }
           }
+
+        /*   const event = {
+            'summary': 'Google I/O 2015',
+            'location': '800 Howard St., San Francisco, CA 94103',
+            'description': 'A chance to hear more about Google\'s developer products.',
+            'start': {
+              'dateTime': '2023-12-23T09:00:00-07:00',
+              'timeZone': 'Europe/Budapest',
+            },
+            'end': {
+              'dateTime': '2023-12-23T17:00:00-07:00',
+              'timeZone': 'Europe/Budapest',
+            },
+            'recurrence': [
+              'RRULE:FREQ=DAILY;COUNT=2'
+            ],
+            'attendees': [
+              {'email': 'lpage@example.com'},
+              {'email': 'sbrin@example.com'},
+            ],
+            'reminders': {
+              'useDefault': false,
+              'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+              ],
+            },
+          }; */
+/* 
+          addEvent(event); */
+          /* const evs = await listEvents();
+          console.log(evs); */
+
           res.status(200).send(szabadIdopontok);
         } else {
           res.status(500).send({ err: err });

@@ -25,6 +25,29 @@ const penznemek = [
   { id: 1, label: "HUF", value: "HUF" },
 ];
 
+const paginationOptions = {
+  count: 5,
+  color: "primary",
+  rowPerPageOptions: [
+    {
+      value: 5,
+      text: "5",
+    },
+    {
+      value: 10,
+      text: "10",
+    },
+    {
+      value: 25,
+      text: "25",
+    },
+    {
+      value: 50,
+      text: "50",
+    },
+  ],
+};
+
 const Szolgaltatasok = (props) => {
   const [szolgaltatasokJson, setSzolgaltatasokJson] = useState([]);
   const [szolgaltatasObj, setSzolgaltatasObj] = useState(
@@ -150,7 +173,7 @@ const Szolgaltatasok = (props) => {
       { text: "Műveletek", dataField: "id", formatter: tableIconFormatter },
     ];
 
-    return <DataTable columns={columns} datas={szolgaltatasokJson} bordered />;
+    return <DataTable columns={columns} datas={szolgaltatasokJson} paginationOptions={paginationOptions} bordered />;
   };
 
   const toggleSzolgModal = () => {

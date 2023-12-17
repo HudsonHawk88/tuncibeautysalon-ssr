@@ -2,7 +2,8 @@ import { createPool } from 'mysql2';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import path from 'path';
-import { existsSync, mkdirSync, createWriteStream } from 'fs';
+import { existsSync, mkdirSync, createWriteStream } from 'fs/promises';
+/* import { google } from 'googleapis'; */
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env')
@@ -22,6 +23,21 @@ const db_params = {
 };
 const pool = createPool(db_params);
 
+/* let jwtClient = new google.auth.JWT(
+    process.env.calendarEmail,
+    null,
+    process.env.calendarPrivateKey,
+    ['https://www.googleapis.com/auth/calendar']);
+//authenticate request
+    jwtClient.authorize(function (err, tokens) {
+        if (err) {
+            console.log(err);
+            return;
+            } else {
+            console.log("Successfully connected!");
+        }
+    }); */
+
 const log = (endPoint, error) => {
     const time = new Date().toLocaleDateString(hungarian);
     let filePath = `${process.env.REACT_APP_logDir}/${time}_error.log`;
@@ -34,6 +50,41 @@ const log = (endPoint, error) => {
 
     logger.write(`ERROR: ${endPoint}: ${time} - ${error}\n`);
 };
+
+/* const addEvent = (event) => {
+    const calendar = google.calendar('v3');
+    calendar.events.insert({
+        auth: jwtClient,
+        calendarId: 'primary',
+        resource: event,
+    }, function(err, event) {
+        if (err) {
+        console.log('There was an error contacting the Calendar service: ' + err);
+        return;
+        }
+        console.log('Event created: %s', event.htmlLink);
+    });
+} */
+/* async function listEvents() {
+  const calendar = google.calendar('v3')
+  const res = await calendar.events.list({
+    calendarId: 'primary',
+    timeMin: new Date().toISOString(),
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  });
+  const events = res.data.items;
+  if (!events || events.length === 0) {
+    console.log('No upcoming events found.');
+    return;
+  }
+  console.log('Upcoming 10 events:');
+  events.map((event) => {
+    const start = event.start.dateTime || event.start.date;
+    console.log(`${start} - ${event.summary}`);
+  });
+} */
 
 const quote = (val) => (typeof val === 'string' ? `"${val}"` : val);
 
@@ -602,5 +653,7 @@ export {
     getBooleanFromNumber,
     getNumberFromBoolean,
     isTableExists,
-    isAdminUsersTableExists
+    isAdminUsersTableExists,
+ /*    addEvent,
+    listEvents */
 };

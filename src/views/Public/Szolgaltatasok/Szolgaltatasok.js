@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Services from "./Services";
 import { Col, Row, Table } from "reactstrap";
-import { DataTable } from "@inftechsol/react-data-table";
 import PropTypes from "prop-types";
 
 const Szolgaltatasok = (props) => {
@@ -56,15 +55,6 @@ const Szolgaltatasok = (props) => {
         setSzolgaltatasok(szolgArr);
       }
     });
-  };
-
-  const arFormatter = (cell, row) => {
-    console.log(row);
-    return `${row.ar} ${row.penznem}`;
-  };
-
-  const idotartamFormatter = (cell, row) => {
-    return `${row.idotartam} ${lang === "ch" ? "minuten" : "perc"}`;
   };
 
   /* const renderSzolgaltatasok = () => {
