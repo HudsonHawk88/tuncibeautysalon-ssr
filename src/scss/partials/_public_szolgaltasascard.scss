@@ -19,7 +19,7 @@
             border: 2px solid grey;
             padding: 10px 20px;
             text-align: center;
-            height: 500px;
+            height: 550px;
 
             @media screen and (min-width: 950px) {
                 width: calc(33% - 10px);
@@ -42,12 +42,12 @@
                 & .szolg_rovidnev {
                     font-weight: bold;
                     font-size: 1.2em;
-                    height: 30px;
+                    height: 140px;
                 }
     
                 & .szolg_leiras {
                     font-size: .9em;
-                    height: 215px;
+                    height: 150px;
                 }
     
                 & .szolg_ar {

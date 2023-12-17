@@ -3,7 +3,7 @@ import Services from "./Services";
 import { Col, Row, Table } from "reactstrap";
 import PropTypes from "prop-types";
 
-const Szolgaltatasok = (props) => {
+const Preisliste = (props) => {
   const { lang } = props;
 
   console.log(lang, props);
@@ -145,8 +145,8 @@ const Szolgaltatasok = (props) => {
   );
 };
 
-Szolgaltatasok.propTypes = {
+Preisliste.propTypes = {
   lang: PropTypes.string.isRequired,
 };
 
-export default Szolgaltatasok;
+export default Preisliste;

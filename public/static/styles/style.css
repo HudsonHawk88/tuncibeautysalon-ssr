@@ -13,6 +13,12 @@ html body {
   /*  scrollbar-width: thin; */
 }
 
+.bio {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
 .rw-calendar-btn-today.rw-calendar-btn.rw-btn {
   display: none;
 }
@@ -1671,7 +1677,7 @@ html body::-webkit-scrollbar {
   border: 2px solid grey;
   padding: 10px 20px;
   text-align: center;
-  height: 500px;
+  height: 550px;
 }
 @media screen and (min-width: 950px) {
   .fooldalszolgok .szolgkatblokk .szolg_kartya {
@@ -1695,11 +1701,11 @@ html body::-webkit-scrollbar {
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_rovidnev {
   font-weight: bold;
   font-size: 1.2em;
-  height: 30px;
+  height: 140px;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_leiras {
   font-size: 0.9em;
-  height: 215px;
+  height: 150px;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_ar {
   height: 30px;

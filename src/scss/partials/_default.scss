@@ -17,6 +17,12 @@ html body {
   /*  scrollbar-width: thin; */
 }
 
+.bio {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
 .rw-calendar-btn-today.rw-calendar-btn.rw-btn {
   display: none;
 }

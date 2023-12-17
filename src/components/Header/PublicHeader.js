@@ -107,10 +107,10 @@ const PublicHeader = (props) => {
             <NavItem className="nav-item public-navbar__nav-item">
               <NavLink
                 className="nav-link public-navbar__nav-link"
-                to="/dienstleistungen"
+                to="/preisliste"
               >
-                <i className="fa-regular fa-images" />
-                &nbsp; {lang === "hu" ? "Szolgáltatások" : "Dienstleistungen"}
+                <i className="fa-solid fa-money-bill" />
+                &nbsp; {lang === "hu" ? "Árlista" : "Preisliste"}
               </NavLink>
             </NavItem>
             <NavItem className="nav-item public-navbar__nav-item">

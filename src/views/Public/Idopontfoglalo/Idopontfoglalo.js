@@ -44,7 +44,7 @@ const Idopontfoglalo = (props) => {
 
   useEffect(() => {
     if (!szolgaltatas && szolgaltatasok) {
-      translteSzolgaltatasok(szolgaltatasok);
+      listSzolgaltatasok();
     }
   }, [lang]);
 
@@ -153,8 +153,8 @@ const Idopontfoglalo = (props) => {
       <hr style={{ color: "rgba(241, 24, 24, 1)" }} />
       <div className="row">
         {!szolgaltatas && (
-          <div className="col-md-3">
-            <Label htmlFor="szolgaltatas">
+          <div style={{ margin: '10px 0px' }} className="col-md-3">
+            <Label htmlFor="szolgaltatas" style={{fontSize: '1.8em' }}>
               {lang === "hu" ? "Szolgáltatás" : "Dienestlungen"}
             </Label>
             <RVInput
@@ -191,8 +191,8 @@ const Idopontfoglalo = (props) => {
             </RVInput>
           </div>
         )}
-        <div className="col-md-3" hidden={!idopont.szolgaltatas}>
-          <Label htmlFor="szolgaltatas">{lang === "hu" ? "Nap" : "Tage"}</Label>
+        <div style={{ margin: '10px 0px' }} className="col-md-3" hidden={!idopont.szolgaltatas}>
+          <Label htmlFor="szolgaltatas" style={{fontSize: '1.8em' }}>{lang === "hu" ? "Nap" : "Tage"}</Label>
           {console.log(moment().month(6).format("MMMM"))}
           <Calendar
             min={new Date(moment().add(1, "days"))}
@@ -224,8 +224,8 @@ const Idopontfoglalo = (props) => {
             }}
           />
         </div>
-        <div className="col-md-3" hidden={!idopont.nap && !message}>
-          <Label>{lang === "hu" ? "Időpont" : "Termin"}</Label>
+        <div style={{ margin: '10px 0px' }} className="col-md-3" hidden={!idopont.nap && !message}>
+          <Label style={{fontSize: '1.8em' }}>{lang === "hu" ? "Időpont" : "Termin"}</Label>
           <div className="idopontfoglalo__idopontok">
             {message
               ? message
@@ -246,6 +246,7 @@ const Idopontfoglalo = (props) => {
           </div>
         </div>
         <div
+          style={{ margin: '10px 0px' }}
           className="col-md-3"
           hidden={
             !idopont.szolgaltatas ||
@@ -256,7 +257,7 @@ const Idopontfoglalo = (props) => {
             idopont.kezdete === ""
           }
         >
-          <Label>{lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}</Label>
+          <Label style={{fontSize: '1.8em' }}>{lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}</Label>
           <div className="idopontfoglalo__ugyfeladatok">
             <div style={{ margin: "0 0 10px 0" }}>
               <RVInput
