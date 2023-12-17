@@ -30,7 +30,7 @@ const Fooldal = (props) => {
       szolgArr.push(szolgObj);
       groups.push({
         nemetnev: szolgObj.szolgkategoria,
-        magyarnev: szolgObj.magyarszolgkategoria,
+        magyarnev: szolgObj.magyarszolgkategoria
       });
     });
 
@@ -47,10 +47,11 @@ const Fooldal = (props) => {
     }
   }, [lang]);
 
-  const getSzolgok = (szolg, szolgIdx) => {
+  const getSzolgok = (szolg, szolgIdx, groupIdx) => {
     console.log(szolgIdx + "_szolgId_ " + szolg.id);
     return (
       <SzolgaltatasCard
+        groupId={groupIdx + 1}
         data={szolg}
         key={szolgIdx + "_szolgId_ " + szolg.id}
         {...props}
@@ -59,7 +60,7 @@ const Fooldal = (props) => {
   };
 
   const renderSzolgaltatasok = () => {
-    return groups.map((group) => {
+    return groups.map((group, groupIdx) => {
       console.log(group);
       const szolgok = szolgaltatasok.filter(
         (sz) => sz.szolgkategoria === group.nemetnev
@@ -72,7 +73,7 @@ const Fooldal = (props) => {
             <h2>{lang === "hu" ? group.magyarnev : group.nemetnev}</h2>
           </div>
           {szolgok.map((szolg, szolgIdx) => {
-            return getSzolgok(szolg, szolgIdx);
+            return getSzolgok(szolg, szolgIdx, groupIdx);
           })}
         </div>
       );

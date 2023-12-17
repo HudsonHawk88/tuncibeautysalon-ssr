@@ -33,7 +33,7 @@ const FoglalasTorles = (props) => {
     <div
       style={{
         width: "100%",
-        display: "flex",
+        display: loading ? "flex" : "block",
         justifyContent: `${loading ? "center" : "normal"}`,
         alignItems: `${loading ? "center" : "normal"}`,
         height: `${loading ? "100%" : "unset"}`,

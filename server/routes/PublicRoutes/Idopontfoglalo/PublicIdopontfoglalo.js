@@ -473,27 +473,28 @@ router.delete("/", async (req, res) => {
             const ido = moment(idopont.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(idopont.vege).format('HH:mm');
             const id = idopont.id;
 
-            const ugyfeluzenetmagyar = `<b>Kedves ${nev}!</b><br><br>
-            A foglalását sikeresen törölte!<br>
-            Név: ${nev}.<br>
-            Telefonszám: ${tel}.<br><br>
-            Időpont: ${ido}<br><br>
-            Tisztelettel:<br>
-            Tünci Beauty Salon<br>`;
-            const ugyfeluzenetnemet = `<b>Liebe ${nev},</b><br><br>
-            Sie haben Ihre Reservierung erfolgreich storniert!<br>
-              <ul><li>Name: ${nev}</li>
-            <li>Telefonnummer: ${tel}</li>
-            <li>Termin: ${ido}</li></ul><br>
-            Aufrichtig:<br>
-            Tünci Beauty Salon<br>`;
-            const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
-            A(z) #${id} foglalás törölve lett<br>
-            <ul><li>Név: ${nev}</li>
-            <li>Telefonszám: ${tel}.</li>
-            <li>Időpont: ${ido}</li></ul><br><br>
-            Tisztelettel:<br>
-            Tünci Beauty Salon<br>`;
+            if (idopont && nev && tel && email && ido && id) {
+              const ugyfeluzenetmagyar = `<b>Kedves ${nev}!</b><br><br>
+              A foglalását sikeresen törölte!<br>
+              Név: ${nev}.<br>
+              Telefonszám: ${tel}.<br><br>
+              Időpont: ${ido}<br><br>
+              Tisztelettel:<br>
+              Tünci Beauty Salon<br>`;
+              const ugyfeluzenetnemet = `<b>Liebe ${nev},</b><br><br>
+              Sie haben Ihre Reservierung erfolgreich storniert!<br>
+                <ul><li>Name: ${nev}</li>
+              <li>Telefonnummer: ${tel}</li>
+              <li>Termin: ${ido}</li></ul><br>
+              Aufrichtig:<br>
+              Tünci Beauty Salon<br>`;
+              const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
+              A(z) #${id} foglalás törölve lett<br>
+              <ul><li>Név: ${nev}</li>
+              <li>Telefonszám: ${tel}.</li>
+              <li>Időpont: ${ido}</li></ul><br><br>
+              Tisztelettel:<br>
+              Tünci Beauty Salon<br>`;
 
             const deleteSql = `DELETE FROM idopontok WHERE id = '${id}';`;
 
@@ -526,6 +527,11 @@ router.delete("/", async (req, res) => {
                     res.status(500).send({ err: errrr, msg: lang === 'hu' ? 'Foglalás törlése sikertelen!' : 'Stornierung der Reservierung fehlgeschlagen!' })
                 }
             })
+          } else {
+            res.status(500).send({ err: lang === 'hu' ? 'Nincs ilyen időpont' : 'Ein solches Datum gibt es nicht' })
+          }
+
+            
 
             
         }

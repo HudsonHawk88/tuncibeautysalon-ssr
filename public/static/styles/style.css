@@ -1689,7 +1689,7 @@ html body::-webkit-scrollbar {
   border: 2px solid grey;
   padding: 10px 20px;
   text-align: center;
-  height: 550px;
+  height: 600px;
 }
 @media screen and (min-width: 950px) {
   .fooldalszolgok .szolgkatblokk .szolg_kartya {
@@ -1704,25 +1704,47 @@ html body::-webkit-scrollbar {
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_logo {
   height: 150px;
   width: 100%;
   border-radius: 50%;
+  margin: 5px 0px;
+  display: "flex";
+  justify-content: center;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_logo img {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_rovidnev {
   font-weight: bold;
   font-size: 1.2em;
-  height: 140px;
+  max-height: 140px;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_leiras {
   font-size: 0.9em;
-  height: 150px;
+  height: auto;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_idotartam {
+  height: 40px;
+  font-weight: bold;
+  font-size: 1.2em;
+  position: absolute;
+  bottom: 80px;
+  width: 100%;
+  text-align: center;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_ar {
   height: 30px;
   font-weight: bold;
   font-size: 1.2em;
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  text-align: center;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button {
   background-color: rgb(241, 24, 24);
@@ -1734,6 +1756,13 @@ html body::-webkit-scrollbar {
   padding: 5px 10px;
   height: 50px;
   width: 100%;
+  border: 2px solid rgb(241, 24, 24);
+  position: absolute;
+  bottom: 0px;
+}
+.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button:hover {
+  color: rgb(241, 24, 24);
+  background-color: black;
 }
 
 .ingat_card {
