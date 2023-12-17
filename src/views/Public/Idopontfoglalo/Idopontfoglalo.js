@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Calendar } from "react-widgets";
 import moment from "moment";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
+import { useSearchParams } from "react-router-dom";
 import { handleInputChange } from "../../../commons/InputHandlers";
 import Services from "./Services";
 import { Button, Label } from "reactstrap";
@@ -18,7 +19,9 @@ const defaultIdopont = {
 };
 
 const Idopontfoglalo = (props) => {
-  const { lang, szolgaltatas, addNotification } = props;
+  const { lang, szolgaltatas } = props;
+ 
+  
 
   const [idopont, setIdopont] = useState(defaultIdopont);
   const [groups, setGroups] = useState([]);
@@ -26,6 +29,9 @@ const Idopontfoglalo = (props) => {
   const [szabadIdopontok, setSzabadIdopontok] = useState([]);
   const [unnepnapok, setUnnepnapok] = useState([]);
   const [message, setMessage] = useState(null);
+  const [searchParams] = useSearchParams();
+
+
 
   const translteSzolgaltatasok = (array) => {
     const szolgArr = [];
@@ -38,6 +44,15 @@ const Idopontfoglalo = (props) => {
     });
 
     setGroups([...new Map(groups.map(item => [item.nemetnev, item])).values()]);
+    const szolgId = searchParams.get("szolgId");
+    if (szolgId) {
+      const found = szolgArr.find((sz) => sz.id === parseInt(szolgId));
+      console.log(found)
+      if (found) {
+        setIdopont({ ...idopont, szolgaltatas: found.id })
+      /*   getIdopontok(idopont.nap); */
+      }
+    }
     console.log(szolgArr);
     setSzolgaltatasok(szolgArr);
   };
@@ -208,14 +223,13 @@ const Idopontfoglalo = (props) => {
               );
               console.log(found);
               setIdopont({ ...idopont, nap: v, kezdete: null });
-              setSzabadIdopontok([]);
               if (found) {
                 const msg =
                   lang === "hu"
                     ? "Ezen a napon nem foglalható időpont!"
                     : "An diesem Tag sind keine Terminbuchungen möglich!";
                 setMessage(msg);
-                addNotification.success(msg);
+                
               } else {
                 setMessage(null);
 

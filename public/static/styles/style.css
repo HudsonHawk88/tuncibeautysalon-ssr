@@ -13,6 +13,13 @@ html body {
   /*  scrollbar-width: thin; */
 }
 
+table, tr {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+  /* overflow-wrap: break-word; */
+}
+
 .bio {
   display: flex;
   justify-content: center;
@@ -685,7 +692,12 @@ html body::-webkit-scrollbar {
 .tartalom-admin .fas.fa-file-pdf {
   color: red;
 }
-.tartalom-admin table {
+.tartalom-admin table, .tartalom-admin tr {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+  /*  overflow-wrap: break-word; */
+  width: 100% !important;
   border: 1px black solid;
 }
 .tartalom-admin .pagination.react-bootstrap-table-page-btns-ul {

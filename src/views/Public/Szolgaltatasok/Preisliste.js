@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Services from "./Services";
-import { Col, Row, Table } from "reactstrap";
+import { Table } from "reactstrap";
 import PropTypes from "prop-types";
 
 const Preisliste = (props) => {
@@ -90,7 +90,7 @@ const Preisliste = (props) => {
         : group === obj.magyarkategorianev
     ) {
       return (
-        <tr key={obj.id}>
+        <tr key={obj.id} >
           <td key={"1_cell"}>{obj.szolgrovidnev}</td>
           <td key={"2_cell"}>{obj.szolgreszletek}</td>
           <td key={"3_cell"}>{`${obj.ar} ${obj.penznem}`}</td>
@@ -107,12 +107,12 @@ const Preisliste = (props) => {
 
     return groups.map((group, index) => {
       return (
-        <div key={index}>
+        <div key={index} style={{ width: '100%' }}>
           <div>
             <h4>{group}</h4>
           </div>
-          <Table bordered style={{ color: "white" }}>
-            <thead>
+          <Table bordered style={{ color: "white", width: '100%' }}>
+            <thead style={{ maxWidth: '100%' }}>
               <tr>
                 <td>{lang === "ch" ? "Dienstleistungen" : "Szolgáltatások"}</td>
                 <td>{lang === "ch" ? "Einzelheiten" : "Részletek"}</td>
@@ -132,16 +132,15 @@ const Preisliste = (props) => {
   };
 
   return (
-    <div>
-      <h2 style={{ textAlign: "center" }}>
-        {lang !== "ch" ? "Szolgáltatások" : "Dienstleistungen"}
-      </h2>
-      <Row>
-        <Col sm={12} md={12} lg={12} xl={12} xxl={12}>
+      
+      <div className="row">
+        <div className="col-md-12">
+          <h2 style={{ textAlign: "center", width: '100%' }}>
+            {lang !== "ch" ? "Szolgáltatások" : "Dienstleistungen"}
+          </h2>
           {renderSzolgaltatasok()}
-        </Col>
-      </Row>
-    </div>
+        </div>
+      </div>
   );
 };
 

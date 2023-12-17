@@ -59,8 +59,9 @@ router.get("/", (req, res) => {
           );
           const szabadIdopontok = [];
           if (nyitva && szolg) {
+           
             let nyitvatartas = nyitva[0].nyitvatartas;
-            console.log('SZOLG: ', szolg);
+            nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
             let total = szolg[0].total;
             const dayname = moment(nap).format("dddd");
             const capitalized = "is" + dayname;

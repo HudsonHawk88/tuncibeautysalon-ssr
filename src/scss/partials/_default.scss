@@ -17,6 +17,13 @@ html body {
   /*  scrollbar-width: thin; */
 }
 
+table, tr {
+  width:100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+  /* overflow-wrap: break-word; */
+}
+
 .bio {
   display: flex;
   justify-content: center;
@@ -797,7 +804,12 @@ html body::-webkit-scrollbar {
     color: red;
   }
 
-  table {
+  table, tr {
+    width:100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+   /*  overflow-wrap: break-word; */
+    width: 100% !important;
     border: 1px black solid;
   }
 
