@@ -46,8 +46,8 @@ const AdminSidebar = (props) => {
                     to="/admin/felhasznalok"
                     id="felhasznalok"
                   >
-                    &nbsp;&nbsp;<i className="fas fa-user"></i>
-                    &nbsp;Admin felhasználók
+                    &nbsp;&nbsp;<i aria-hidden className="fas fa-user"></i>
+                    &nbsp;&nbsp; Admin felhasználók
                   </NavLink>
                 </NavItem>
                 <NavItem className="admin-sidebar__navitem">
@@ -57,8 +57,8 @@ const AdminSidebar = (props) => {
                     id="jogosultsagok"
                   >
                     &nbsp;&nbsp;
-                    <i className="fas fa-user" />
-                    &nbsp;Jogosultságok
+                    <i aria-hidden className="fas fa-user" />
+                    &nbsp;&nbsp; Jogosultságok
                   </NavLink>
                 </NavItem>
               </React.Fragment>
@@ -97,7 +97,7 @@ const AdminSidebar = (props) => {
                   id="kapcsolatok"
                 >
                   &nbsp;&nbsp;
-                  <i className="fa-solid fa-address-book" />
+                  <i aria-hidden className="fa-solid fa-address-book" />
                   &nbsp; Kapcsolatok
                 </NavLink>
               </NavItem>
@@ -109,7 +109,7 @@ const AdminSidebar = (props) => {
                   to="/admin/adatkezeles"
                   id="Adatkezelés"
                 >
-                  &nbsp;&nbsp;<i className="fas fa-shield-alt"></i>
+                  &nbsp;&nbsp;<i aria-hidden className="fas fa-shield-alt"></i>
                   &nbsp;Adatkezelés
                 </NavLink>
               </NavItem>

@@ -104,13 +104,10 @@ const Szolgaltatasok = (props) => {
               (szk) => szk.kategorianev === res.szolgkategoria
             ).id
           : null;
-
-        res.penznem = penznemek.find((pn) => pn.value === res.penznem)
-          ? penznemek.find((pn) => pn.value === res.penznem)
-          : null;
-        res.magyarpenznem = penznemek.find((pn) => pn.value === res.penznem)
-          ? penznemek.find((pn) => pn.value === res.penznem)
-          : null;
+        res.penznem = penznemek.find((pn) => res.penznem === pn.value);
+        res.magyarpenznem = penznemek.find(
+          (pn) => res.magyarpenznem === pn.value
+        );
         setSzolgaltatasObj(res);
       }
     });
@@ -173,7 +170,14 @@ const Szolgaltatasok = (props) => {
       { text: "Műveletek", dataField: "id", formatter: tableIconFormatter },
     ];
 
-    return <DataTable columns={columns} datas={szolgaltatasokJson} paginationOptions={paginationOptions} bordered />;
+    return (
+      <DataTable
+        columns={columns}
+        datas={szolgaltatasokJson}
+        paginationOptions={paginationOptions}
+        bordered
+      />
+    );
   };
 
   const toggleSzolgModal = () => {
@@ -194,8 +198,7 @@ const Szolgaltatasok = (props) => {
   const onSubmit = () => {
     console.log(currentId !== undefined);
     let submitObj = szolgaltatasObj;
-    submitObj.penznem = submitObj.penznem.value;
-    submitObj.magyarpenznem = submitObj.magyarpenznem.value;
+    /* console.log("PÉNZNEMEK: ", submitObj) */
     if (currentId === undefined) {
       Services.addSzolgaltatas(submitObj, (err, res) => {
         if (!err) {

@@ -237,8 +237,11 @@ const getJSONfromLongtext = (object, direction = 'toBool') => {
                 }
                 return newObj[key];
             } else {
+                console.log()
                 if (verifyJson(object[key])) {
+                    console.log(object[key])
                     newObj[key] = JSON.parse(object[key]);
+                    console.log(typeof newObj[key])
                 } else {
                     newObj[key] = object[key];
                 }

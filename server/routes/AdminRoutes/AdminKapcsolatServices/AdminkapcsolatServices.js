@@ -34,11 +34,12 @@ router.get('/', async (req, res) => {
                 if (vanTabla) {
                     kapcsolatok.query(sql, (err, result) => {
                         if (!err) {
+                            const newResult = [];
                             result.forEach((r) => {
-                                r = getJSONfromLongtext(r);
-                                return r
+                                const newR = getJSONfromLongtext(r);
+                                newResult.push(newR);
                             })
-                            res.status(200).send(result);
+                            res.status(200).send(newResult);
                         } else {
                             res.status(500).send({
                                 err: err,

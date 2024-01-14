@@ -20,8 +20,6 @@ const defaultIdopont = {
 
 const Idopontfoglalo = (props) => {
   const { lang, szolgaltatas } = props;
- 
-  
 
   const [idopont, setIdopont] = useState(defaultIdopont);
   const [groups, setGroups] = useState([]);
@@ -31,26 +29,28 @@ const Idopontfoglalo = (props) => {
   const [message, setMessage] = useState(null);
   const [searchParams] = useSearchParams();
 
-
-
   const translteSzolgaltatasok = (array) => {
     const szolgArr = [];
     const groups = [];
     array.forEach((szolg) => {
       const szolgObj = Object.assign({}, szolg);
       szolgArr.push(szolgObj);
-      groups.push({ nemetnev: szolgObj.szolgkategoria, magyarnev: szolgObj.magyarszolgkategoria });
-  
+      groups.push({
+        nemetnev: szolgObj.szolgkategoria,
+        magyarnev: szolgObj.magyarszolgkategoria,
+      });
     });
 
-    setGroups([...new Map(groups.map(item => [item.nemetnev, item])).values()]);
+    setGroups([
+      ...new Map(groups.map((item) => [item.nemetnev, item])).values(),
+    ]);
     const szolgId = searchParams.get("szolgId");
     if (szolgId) {
       const found = szolgArr.find((sz) => sz.id === parseInt(szolgId));
-      console.log(found)
+      console.log(found);
       if (found) {
-        setIdopont({ ...idopont, szolgaltatas: found.id })
-      /*   getIdopontok(idopont.nap); */
+        setIdopont({ ...idopont, szolgaltatas: found.id });
+        /*   getIdopontok(idopont.nap); */
       }
     }
     console.log(szolgArr);
@@ -114,7 +114,7 @@ const Idopontfoglalo = (props) => {
     return (
       <Fragment>
         <option key={szolgIdx + "_szolgId_ " + szolg.id} value={szolg.id}>
-          {lang === "hu" ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev}
+          {(lang === "hu" ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev) + ` - ${szolg.idotartam} ${lang === 'hu' ? 'perc' : 'Minuten'} - ${szolg.ar} ${szolg.penznem}`} 
         </option>
       </Fragment>
     );
@@ -158,7 +158,7 @@ const Idopontfoglalo = (props) => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", minHeight: "100vh" }}>
       {console.log(idopont)}
       <div className="row">
         <div className="col-md-12">
@@ -168,8 +168,8 @@ const Idopontfoglalo = (props) => {
       <hr style={{ color: "rgba(241, 24, 24, 1)" }} />
       <div className="row">
         {!szolgaltatas && (
-          <div style={{ margin: '10px 0px' }} className="col-md-3">
-            <Label htmlFor="szolgaltatas" style={{fontSize: '1.8em' }}>
+          <div style={{ margin: "10px 0px" }} className="col-md-3">
+            <Label htmlFor="szolgaltatas" style={{ fontSize: "1.8em" }}>
               {lang === "hu" ? "Szolgáltatás" : "Dienestlungen"}
             </Label>
             <RVInput
@@ -194,9 +194,14 @@ const Idopontfoglalo = (props) => {
                   : "Bitte wählen Sie eine Dienstleistung aus"}
               </option>
               {groups.map((group) => {
-                const szolgok = szolgaltatasok.filter((sz) => sz.szolgkategoria === group.nemetnev);
+                const szolgok = szolgaltatasok.filter(
+                  (sz) => sz.szolgkategoria === group.nemetnev
+                );
                 return (
-                  <optgroup key={lang === 'hu' ? group.magyarnev : group.nemetnev} label={lang === 'hu' ? group.magyarnev : group.nemetnev}>
+                  <optgroup
+                    key={lang === "hu" ? group.magyarnev : group.nemetnev}
+                    label={lang === "hu" ? group.magyarnev : group.nemetnev}
+                  >
                     {szolgok.map((szolg, szolgIdx) => {
                       return getOpts(szolg, szolgIdx);
                     })}
@@ -206,8 +211,14 @@ const Idopontfoglalo = (props) => {
             </RVInput>
           </div>
         )}
-        <div style={{ margin: '10px 0px' }} className="col-md-3" hidden={!idopont.szolgaltatas}>
-          <Label htmlFor="szolgaltatas" style={{fontSize: '1.8em' }}>{lang === "hu" ? "Nap" : "Tage"}</Label>
+        <div
+          style={{ margin: "10px 0px" }}
+          className="col-md-3"
+          hidden={!idopont.szolgaltatas}
+        >
+          <Label htmlFor="szolgaltatas" style={{ fontSize: "1.8em" }}>
+            {lang === "hu" ? "Nap" : "Tage"}
+          </Label>
           {console.log(moment().month(6).format("MMMM"))}
           <Calendar
             min={new Date(moment().add(1, "days"))}
@@ -229,7 +240,6 @@ const Idopontfoglalo = (props) => {
                     ? "Ezen a napon nem foglalható időpont!"
                     : "An diesem Tag sind keine Terminbuchungen möglich!";
                 setMessage(msg);
-                
               } else {
                 setMessage(null);
 
@@ -238,8 +248,14 @@ const Idopontfoglalo = (props) => {
             }}
           />
         </div>
-        <div style={{ margin: '10px 0px' }} className="col-md-3" hidden={!idopont.nap && !message}>
-          <Label style={{fontSize: '1.8em' }}>{lang === "hu" ? "Időpont" : "Termin"}</Label>
+        <div
+          style={{ margin: "10px 0px" }}
+          className="col-md-3"
+          hidden={!idopont.nap && !message}
+        >
+          <Label style={{ fontSize: "1.8em" }}>
+            {lang === "hu" ? "Időpont" : "Termin"}
+          </Label>
           <div className="idopontfoglalo__idopontok">
             {message
               ? message
@@ -260,7 +276,7 @@ const Idopontfoglalo = (props) => {
           </div>
         </div>
         <div
-          style={{ margin: '10px 0px' }}
+          style={{ margin: "10px 0px" }}
           className="col-md-3"
           hidden={
             !idopont.szolgaltatas ||
@@ -271,7 +287,9 @@ const Idopontfoglalo = (props) => {
             idopont.kezdete === ""
           }
         >
-          <Label style={{fontSize: '1.8em' }}>{lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}</Label>
+          <Label style={{ fontSize: "1.8em" }}>
+            {lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}
+          </Label>
           <div className="idopontfoglalo__ugyfeladatok">
             <div style={{ margin: "0 0 10px 0" }}>
               <RVInput

@@ -820,7 +820,7 @@ const AdminUsers = (props) => {
 };
 
 AdminUsers.propTypes = {
-  addNotification: PropTypes.func.isRequired
+  addNotification: PropTypes.func.isRequired,
 };
 
 export default AdminUsers;

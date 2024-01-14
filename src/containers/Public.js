@@ -26,9 +26,7 @@ const Public = (props) => {
             <Loading isLoading={loading} />
           </div>
         ) : (
-          <React.Fragment>
-            <div className="tartalom">{children}</div>
-          </React.Fragment>
+          <div className="tartalom">{children}</div>
         )}
         <PublicFooter />
       </div>

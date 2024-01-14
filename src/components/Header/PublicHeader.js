@@ -4,10 +4,10 @@ import {
   Collapse,
   Nav,
   NavItem,
-  /*   UncontrolledDropdown,
+  UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem, */
+  DropdownItem,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { HU, CH } from "country-flag-icons/react/3x2";
@@ -52,7 +52,7 @@ const PublicHeader = (props) => {
                 &nbsp; {lang === "hu" ? "Időpontfoglaló" : "Termin buchen"}
               </NavLink>
             </NavItem>
-            {/* <UncontrolledDropdown
+            <UncontrolledDropdown
               className="nav-item public-navbar__nav-item"
               inNavbar
               nav
@@ -63,48 +63,67 @@ const PublicHeader = (props) => {
                 className="nav-link public-navbar__nav-link"
               >
                 <i aria-hidden className="fas fa-briefcase"></i>
-                &nbsp; Dienstleistungen
+                &nbsp; {lang === "hu" ? "Szolgáltatások" : "Dienstleistungen"}
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
-                    to="/kosmetik"
+                    to="/service/1"
+                    end
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; Kosmetic
+                    &nbsp; {lang === "hu" ? "Kozmetika" : "Kosmetik"}
                   </NavLink>
                 </DropdownItem>
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
-                    to="/manikure"
+                    to="/service/2"
+                    end
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; Maniküre
+                    &nbsp;{" "}
+                    {lang === "hu"
+                      ? "Manikűr / Pedikűr"
+                      : "Maniküre / Pediküre"}
                   </NavLink>
                 </DropdownItem>
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
-                    to="/falschewimpern"
+                    to="/service/3"
+                    end
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; Falsche Wimpern
+                    &nbsp; {lang === "hu" ? "Smink" : "Make-Up"}
                   </NavLink>
                 </DropdownItem>
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
-                    to="/makeup"
+                    to="/service/4"
+                    end
                   >
                     <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; Make-Up
+                    &nbsp;{" "}
+                    {lang === "hu"
+                      ? "Szempilla / Szemöldök"
+                      : "Wimpern / Augenbrauen"}
+                  </NavLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavLink
+                    className="nav-link public-navbar__nav-link"
+                    to="/preisliste"
+                  >
+                    <i className="fa-solid fa-money-bill" />
+                    &nbsp; {lang === "hu" ? "Árlista" : "Preisliste"}
                   </NavLink>
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>*/}
-            <NavItem className="nav-item public-navbar__nav-item">
+            </UncontrolledDropdown>
+            {/* <NavItem className="nav-item public-navbar__nav-item">
               <NavLink
                 className="nav-link public-navbar__nav-link"
                 to="/preisliste"
@@ -112,7 +131,7 @@ const PublicHeader = (props) => {
                 <i className="fa-solid fa-money-bill" />
                 &nbsp; {lang === "hu" ? "Árlista" : "Preisliste"}
               </NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem className="nav-item public-navbar__nav-item">
               <NavLink
                 className="nav-link public-navbar__nav-link"

@@ -74,7 +74,9 @@ router.get("/", (req, res) => {
               const uzletzar = moment(
                 moment(nap).format("YYYY-MM-DD") + " " + zaro
               ).format("YYYY-MM-DD HH:mm");
+              // HA VAN IDOPONT MÁR
               if (result.length > 0) {
+                // HA CSAK EGY IDŐPONT VAN MÉG
                 if (result.length === 1) {
                   const start = moment(
                     moment(nap).format("YYYY-MM-DD") + " " + kezdo
@@ -150,18 +152,20 @@ router.get("/", (req, res) => {
                     }
                   }
                 } else {
+                  // HA MÁR EGYNÉL TÖBB IDŐPONT VAN
                   result.forEach((idopont, idx) => {
                     const start = moment(idopont.kezdete).format(
                       "YYYY-MM-DD HH:mm"
                     );
                     const end = moment(idopont.vege).format("YYYY-MM-DD HH:mm");
                     const afterIndex = result[idx + 1] ? idx + 1 : null;
+                    // ELSŐ IDOPONT
                     if (idx === 0) {
+                       // ELSŐ IDŐPONT ÉS NYITÁS KÖZÖTTI
                       const differ = moment(start).diff(uzletnyit, "minutes");
 
                       if (differ >= total) {
                         let loop = uzletnyit;
-
                         if (
                           moment(
                             moment(loop).add(total).format("YYYY-MM-DD HH:mm")
@@ -190,36 +194,112 @@ router.get("/", (req, res) => {
                           }
                         }
                       }
-                    } else {
-                      if (afterIndex) {
-                        const kovstart = moment(
-                          result[afterIndex].kezdete
-                        ).format("YYYY-MM-DD HH:mm");
-                        let loop = end;
-                        const newDiff = moment(
-                          moment(kovstart).format("YYYY-MM-DD HH:mm")
-                        ).diff(loop, "minutes");
+                      // UTOLSÓ IDOŐPONT
+                    } 
+                    
+                    /* else if (idx === (result.length - 1)) {
+                      const elsoend = moment(result[idx-1].vege).format(
+                        "YYYY-MM-DD HH:mm"
+                      );
+                      const masodikstart = moment(result[idx].kezdete).format(
+                        "YYYY-MM-DD HH:mm"
+                      );
 
+                      console.log('ELSOEND: ', elsoend);
+                      console.log('MASODIKSTART: ', masodikstart);
+
+                      const differ2 = moment(masodikstart).diff(elsoend, "minutes");
+                      if (differ2 >= total) {
+                        let firstBetweenSecondLoop = elsoend;
                         if (
                           moment(
-                            moment(loop)
-                              .add(total, "minutes")
-                              .format("YYYY-MM-DD HH:mm")
-                          ).isSameOrBefore(kovstart)
+                            moment(firstBetweenSecondLoop).add(total).format("YYYY-MM-DD HH:mm")
+                          ).isSameOrBefore(masodikstart)
                         ) {
-                          const formatted = moment(loop).format("HH:mm");
+                          const formatted = moment(firstBetweenSecondLoop)
+                            .add(total)
+                            .format("HH:mm");
                           szabadIdopontok.push(formatted);
                         }
-
-                        while (
-                          newDiff >= total &&
-                          loop <= kovstart &&
-                          moment(loop).isSameOrBefore(uzletzar)
-                        ) {
-                          let newDate = loop;
-                          loop = moment(
+                        while (differ2 >= total && firstBetweenSecondLoop <= masodikstart) {
+                          let newDate = firstBetweenSecondLoop;
+                          firstBetweenSecondLoop = newDate;
+                          firstBetweenSecondLoop = moment(
                             moment(newDate).add(total, "minutes")
                           ).format("YYYY-MM-DD HH:mm");
+                          if (
+                            moment(
+                              moment(firstBetweenSecondLoop)
+                                .add(total, "minutes")
+                                .format("YYYY-MM-DD HH:mm")
+                            ).isSameOrBefore(masodikstart)
+                          ) {
+                            const formatted = moment(loop).format("HH:mm");
+                            szabadIdopontok.push(formatted);
+                          }
+                        }
+                      }
+                    }  */
+                    else {
+                      console.log('ANYÁD: ', idx === (result.length - 1) ? idx : 'NONIDX')
+                      // 2. IDŐPONTTÓL ZÁRÁSIG
+
+                      // HA NEM AZ UTOLSÓ IDŐPONT
+                      if (afterIndex) {
+
+                        // ELSŐ IDŐPONT ÉS A 2. IDŐPONT KÖZÖTTI
+
+                        if (idx === 1) {
+                          const elsoend = moment(result[idx-1].vege).format(
+                            "YYYY-MM-DD HH:mm"
+                          );
+                          const masodikstart = moment(idopont.kezdete).format(
+                            "YYYY-MM-DD HH:mm"
+                          );
+  
+                          console.log('ELSOEND: ', elsoend);
+                          console.log('MASODIKSTART: ', masodikstart);
+  
+                          const differ2 = moment(masodikstart).diff(elsoend, "minutes");
+                          if (differ2 >= total) {
+                            let firstBetweenSecondLoop = elsoend;
+                            if (
+                              moment(
+                                moment(firstBetweenSecondLoop).add(total).format("YYYY-MM-DD HH:mm")
+                              ).isSameOrBefore(masodikstart)
+                            ) {
+                              const formatted = moment(firstBetweenSecondLoop)
+                                .add(total)
+                                .format("HH:mm");
+                              szabadIdopontok.push(formatted);
+                            }
+                            while (differ2 >= total && firstBetweenSecondLoop <= masodikstart) {
+                              let newDate = firstBetweenSecondLoop;
+                              firstBetweenSecondLoop = newDate;
+                              firstBetweenSecondLoop = moment(
+                                moment(newDate).add(total, "minutes")
+                              ).format("YYYY-MM-DD HH:mm");
+                              if (
+                                moment(
+                                  moment(firstBetweenSecondLoop)
+                                    .add(total, "minutes")
+                                    .format("YYYY-MM-DD HH:mm")
+                                ).isSameOrBefore(masodikstart)
+                              ) {
+                                const formatted = moment(loop).format("HH:mm");
+                                szabadIdopontok.push(formatted);
+                              }
+                            }
+                          }
+                        } else {
+                          const kovstart = moment(
+                            result[afterIndex].kezdete
+                          ).format("YYYY-MM-DD HH:mm");
+                          let loop = end;
+                          const newDiff = moment(
+                            moment(kovstart).format("YYYY-MM-DD HH:mm")
+                          ).diff(loop, "minutes");
+  
                           if (
                             moment(
                               moment(loop)
@@ -230,8 +310,81 @@ router.get("/", (req, res) => {
                             const formatted = moment(loop).format("HH:mm");
                             szabadIdopontok.push(formatted);
                           }
+  
+                          while (
+                            newDiff >= total &&
+                            loop <= kovstart &&
+                            moment(loop).isSameOrBefore(uzletzar)
+                          ) {
+                            let newDate = loop;
+                            loop = moment(
+                              moment(newDate).add(total, "minutes")
+                            ).format("YYYY-MM-DD HH:mm");
+                            if (
+                              moment(
+                                moment(loop)
+                                  .add(total, "minutes")
+                                  .format("YYYY-MM-DD HH:mm")
+                              ).isSameOrBefore(kovstart)
+                            ) {
+                              const formatted = moment(loop).format("HH:mm");
+                              szabadIdopontok.push(formatted);
+                            }
+                          }
                         }
+                        
+                        
                       } else {
+                        console.log('LKFSKLNFKLSNILFNSI')
+                        // UTOLSÓ IDŐPONT KEZDETÉTŐL UTOLSÓ ELŐTTI VÉGÉIG
+
+                        // ELSŐ IDŐPONT ÉS A 2. IDŐPONT KÖZÖTTI
+                        
+                        const elsoend = moment(result[idx-1].vege).format(
+                          "YYYY-MM-DD HH:mm"
+                        );
+                        const masodikstart = moment(idopont.kezdete).format(
+                          "YYYY-MM-DD HH:mm"
+                        );
+
+                        console.log('ELSOEND: ', elsoend);
+                        console.log('MASODIKSTART: ', masodikstart);
+
+                        const differ2 = moment(masodikstart).diff(elsoend, "minutes");
+                        if (differ2 >= total) {
+                          let firstBetweenSecondLoop = elsoend;
+                          if (
+                            moment(
+                              moment(firstBetweenSecondLoop).add(total).format("YYYY-MM-DD HH:mm")
+                            ).isSameOrBefore(masodikstart)
+                          ) {
+                            const formatted = moment(firstBetweenSecondLoop)
+                              .add(total)
+                              .format("HH:mm");
+                            szabadIdopontok.push(formatted);
+                          }
+                          while (differ2 >= total && firstBetweenSecondLoop <= masodikstart) {
+                            let newDate = firstBetweenSecondLoop;
+                            firstBetweenSecondLoop = newDate;
+                            firstBetweenSecondLoop = moment(
+                              moment(newDate).add(total, "minutes")
+                            ).format("YYYY-MM-DD HH:mm");
+                            if (
+                              moment(
+                                moment(firstBetweenSecondLoop)
+                                  .add(total, "minutes")
+                                  .format("YYYY-MM-DD HH:mm")
+                              ).isSameOrBefore(masodikstart)
+                            ) {
+                              const formatted = moment(loop).format("HH:mm");
+                              szabadIdopontok.push(formatted);
+                            }
+                          }
+                        }
+
+                        // TODO:
+
+                        // UTOLSÓ IDŐPONTTÓL ZÁRÁSIG
                         if (end <= uzletzar) {
                           let loop = end;
                           let nDiff = moment(uzletzar).diff(loop, "minutes");

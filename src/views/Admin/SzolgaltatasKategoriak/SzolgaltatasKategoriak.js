@@ -22,6 +22,29 @@ const SzolgaltatasKategoriak = (props) => {
   const [torolModal, setTorolModal] = useState(false);
   const [currentId, setCurrentId] = useState(undefined);
 
+  const paginationOptions = {
+    count: 5,
+    color: "primary",
+    rowPerPageOptions: [
+      {
+        value: 5,
+        text: "5",
+      },
+      {
+        value: 10,
+        text: "10",
+      },
+      {
+        value: 25,
+        text: "25",
+      },
+      {
+        value: 50,
+        text: "50",
+      },
+    ],
+  };
+
   useEffect(() => {
     listKategoriak();
   }, []);
@@ -79,16 +102,38 @@ const SzolgaltatasKategoriak = (props) => {
     );
   };
 
+  const leirasFormatter = (cell, row, lang) => {
+    const leiras =
+      lang === "hu" ? row.magyarkategorialeiras : row.kategorialeiras;
+
+    return leiras.length > 100 ? leiras.substring(0, 100) + "..." : leiras;
+  };
+
   const renderKategoriakTable = () => {
     const columns = [
       { text: "Német kategórianév", dataField: "kategorianev" },
       { text: "Magyar kategórianév", dataField: "magyarkategorianev" },
-      { text: "Német kategórialeíras", dataField: "kategorialeiras" },
-      { text: "Magyar kategórialeíras", dataField: "magyarkategorialeiras" },
+      {
+        text: "Német kategórialeíras",
+        dataField: "kategorialeiras",
+        formatter: (cell, row) => leirasFormatter(cell, row, "ch"),
+      },
+      {
+        text: "Magyar kategórialeíras",
+        dataField: "magyarkategorialeiras",
+        formatter: (cell, row) => leirasFormatter(cell, row, "hu"),
+      },
       { text: "Műveletek", dataField: "id", formatter: tableIconFormatter },
     ];
 
-    return <DataTable columns={columns} datas={kategoriak} bordered />;
+    return (
+      <DataTable
+        columns={columns}
+        datas={kategoriak}
+        paginationOptions={paginationOptions}
+        bordered
+      />
+    );
   };
 
   const toggleKategoriaModal = () => {

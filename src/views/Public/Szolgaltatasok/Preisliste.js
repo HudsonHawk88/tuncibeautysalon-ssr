@@ -57,7 +57,6 @@ const Preisliste = (props) => {
     });
   };
 
-
   /* const renderSzolgaltatasok = () => {
     const columns = [
       {
@@ -90,7 +89,7 @@ const Preisliste = (props) => {
         : group === obj.magyarkategorianev
     ) {
       return (
-        <tr key={obj.id} >
+        <tr key={obj.id}>
           <td key={"1_cell"}>{obj.szolgrovidnev}</td>
           <td key={"2_cell"}>{obj.szolgreszletek}</td>
           <td key={"3_cell"}>{`${obj.ar} ${obj.penznem}`}</td>
@@ -107,12 +106,12 @@ const Preisliste = (props) => {
 
     return groups.map((group, index) => {
       return (
-        <div key={index} style={{ width: '100%' }}>
+        <div key={index} style={{ width: "100%" }}>
           <div>
             <h4>{group}</h4>
           </div>
-          <Table bordered style={{ color: "white", width: '100%' }}>
-            <thead style={{ maxWidth: '100%' }}>
+          <Table bordered style={{ color: "white", width: "100%" }}>
+            <thead style={{ maxWidth: "100%" }}>
               <tr>
                 <td>{lang === "ch" ? "Dienstleistungen" : "Szolgáltatások"}</td>
                 <td>{lang === "ch" ? "Einzelheiten" : "Részletek"}</td>
@@ -132,15 +131,14 @@ const Preisliste = (props) => {
   };
 
   return (
-      
-      <div className="row">
-        <div className="col-md-12">
-          <h2 style={{ textAlign: "center", width: '100%' }}>
-            {lang !== "ch" ? "Szolgáltatások" : "Dienstleistungen"}
-          </h2>
-          {renderSzolgaltatasok()}
-        </div>
+    <div className="row">
+      <div className="col-md-12">
+        <h2 style={{ textAlign: "center", width: "100%" }}>
+          {lang !== "ch" ? "Szolgáltatások" : "Dienstleistungen"}
+        </h2>
+        {renderSzolgaltatasok()}
       </div>
+    </div>
   );
 };
 

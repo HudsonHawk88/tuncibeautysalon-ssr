@@ -18,7 +18,6 @@ const PublicFooter = () => {
             <i aria-hidden className="far fa-copyright"></i>
           </sup>
         </div>
-        <br />
         <div className="linkek">
           <a href={"/adatkezeles"}>Adatkezelési nyilatkozat</a>
         </div>
