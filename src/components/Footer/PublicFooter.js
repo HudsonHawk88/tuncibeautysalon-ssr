@@ -39,7 +39,7 @@ const PublicFooter = () => {
                 <i aria-hidden className="fab fa-instagram"></i>
               </a>
               <a
-                href="https://www.tiktok.com/@myhomeingatlan"
+                href="https://www.tiktok.com/@tnci58?_t=8iq2E1QsvGD&_r=1"
                 target="_blank"
                 rel="noreferrer"
               >

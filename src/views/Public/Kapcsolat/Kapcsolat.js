@@ -140,7 +140,7 @@ const Kapcsolat = (props) => {
       <div className="row">
         <div className="col-md-6">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10915.5994816901!2d16.845653!3d46.845661!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x5bcc4784fd93d883!2sMyhome%20Immo%20Kft.!5e0!3m2!1shu!2shu!4v1640359411151!5m2!1shu!2shu"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2720.1973884781146!2d7.4800742763598125!3d47.016730371141776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478e3a828e8621c9%3A0xc6bc0cbce711a227!2sKirchgasse%203%2C%203302%20Moosseedorf%2C%20Sv%C3%A1jc!5e0!3m2!1shu!2shu!4v1705273684948!5m2!1shu!2shu"
             width="100%"
             height="450px"
             style={{ border: 0 }}
