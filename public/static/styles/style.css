@@ -5,6 +5,7 @@
 }
 html {
   scrollbar-color: red black !important;
+  scroll-behavior: smooth;
 }
 
 html body {
@@ -452,7 +453,7 @@ html body::-webkit-scrollbar {
   /* min-height: calc(100vh - 200px); */
   box-shadow: none !important;
   margin: 3% 0px;
-  padding: 0px 10px;
+  padding: 10px 10px;
   /* background-color: var(themes-public-bgcolor2); */
   /*     background-image: var(themes-public-navbarbgimage); */
   /*  background-size: contain; */
@@ -1302,11 +1303,13 @@ html body::-webkit-scrollbar {
 
 .public_full header {
   display: flex;
-  min-height: 150px;
+  min-height: 70px;
   width: inherit;
-  /* @media screen and (min-width: 992px) {
-    min-height: 140px;
-  } */
+}
+@media screen and (min-width: 992px) {
+  .public_full header {
+    min-height: 150px;
+  }
 }
 
 .public-navbar {
@@ -1723,7 +1726,12 @@ html body::-webkit-scrollbar {
   justify-content: center;
 }
 .szolgkat_logo img {
-  width: 40vw;
+  width: 30vw;
+}
+@media screen and (min-width: 992px) {
+  .szolgkat_logo img {
+    width: 20vw;
+  }
 }
 .szolgkat_leiras {
   font-size: 1.2em;

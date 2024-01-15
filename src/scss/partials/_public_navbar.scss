@@ -3,12 +3,12 @@
 
 .public_full header {
   display: flex;
-  min-height: 150px;
+  min-height: 70px;
   width: inherit;
 
-  /* @media screen and (min-width: 992px) {
-    min-height: 140px;
-  } */
+  @media screen and (min-width: 992px) {
+    min-height: 150px;
+  }
 }
 
 .public-navbar {

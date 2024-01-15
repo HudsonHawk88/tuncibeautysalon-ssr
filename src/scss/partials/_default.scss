@@ -8,6 +8,7 @@
 
 html {
   scrollbar-color: red black !important;
+  scroll-behavior: smooth;
 }
 
 html body {
@@ -490,7 +491,7 @@ html body::-webkit-scrollbar {
   /* min-height: calc(100vh - 200px); */
   box-shadow: none !important;
   margin: 3% 0px;
-  padding: 0px 10px;
+  padding: 10px 10px;
 
   /* background-color: var(themes-public-bgcolor2); */
 

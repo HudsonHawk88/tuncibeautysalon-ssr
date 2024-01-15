@@ -10,7 +10,11 @@
     justify-content: center;
 
     img {
-      width: 40vw;
+      width: 30vw;
+
+      @media screen and (min-width: 992px) {
+        width: 20vw;
+      }
     }
   }
 
