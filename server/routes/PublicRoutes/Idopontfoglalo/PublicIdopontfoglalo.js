@@ -286,7 +286,7 @@ router.get("/", (req, res) => {
                                     .format("YYYY-MM-DD HH:mm")
                                 ).isSameOrBefore(masodikstart)
                               ) {
-                                const formatted = moment(loop).format("HH:mm");
+                                const formatted = moment(firstBetweenSecondLoop).format("HH:mm");
                                 szabadIdopontok.push(formatted);
                               }
                             }
@@ -376,7 +376,7 @@ router.get("/", (req, res) => {
                                   .format("YYYY-MM-DD HH:mm")
                               ).isSameOrBefore(masodikstart)
                             ) {
-                              const formatted = moment(loop).format("HH:mm");
+                              const formatted = moment(firstBetweenSecondLoop).format("HH:mm");
                               szabadIdopontok.push(formatted);
                             }
                           }
