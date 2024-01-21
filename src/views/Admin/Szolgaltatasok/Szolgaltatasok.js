@@ -198,7 +198,14 @@ const Szolgaltatasok = (props) => {
   const onSubmit = () => {
     console.log(currentId !== undefined);
     let submitObj = szolgaltatasObj;
-    /* console.log("PÉNZNEMEK: ", submitObj) */
+    submitObj.penznem = submitObj.penznem.value
+      ? submitObj.penznem.value
+      : submitObj.penznem;
+    submitObj.magyarpenznem = submitObj.magyarpenznem.value
+      ? submitObj.magyarpenznem.value
+      : submitObj.magyarpenznem;
+
+    /* console.log("submitObj: ", submitObj) */
     if (currentId === undefined) {
       Services.addSzolgaltatas(submitObj, (err, res) => {
         if (!err) {

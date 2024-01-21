@@ -121,7 +121,7 @@ function App() {
   useEffect(() => {
     if (__isBrowser__) {
       setDefaultLang();
-      window.scrollTo(0,0)
+      window.scrollTo(0, 0);
       const navbar = document.getElementById("public_navbar_collapse");
       if (navbar && navbar.classList.contains("show")) {
         navbar.classList.toggle("show");

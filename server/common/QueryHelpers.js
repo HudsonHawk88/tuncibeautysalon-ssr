@@ -2,7 +2,7 @@ import { createPool } from 'mysql2';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import path from 'path';
-import { existsSync, mkdirSync, createWriteStream } from 'fs/promises';
+import { existsSync, mkdirSync, createWriteStream } from 'fs';
 /* import { google } from 'googleapis'; */
 
 dotenv.config({
@@ -21,6 +21,7 @@ const db_params = {
     password: process.env.dbpass,
     database: process.env.database
 };
+
 const pool = createPool(db_params);
 
 /* let jwtClient = new google.auth.JWT(

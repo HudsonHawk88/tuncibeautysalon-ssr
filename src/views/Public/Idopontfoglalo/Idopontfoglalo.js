@@ -41,17 +41,21 @@ const Idopontfoglalo = (props) => {
       });
     });
 
-    setGroups([
+    const grs = [
       ...new Map(groups.map((item) => [item.nemetnev, item])).values(),
-    ]);
-    const szolgId = searchParams.get("szolgId");
-    if (szolgId) {
-      const found = szolgArr.find((sz) => sz.id === parseInt(szolgId));
+    ];
+
+    setGroups(grs);
+    const kategorie = searchParams.get("kategorie");
+    if (kategorie) {
+      const kat = grs.filter((k) => k.nemetnev === kategorie);
+      console.log("KAT: ", kat);
+      setGroups(kat);
+      /* const found = szolgArr.find((sz) => sz.szolgkategoria === parseInt(kategorie));
       console.log(found);
       if (found) {
-        setIdopont({ ...idopont, szolgaltatas: found.id });
-        /*   getIdopontok(idopont.nap); */
-      }
+        console.log('FOUND: ', found);
+      } */
     }
     console.log(szolgArr);
     setSzolgaltatasok(szolgArr);
@@ -114,7 +118,10 @@ const Idopontfoglalo = (props) => {
     return (
       <Fragment>
         <option key={szolgIdx + "_szolgId_ " + szolg.id} value={szolg.id}>
-          {(lang === "hu" ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev) + ` - ${szolg.idotartam} ${lang === 'hu' ? 'perc' : 'Minuten'} - ${szolg.ar} ${szolg.penznem}`} 
+          {(lang === "hu" ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev) +
+            ` - ${szolg.idotartam} ${lang === "hu" ? "perc" : "Minuten"} - ${
+              szolg.ar
+            } ${szolg.penznem}`}
         </option>
       </Fragment>
     );

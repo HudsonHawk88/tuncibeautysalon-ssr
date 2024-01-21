@@ -28,8 +28,8 @@ const SzolgaltatasCard = (props) => {
 
   console.log("DATA: ", szolgaltatasKat);
 
-  const goToTerminBuch = () => {
-    navigate(`terminbuchen`);
+  const goToTerminBuch = (kategorie) => {
+    navigate(`terminbuchen?kategorie=${kategorie}`);
   };
 
   const goToService = (id) => {
@@ -52,7 +52,10 @@ const SzolgaltatasCard = (props) => {
             {/* <div className="szolg_idotartam">{szolgaltatasKat.idotartam}</div> */}
             {/* <div className="szolg_ar">{szolgaltatasKat.ar}</div> */}
           </div>
-          <div className="idopont_button" onClick={goToTerminBuch}>
+          <div
+            className="idopont_button"
+            onClick={() => goToTerminBuch(data.kategorianev)}
+          >
             {lang === "hu" ? "Időpotfoglalás" : "Termin buchen"}
           </div>
         </div>

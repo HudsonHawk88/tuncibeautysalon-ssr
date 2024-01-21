@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 
 import Services from "./Services";
 
-const Adatkezeles = () => {
+const Adatkezeles = (props) => {
   const defaultAdatkezeles = {
     azonosito: "",
     tipus: "",
     leiras: "",
   };
   const [adatkezeles, setAdatkezeles] = useState(defaultAdatkezeles);
+  const { lang } = props;
 
   const getAdatkezeles = () => {
     Services.listAdatkezeles((err, res) => {
@@ -17,6 +18,7 @@ const Adatkezeles = () => {
           azonosito: res[0].azonosito,
           tipus: res[0].tipus,
           leiras: res[0].leiras,
+          magyarleiras: res[0].magyarleiras
         });
       }
     });
@@ -35,7 +37,7 @@ const Adatkezeles = () => {
       <React.Fragment>
         <div
           className="adatkezeles__leiras"
-          dangerouslySetInnerHTML={{ __html: adatkezeles.leiras }}
+          dangerouslySetInnerHTML={{ __html: lang === 'hu' ? adatkezeles.magyarleiras : adatkezeles.leiras }}
         />
       </React.Fragment>
     );
