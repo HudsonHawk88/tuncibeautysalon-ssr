@@ -19,7 +19,7 @@ const PublicFooter = () => {
           </sup>
         </div>
         <div className="linkek">
-          <a href={"/adatkezeles"}>Adatkezelési nyilatkozat</a>
+          <a href={"/datenverarbeitung"}>Adatkezelési nyilatkozat</a>
         </div>
         <div className="plus_nav">
           <div className="plus_content">

@@ -6,6 +6,7 @@ import Preisliste from '../src/views/Public/Szolgaltatasok/Preisliste';
 import Kapcsolat from '../src/views/Public/Kapcsolat/Kapcsolat';
 import SikeresFoglalas from '../src/views/Public/Idopontfoglalo/SikeresFoglalas';
 import FoglalasTorles from '../src/views/Public/Idopontfoglalo/FoglalasTorles';
+import Adatkezeles from '../src/views/Public/GDPR/Adatkezeles'
 
 const PublicRoutes = [
     { path: '/', element: Fooldal },
@@ -15,6 +16,7 @@ const PublicRoutes = [
     { path: '/terminbuchen', element: Idopontfoglalo },
     { path: '/terminstreichung', element: FoglalasTorles },
     { path: '/erfolgreich', element: SikeresFoglalas },
+    { path: '/datenverarbeitung', element: Adatkezeles },
     { path: '/kontakt', element: Kapcsolat }
 /*     { path: '/kosmetik', element: Ingatlan },
     { path: '/manikure', element: Ingatlanok },
