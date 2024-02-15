@@ -4,28 +4,9 @@ import bcrypt from 'bcrypt';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import multer from 'multer';
 import sharp from 'sharp';
-/* import { getJSONfromLongtext } from '../../../common/QueryHelpers'; */
+
 const router = express.Router();
 const adminusers = pool;
-
-/* const storage = multer.diskStorage({
-    destination: async function (req, file, cb) {
-        if (file) {
-            const id = await getId(req.headers.id, 'adminusers');
-            const dir = `${process.env.avatardir}/${id}/`;
-            let exist = existsSync(dir);
-            if (!exist) {
-                mkdirSync(dir);
-            }
-            cb(null, dir);
-        }
-    },
-    filename: function (req, file, cb) {
-        if (file) {
-            cb(null, file.originalname); //Appending .jpg
-        }
-    }
-}); */
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -35,9 +16,10 @@ const upload = multer({ storage: storage });
 router.get('/', async (req, res) => {
     const token = req.cookies.JWT_TOKEN;
     if (token) {
+        
         const id = req.headers.id;
         const user = await validateToken(token, jwtparams.secret);
-        // const user = { roles: [{ value: "SZUPER_ADMIN"}]}
+
         if (user === null) {
             res.status(401).send({
                 err: 'Nincs belépve! Kérem jelentkezzen be!'

@@ -1,4 +1,4 @@
-import { Microservices } from "../../../../shared/MicroServices";
+import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
 const gdprUrl = location.origin + "/api/adatkezeles";
 const gdprAdminUrl = location.origin + "/api/admin/adatkezeles";

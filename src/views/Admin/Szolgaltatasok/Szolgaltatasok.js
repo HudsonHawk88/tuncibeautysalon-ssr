@@ -4,8 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { RVForm } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import Services from "./Services";
-import SzolgaltatasokForm from "./SzolgaltatasokForm";
+import Services from "./Services.js";
+import SzolgaltatasokForm from "./SzolgaltatasokForm.js";
 
 const defaultSzolgaltatasObj = {
   szolgkategoria: "",

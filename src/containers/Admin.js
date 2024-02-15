@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import AdminHeader from "../components/Header/AdminHeader";
-import AdminSidebar from "../components/Sidebar/AdminSidebar";
-import AdminFooter from "../components/Footer/AdminFooter";
+import AdminHeader from "../components/Header/AdminHeader.js";
+import AdminSidebar from "../components/Sidebar/AdminSidebar.js";
+import AdminFooter from "../components/Footer/AdminFooter.js";
 
 const Admin = (props) => {
   const { children } = props;

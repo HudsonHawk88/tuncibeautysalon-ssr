@@ -4,8 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { RVForm } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import Services from "./Services";
-import KategoriaForm from "./KategoriaForm";
+import Services from "./Services.js";
+import KategoriaForm from "./KategoriaForm.js";
 
 const defaultKategoriaObj = {
   kategorianev: "",

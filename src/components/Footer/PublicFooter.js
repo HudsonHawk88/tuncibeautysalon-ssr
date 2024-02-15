@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const PublicFooter = () => {
+const PublicFooter = (props) => {
+  const { lang } = props;
   return (
     <footer className="public-footer" id="public_footer">
       <div className="public-footer__div">
@@ -19,13 +21,17 @@ const PublicFooter = () => {
           </sup>
         </div>
         <div className="linkek">
-          <a href={"/datenverarbeitung"}>Adatkezelési nyilatkozat</a>
+          <a href={"/datenverarbeitung"}>
+            {lang === "hu"
+              ? "Adatkezelési nyilatkozat"
+              : "Erklärung zur Datenverwaltung"}
+          </a>
         </div>
         <div className="plus_nav">
           <div className="plus_content">
             <div className="kozossegi">
               <a
-                href="https://www.facebook.com/myhomeberkimonika"
+                href="https://www.facebook.com/profile.php?id=61555853729992"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -45,15 +51,19 @@ const PublicFooter = () => {
               >
                 <i className="fab fa-tiktok"></i>
               </a>
-              <a href="#" target="_blank" rel="noreferrer">
+              {/*<a href="#" target="_blank" rel="noreferrer">
                 <i aria-hidden className="fab fa-whatsapp"></i>
-              </a>
+              </a>*/}
             </div>
           </div>
         </div>
       </div>
     </footer>
   );
+};
+
+PublicFooter.propTypes = {
+  lang: PropTypes.string.isRequired,
 };
 
 export default PublicFooter;

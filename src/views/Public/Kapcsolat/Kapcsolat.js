@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
-import Services from "./Services";
+import Services from "./Services.js";
 
 const Kapcsolat = (props) => {
   const { lang } = props;

@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import NavLink from "../../commons/NavLink";
+import NavLink from "../../commons/NavLink.js";
 
 const AdminHeader = (props) => {
   const { user, history, logout } = props;

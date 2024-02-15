@@ -1,4 +1,4 @@
-import { Microservices } from "../../../../shared/MicroServices";
+import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
 const ingatlanokUrl = location.origin + "/api/ingatlan/aktiv";
 const ingatlanUrl = location.origin + "/api/ingatlan";

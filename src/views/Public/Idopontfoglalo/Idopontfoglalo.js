@@ -4,8 +4,8 @@ import { Calendar } from "react-widgets";
 import moment from "moment";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
 import { useSearchParams } from "react-router-dom";
-import { handleInputChange } from "../../../commons/InputHandlers";
-import Services from "./Services";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
+import Services from "./Services.js";
 import { Button, Label } from "reactstrap";
 
 const defaultIdopont = {

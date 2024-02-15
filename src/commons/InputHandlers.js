@@ -1,4 +1,11 @@
-import moment from "moment";
+function verifyJson(input) {
+  try {
+    JSON.parse(input);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
 
 const handleInputChange = (e, obj, setObj) => {
   /* if (!inputName) { */
@@ -6,17 +13,31 @@ const handleInputChange = (e, obj, setObj) => {
   const { type, checked, name } = target;
   const { pattern } = target;
   let value = target.value;
+
   if (type !== "checkbox") {
-    if (pattern && value) {
-      if (value[value.length - 1].match(pattern)) {
-        value = target.value;
-      } else {
-        value = value.slice(0, -1);
+    if (pattern) {
+      if (value) {
+        if (value[value.length - 1].match(pattern)) {
+          value = target.value;
+        } else {
+          value = value.slice(0, -1);
+        }
+      }
+    } else {
+      const isJson = verifyJson(target.value);
+      if (isJson) {
+        value = JSON.parse(target.value);
       }
     }
   } else {
     value = checked;
   }
+
+  console.log(
+    "VALUE: ",
+    typeof value,
+    verifyJson(value) ? JSON.parse(value) : value
+  );
 
   setObj({
     ...obj,
@@ -54,4 +75,4 @@ const recaptchaOnChange = (ref) => {
   // console.log(key);
 };
 
-export { handleInputChange, addFile, recaptchaOnChange };
+export { handleInputChange, addFile, recaptchaOnChange, verifyJson };

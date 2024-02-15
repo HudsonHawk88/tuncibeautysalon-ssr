@@ -16,9 +16,9 @@ import { DataTable } from "@inftechsol/react-data-table";
 import { useDropzone } from "react-dropzone";
 import PropTypes from "prop-types";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
-import Services from "./Services";
-import { makeFormData } from "../../../commons/Lib";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
+import Services from "./Services.js";
+import { makeFormData } from "../../../commons/Lib.js";
 import { RVForm, RVInput } from "@inftechsol/reactstrap-form-validation";
 
 const AdminUsers = (props) => {

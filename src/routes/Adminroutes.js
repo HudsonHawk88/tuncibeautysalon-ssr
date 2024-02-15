@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import AdminRoutes from "../../shared/AdminRoutes";
-import Admin from "../containers/Admin";
+import AdminRoutes from "../../shared/AdminRoutes.js";
+import Admin from "../containers/Admin.js";
 
 const Admroutes = (props) => {
   const getChildRoutes = (children) =>

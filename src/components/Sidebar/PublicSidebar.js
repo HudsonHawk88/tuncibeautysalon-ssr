@@ -5,8 +5,8 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "reactstrap";
-import KeresoForm from "../../views/Public/Fooldal/KeresoForm";
-import IngatlanForm from "../../views/Public/Fooldal/IngatlanForm";
+import KeresoForm from "../../views/Public/Fooldal/KeresoForm.js";
+import IngatlanForm from "../../views/Public/Fooldal/IngatlanForm.js";
 
 const PublicSidebar = (props) => {
   return (

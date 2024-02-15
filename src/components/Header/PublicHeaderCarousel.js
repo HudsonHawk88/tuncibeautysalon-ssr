@@ -5,8 +5,8 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "reactstrap";
-import KeresoForm from "../../views/Public/Fooldal/KeresoForm";
-import Gallery from "../../commons/Gallery";
+import KeresoForm from "../../views/Public/Fooldal/KeresoForm.js";
+import Gallery from "../../commons/Gallery.js";
 
 const PublicHeaderCarousel = (props) => {
   const { ingatlanok } = props;

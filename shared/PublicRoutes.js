@@ -1,12 +1,13 @@
-import Login from '../src/views/Pages/Login/Login';
-import Fooldal from '../src/views/Public/Fooldal/Fooldal';
-import Idopontfoglalo from '../src/views/Public/Idopontfoglalo/Idopontfoglalo';
-import Szolgaltatas from '../src/views/Public/Szolgaltatasok/Szolgaltatas'
-import Preisliste from '../src/views/Public/Szolgaltatasok/Preisliste';
-import Kapcsolat from '../src/views/Public/Kapcsolat/Kapcsolat';
-import SikeresFoglalas from '../src/views/Public/Idopontfoglalo/SikeresFoglalas';
-import FoglalasTorles from '../src/views/Public/Idopontfoglalo/FoglalasTorles';
-import Adatkezeles from '../src/views/Public/GDPR/Adatkezeles'
+import Login from '../src/views/Pages/Login/Login.js';
+import Fooldal from '../src/views/Public/Fooldal/Fooldal.js';
+import Idopontfoglalo from '../src/views/Public/Idopontfoglalo/Idopontfoglalo.js';
+import Szolgaltatas from '../src/views/Public/Szolgaltatasok/Szolgaltatas.js'
+import Preisliste from '../src/views/Public/Szolgaltatasok/Preisliste.js';
+import Kapcsolat from '../src/views/Public/Kapcsolat/Kapcsolat.js';
+import SikeresFoglalas from '../src/views/Public/Idopontfoglalo/SikeresFoglalas.js';
+import FoglalasTorles from '../src/views/Public/Idopontfoglalo/FoglalasTorles.js';
+import Adatkezeles from '../src/views/Public/GDPR/Adatkezeles.js';
+import Galeria from '../src/views/Public/Galeria/Galeria.js'
 
 const PublicRoutes = [
     { path: '/', element: Fooldal },
@@ -17,6 +18,7 @@ const PublicRoutes = [
     { path: '/terminstreichung', element: FoglalasTorles },
     { path: '/erfolgreich', element: SikeresFoglalas },
     { path: '/datenverarbeitung', element: Adatkezeles },
+    { path: '/galerie', element: Galeria },
     { path: '/kontakt', element: Kapcsolat }
 /*     { path: '/kosmetik', element: Ingatlan },
     { path: '/manikure', element: Ingatlanok },

@@ -1,10 +1,11 @@
-import Fooldal from '../src/views/Admin/Fooldal/Fooldal';
-import Jogosultsagok from '../src/views/Admin/Jogosultsagok/Jogosultsagok';
-import AdminUsers from '../src/views/Admin/Adminusers/AdminUsers';
-import SzolgaltatasKategoriak from '../src/views/Admin/SzolgaltatasKategoriak/SzolgaltatasKategoriak';
-import Szolgaltatasok from '../src/views/Admin/Szolgaltatasok/Szolgaltatasok';
-import Gdpr from '../src/views/Admin/GDPR/Gdpr';
-import Kapcsolat from '../src/views/Admin/Kapcsolat/Kapcsolat';
+import Fooldal from '../src/views/Admin/Fooldal/Fooldal.js';
+import Jogosultsagok from '../src/views/Admin/Jogosultsagok/Jogosultsagok.js';
+import AdminUsers from '../src/views/Admin/Adminusers/AdminUsers.js';
+import SzolgaltatasKategoriak from '../src/views/Admin/SzolgaltatasKategoriak/SzolgaltatasKategoriak.js';
+import Szolgaltatasok from '../src/views/Admin/Szolgaltatasok/Szolgaltatasok.js';
+import Gdpr from '../src/views/Admin/GDPR/Gdpr.js';
+import Kapcsolat from '../src/views/Admin/Kapcsolat/Kapcsolat.js';
+import Galeria from '../src/views/Admin/Galeria/Galeria.js'
 
 const AdminRoutes = [
     { path: '/admin', element: Fooldal },
@@ -14,6 +15,7 @@ const AdminRoutes = [
     { path: '/admin/szolgaltatasok', element: Szolgaltatasok },
     { path: '/admin/kapcsolat', element: Kapcsolat },
     { path: '/admin/adatkezeles', element: Gdpr },
+    { path: '/admin/galeria', element: Galeria },
 ];
 
 export default AdminRoutes;

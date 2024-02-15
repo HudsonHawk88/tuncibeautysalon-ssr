@@ -12,11 +12,11 @@ import {
   RVInputGroupText,
 } from "@inftechsol/reactstrap-form-validation";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
-import FooldalContent from "../Fooldal/FooldalContent";
-import Loading from "../../../commons/Loading";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
+import FooldalContent from "../Fooldal/FooldalContent.js";
+import Loading from "../../../commons/Loading.js";
 
-import Services from "./Services";
+import Services from "./Services.js";
 import { arFormatter } from "../../../commons/Lib.js";
 import { getDefaultKeyBinding } from "draft-js";
 import { object } from "prop-types";

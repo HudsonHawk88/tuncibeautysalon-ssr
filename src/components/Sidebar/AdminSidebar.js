@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Collapse, Nav, NavItem } from "reactstrap";
-import NavLink from "../../commons/NavLink";
+import NavLink from "../../commons/NavLink.js";
 import PropTypes from "prop-types";
 
 const AdminSidebar = (props) => {
@@ -86,6 +86,19 @@ const AdminSidebar = (props) => {
                   &nbsp;&nbsp;
                   <i aria-hidden className="fas fa-briefcase" />
                   &nbsp; Szolgáltatások
+                </NavLink>
+              </NavItem>
+            )}
+            {hasRole(user.roles, ["SZUPER_ADMIN", "GALERIA_ADMIN"]) && (
+              <NavItem className="admin-sidebar__navitem">
+                <NavLink
+                  className="admin-sidebar__navlink nav-link"
+                  to="/admin/galeria"
+                  id="galeria"
+                >
+                  &nbsp;&nbsp;
+                  <i aria-hidden className="fas fa-briefcase" />
+                  &nbsp; Galéria
                 </NavLink>
               </NavItem>
             )}

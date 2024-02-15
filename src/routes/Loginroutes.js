@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import LoginRoutes from "../../shared/LoginRoutes";
+import LoginRoutes from "../../shared/LoginRoutes.js";
 
 const Logroutes = (props) => {
   const { isAdmin, user } = props;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Services from "./Services";
+import Services from "./Services.js";
 import { Table } from "reactstrap";
 import PropTypes from "prop-types";
 

@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import express from 'express';
-import { mailUrl } from '../../../common/QueryHelpers';
+import { mailUrl } from '../../../common/QueryHelpers.js';
 const transporter = nodemailer.createTransport(mailUrl);
 const router = express.Router();
 

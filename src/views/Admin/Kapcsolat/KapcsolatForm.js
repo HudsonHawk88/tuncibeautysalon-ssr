@@ -3,7 +3,7 @@ import { Col, Label, Row } from "reactstrap";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
 import moment from "moment";
 
 const KapcsolatForm = (props) => {

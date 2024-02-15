@@ -6,11 +6,11 @@ import {
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 /* import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'; */
-import Services from "./views/Pages/Login/Services";
-import Pubroutes from "./routes/Publicroutes";
-import AdmRoutes from "./routes/Adminroutes";
+import Services from "./views/Pages/Login/Services.js";
+import Pubroutes from "./routes/Publicroutes.js";
+import AdmRoutes from "./routes/Adminroutes.js";
 /* import Login from "./views/Pages/Login"; */
-import { hasRole } from "./commons/Lib";
+import { hasRole } from "./commons/Lib.js";
 import { useLocation } from "react-router-dom";
 import "react-widgets/styles.css";
 

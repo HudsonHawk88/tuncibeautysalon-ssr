@@ -16,6 +16,8 @@ import adminSzolgaltatasokServices from './routes/AdminRoutes/AdminSzolgaltataso
 import publicSzolgaltatasokServices from './routes/PublicRoutes/Szolgaltatasok/PublicSzolgaltatasok.js';
 import adminSzolgaltatasKategoriaServices from './routes/AdminRoutes/AdminSzolgaltatasKategoriakServices/AdminSzolgaltatasKategoriakServices.js';
 import publicSzolgaltatasKategoriaServices from './routes/PublicRoutes/SzolgaltatasKategoriak/PublicSzolgaltatasKategoriak.js';
+import adminGalleryServices from './routes/AdminRoutes/AdminGalleryServices/AdminGalleryServices.js';
+import publicGaleriaServices from './routes/PublicRoutes/Galeria/PublicGaleriaServices.js';
 import adminKapcsolatokServices from './routes/AdminRoutes/AdminKapcsolatServices/AdminkapcsolatServices.js';
 import publicKapcsolatokServices from './routes/PublicRoutes/Kapcsolatok/PublicKapcsolatok.js';
 import adminGdpr from './routes/AdminRoutes/AdminGDPR/AdminGDPRServices.js';
@@ -25,7 +27,7 @@ import telepulesekService from './routes/common/TelepulesekService/TelepulesekSe
 import mailerService from './routes/common/MailerService/MailerService.js';
 import OptionServices from './routes/common/OptionsService/OptionsServices.js';
 import RecaptchaServices from './routes/common/Recaptcha/RecaptchaService.js';
-import serverRender from './common/serverRender';
+import serverRender from './common/serverRender.js';
 
 // VARIABLES
 
@@ -75,6 +77,7 @@ app.use(function (req, res, next) {
 app.get('/admin', actionIndex);
 app.get('/', actionIndex);
 app.use(express.static('build/public'));
+
 app.use(['/api/admin'], adminAuthService);
 // ADMINROLES
 app.use(['/api/admin/roles'], adminrolesServices);
@@ -88,6 +91,10 @@ app.use(['/api/szolgaltatasok'], publicSzolgaltatasokServices);
 app.use(['/api/admin/szolgaltataskategoria'], adminSzolgaltatasKategoriaServices);
 // PUBLICSZOLGALTATASKATEGORIA
 app.use(['/api/szolgaltataskategoria'], publicSzolgaltatasKategoriaServices);
+// ADMINGALERIA
+app.use(['/api/admin/galeria'], adminGalleryServices);
+// PUBLICGALERIA
+app.use(['/api/galeria'], publicGaleriaServices);
 // ADMINKAPCSOLATOK
 app.use(['/api/admin/kapcsolat'], adminKapcsolatokServices);
 // PUBLICKAPCSOLATOK

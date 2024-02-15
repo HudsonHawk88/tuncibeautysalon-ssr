@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
-import PublicHeader from "../components/Header/PublicHeader";
-import PublicFooter from "../components/Footer/PublicFooter";
+import PublicHeader from "../components/Header/PublicHeader.js";
+import PublicFooter from "../components/Footer/PublicFooter.js";
 /* import PublicHeaderCarousel from "../components/Header/PublicHeaderCarousel"; */
-import Loading from "../commons/Loading";
+import Loading from "../commons/Loading.js";
 
 const Public = (props) => {
   const { children, isAdmin } = props;
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const location = useLocation();
 
   /*  console.log('PUBLICING: ', data); */
@@ -28,10 +29,15 @@ const Public = (props) => {
         ) : (
           <div className="tartalom">{children}</div>
         )}
-        <PublicFooter />
+        <PublicFooter {...props} />
       </div>
     </React.Fragment>
   );
+};
+
+Public.propTypes = {
+  children: PropTypes.any.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default Public;

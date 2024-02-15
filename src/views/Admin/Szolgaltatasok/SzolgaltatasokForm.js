@@ -7,7 +7,7 @@ import {
 } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
 
 const SzolgaltatasokForm = (props) => {
   const {

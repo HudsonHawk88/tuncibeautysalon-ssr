@@ -1,0 +1,27 @@
+.public_galeria {
+  width: 100%;
+
+  .galeria_buttonsdiv {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+
+    .galeria_buttongroup {
+      .galeria_kategoriabutton {
+        background: black;
+        color: red;
+        box-shadow: none !important;
+
+        &:hover {
+          background: red;
+          color: black;
+        }
+
+        &.active {
+          background: red;
+          color: black;
+        }
+      }
+    }
+  }
+}

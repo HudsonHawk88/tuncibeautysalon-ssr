@@ -14,9 +14,13 @@ import {
   setEditorValue,
   initialValue,
 } from "@inftechsol/react-slate-wysiwyg";
-import { WysiwygEditor, serializeValue } from "../../../commons/WysiwygEditor";
-import { handleInputChange } from "../../../commons/InputHandlers";
-import Services from "./Services";
+import {
+  WysiwygEditor,
+  serializeValue,
+} from "../../../commons/WysiwygEditor.js";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
+import Services from "./Services.js";
+import { object } from "prop-types";
 
 const Gdpr = (props) => {
   const { addNotification } = props;
@@ -173,8 +177,11 @@ const Gdpr = (props) => {
 
   const onSave = () => {
     let obj = {};
+
     Object.assign(obj, gdprObj);
+    console.log(object.leiras, obj)
     obj.leiras = serializeValue("se", gdprObj.leiras);
+  
     if (!currentId) {
       Services.addGdpr(obj, (err, res) => {
         if (!err) {

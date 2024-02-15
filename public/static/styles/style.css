@@ -1837,6 +1837,28 @@ html body::-webkit-scrollbar {
   background-color: black;
 }
 
+.public_galeria {
+  width: 100%;
+}
+.public_galeria .galeria_buttonsdiv {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton {
+  background: black;
+  color: red;
+  box-shadow: none !important;
+}
+.public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton:hover {
+  background: red;
+  color: black;
+}
+.public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton.active {
+  background: red;
+  color: black;
+}
+
 .ingat_card {
   /* min-width: calc(33.3% - 10px);
     max-width: 100%;

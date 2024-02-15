@@ -12,7 +12,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
 
 import Gallery from "../../../commons/Gallery.js";
 import Loading from "../../../commons/Loading.js";

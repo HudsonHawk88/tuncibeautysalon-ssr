@@ -3,7 +3,7 @@ import { Row, Col, Label } from "reactstrap";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
 
 const KategoriaForm = (props) => {
   const { kategoriaObj, setKategoriaObj } = props;

@@ -11,8 +11,8 @@ import {
 import { DataTable } from "@inftechsol/react-data-table";
 import PropTypes from "prop-types";
 
-import { handleInputChange } from "../../../commons/InputHandlers";
-import Services from "./Services";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
+import Services from "./Services.js";
 
 const Jogosultsagok = (props) => {
   const defaultRole = {

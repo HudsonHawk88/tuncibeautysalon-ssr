@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { createNotification } from '../src/App';
+import { createNotification } from '../src/App.js';
 let data;
 let ok;
 function handleResponse(response, isFnDone) {

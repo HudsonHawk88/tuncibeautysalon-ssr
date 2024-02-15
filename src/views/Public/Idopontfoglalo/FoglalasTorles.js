@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Col, Row, Spinner } from "reactstrap";
 import { useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
-import Services from "./Services";
+import Services from "./Services.js";
 
 const FoglalasTorles = (props) => {
   const { lang } = props;

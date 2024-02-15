@@ -1,4 +1,4 @@
-import { Microservices } from "../../../../shared/MicroServices";
+import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
 const orszagokUrl = location.origin + "/api/orszagok";
 const telepulesekUrl = location.origin + "/api/telepulesek";

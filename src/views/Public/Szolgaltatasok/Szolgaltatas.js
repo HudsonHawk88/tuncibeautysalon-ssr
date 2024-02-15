@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import Services from "./Services";
+import Services from "./Services.js";
 
 const Szolgaltatas = (props) => {
   const { lang } = props;

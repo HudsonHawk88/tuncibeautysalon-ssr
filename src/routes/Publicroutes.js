@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Public from "../containers/Public";
-import PublicRoutes from "../../shared/PublicRoutes";
+import Public from "../containers/Public.js";
+import PublicRoutes from "../../shared/PublicRoutes.js";
 
 const Pubroutes = (props) => {
   const getChildRoutes = (children) =>

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 
-import Services from "./Services";
-import SzolgaltatasCard from "../Szolgaltatasok/SzolgaltatasCard";
+import Services from "./Services.js";
+import SzolgaltatasCard from "../Szolgaltatasok/SzolgaltatasCard.js";
 
 const Fooldal = (props) => {
   const { lang } = props;

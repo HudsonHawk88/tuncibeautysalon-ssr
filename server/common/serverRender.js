@@ -6,9 +6,9 @@ import { StaticRouter } from 'react-router-dom/server';
 import { matchPath } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import PublicRoutes from '../../shared/PublicRoutes';
-import AdminRoutes from '../../shared/AdminRoutes';
-import { App } from '../../src/App';
+import PublicRoutes from '../../shared/PublicRoutes.js';
+import AdminRoutes from '../../shared/AdminRoutes.js';
+import { App } from '../../src/App.js';
 
 const getRequestPath = (path, url) => {
     let newPath = '';

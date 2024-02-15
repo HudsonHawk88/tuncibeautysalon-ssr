@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Services from "./Services";
+import Services from "./Services.js";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { RVForm } from "@inftechsol/reactstrap-form-validation";
-import KapcsolatForm from "./KapcsolatForm";
+import KapcsolatForm from "./KapcsolatForm.js";
 import { DataTable } from "@inftechsol/react-data-table";
 
 const defaultKapcsolat = {

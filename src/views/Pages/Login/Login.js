@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button } from "reactstrap";
 import { RVForm, RVInput } from "@inftechsol/reactstrap-form-validation";
-import Services from "./Services";
+import Services from "./Services.js";
 
 function Login(props) {
   const [loginObj, setLoginObj] = useState({
