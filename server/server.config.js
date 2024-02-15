@@ -32,7 +32,7 @@ module.exports = {
     apps: [
         {
             name: 'tbs',
-            script: path.resolve(__dirname, 'bundle.cjs'),
+            script: path.resolve(__dirname, 'bundle.js'),
             instances: 'max',
             exec_mode: 'cluster'
         }
