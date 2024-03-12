@@ -137,7 +137,7 @@ const Galeria = (props) => {
               onMovePrevRequest={handleMovePrev}
               onMoveNextRequest={handleMoveNext}
               animationDuration={200}
-            //   toolbarButtons={[<button key='1' onClick={() => alert('JBKJJBJKB')}>+</button>]}
+              //   toolbarButtons={[<button key='1' onClick={() => alert('JBKJJBJKB')}>+</button>]}
             />
           )}
         </React.Fragment>
@@ -156,6 +156,7 @@ const Galeria = (props) => {
   return (
     <div className="public_galeria">
       {renderKategoriaButtons()}
+      <button className="new">Időpontfoglaló</button>
       {renderGaleria()}
     </div>
   );

@@ -63,6 +63,18 @@ const AdminSidebar = (props) => {
                 </NavItem>
               </React.Fragment>
             )}
+            {hasRole(user.roles, ["SZUPER_ADMIN"]) && (
+              <NavItem className="admin-sidebar__navitem">
+                <NavLink
+                  className="admin-sidebar__navlink nav-link"
+                  to="/admin/bio"
+                  id="bio"
+                >
+                  &nbsp;&nbsp;<i aria-hidden className="fas fa-user"></i>
+                  &nbsp;&nbsp; Bio
+                </NavLink>
+              </NavItem>
+            )}
             {hasRole(user.roles, ["SZUPER_ADMIN", "SZOLGALTATASOK_ADMIN"]) && (
               <NavItem className="admin-sidebar__navitem">
                 <NavLink

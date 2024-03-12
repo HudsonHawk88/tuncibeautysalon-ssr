@@ -8,6 +8,7 @@ import SzolgaltatasCard from "../Szolgaltatasok/SzolgaltatasCard.js";
 const Fooldal = (props) => {
   const { lang } = props;
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
+  const [biosJson, setBiosJson] = useState([]);
   const [groups, setGroups] = useState([]);
 
   const getSzolgaltatasok = () => {
@@ -26,7 +27,16 @@ const Fooldal = (props) => {
     });
   };
 
+  const getBios = () => {
+    Services.getBios((err, res) => {
+      if (!err) {
+        setBiosJson(res);
+      }
+    });
+  };
+
   useEffect(() => {
+    getBios();
     getSzolgaltatasok();
     getSzolgaltatasKategoriak();
   }, []);
@@ -107,8 +117,17 @@ const Fooldal = (props) => {
       <div style={{ width: "100%", textAlign: "center" }}>
         <h2>{lang === "hu" ? "Bemutatkozás" : "Über mich"}</h2>
       </div>
-      <div className="bio">
-        {lang === "hu" ? (
+      {console.log(biosJson)}
+      {biosJson && biosJson.length > 0 && (
+        <div
+          className="bio"
+          dangerouslySetInnerHTML={{
+            __html:
+              lang === "hu" ? biosJson[0].magyarleiras : biosJson[0].leiras,
+          }}
+        />
+      )}
+      {/* }lang === "hu" ? (
           <div>
             <h3>
               Szeretettel üdvözlöm minden kedves meglévő és leendő vendégemet a
@@ -198,8 +217,8 @@ const Fooldal = (props) => {
               <br /> 3302 ,Moosseedorf Kirchgasse 3 Tünci Beauty Salon
             </p>
           </div>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
       <div className="fooldalszolgok">{renderSzolgaltatasok()}</div>
     </div>
   );

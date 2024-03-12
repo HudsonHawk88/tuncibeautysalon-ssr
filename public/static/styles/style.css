@@ -39,8 +39,6 @@ tr {
 }
 
 .bio {
-  display: flex;
-  justify-content: center;
   padding: 20px 0px;
 }
 
@@ -469,6 +467,12 @@ html body::-webkit-scrollbar {
 }
 .tartalom .inner_tartalom {
   background-color: rgba(255, 255, 255, 0.1);
+}
+.tartalom .new {
+  background: url("../images/btn2.png");
+  box-shadow: none;
+  padding: 10px 25px;
+  border-radius: 15px 5px;
 }
 .tartalom .myjob {
   /* display: flex; */

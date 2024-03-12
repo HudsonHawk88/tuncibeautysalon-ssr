@@ -12,6 +12,8 @@ import publicUnnepnapokServices from './routes/PublicRoutes/Unnepnapok/PublicUnn
 import adminAuthService from './routes/AdminRoutes/AdminAuthServices/AdminAuthServices.js';
 import adminusersServices from './routes/AdminRoutes/AdminUsersServices/AdminUsersServices.js';
 import adminrolesServices from './routes/AdminRoutes/AdminRoles/AdminRoles.js';
+import adminBioServices from './routes/AdminRoutes/AdminBioServices/AdminBioServices.js';
+import publicBioServices from './routes/PublicRoutes/Bio/PublicBioServices.js';
 import adminSzolgaltatasokServices from './routes/AdminRoutes/AdminSzolgaltatasok/AdminSzolgaltatasokServices.js';
 import publicSzolgaltatasokServices from './routes/PublicRoutes/Szolgaltatasok/PublicSzolgaltatasok.js';
 import adminSzolgaltatasKategoriaServices from './routes/AdminRoutes/AdminSzolgaltatasKategoriakServices/AdminSzolgaltatasKategoriakServices.js';
@@ -83,6 +85,10 @@ app.use(['/api/admin'], adminAuthService);
 app.use(['/api/admin/roles'], adminrolesServices);
 // ADMINUSERS
 app.use(['/api/admin/users'], adminusersServices);
+// ADMINBIO
+app.use(['/api/admin/bio'], adminBioServices);
+// PUBLICBIO
+app.use(['/api/bio'], publicBioServices);
 // ADMINSZOLGALTATASOK
 app.use(['/api/admin/szolgaltatasok'], adminSzolgaltatasokServices);
 // PUBLICSZOLGALTATASOK

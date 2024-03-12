@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Input,
@@ -9,7 +9,6 @@ import {
   Label,
 } from "reactstrap";
 import { DataTable } from "@inftechsol/react-data-table";
-import PropTypes from "prop-types";
 import {
   Editor,
   setEditorValue,
@@ -19,61 +18,59 @@ import {
   WysiwygEditor,
   serializeValue,
 } from "../../../commons/WysiwygEditor.js";
-import { handleInputChange } from "../../../commons/InputHandlers.js";
+import PropTypes from "prop-types";
 import Services from "./Services.js";
+import { handleInputChange } from "../../../commons/InputHandlers.js";
 
-const Gdpr = (props) => {
-  const { addNotification } = props;
+const defaultBioObj = {
+  azonosito: "",
+  leiras: initialValue,
+  magyarleiras: initialValue,
+};
 
-  const defaultGdprObj = {
-    azonosito: "",
-    tipus: "",
-    leiras: initialValue,
-    /*   leiras: serializer.deserialize('<p align="left" style="font-size:17px"></p>') */
-  };
-
-  const [gdprJson, setGdprJson] = useState([]);
-  const [gdprObj, setGdprObj] = useState(defaultGdprObj);
+const Bio = (props) => {
+  const [biosJson, setBiosJson] = useState([]);
+  const [bioObj, setBioObj] = useState(defaultBioObj);
   const [currentId, setCurrentId] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [bioModal, setBioModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const listGdpr = () => {
-    Services.listGdpr((err, res) => {
+  const { addNotification } = props;
+  let Editor1 = useRef(Editor);
+  let Editor2 = useRef(Editor);
+
+  const getBios = () => {
+    Services.listBio((err, res) => {
       if (!err) {
-        setGdprJson(res);
+        setBiosJson(res);
+      }
+    });
+  };
+
+  const getBio = (id) => {
+    Services.getBio(id, (err, res) => {
+      if (!err && Editor) {
+        let obj = res;
+        const leiras = serializeValue("de", res.leiras);
+        const magyarleiras = serializeValue("de", res.magyarleiras);
+        // console.log("Editor1, Editor2: ", Editor1, Editor2);
+        if (Editor1 && Editor2 && Editor1.current && Editor2.current) {
+          setEditorValue(leiras, Editor1.current);
+          setEditorValue(magyarleiras, Editor2.current);
+        }
+        obj.leiras = leiras;
+        obj.magyarleiras = magyarleiras;
+        setBioObj(obj);
       }
     });
   };
 
   useEffect(() => {
-    listGdpr();
+    getBios();
   }, []);
 
-  const getGdpr = (id) => {
-    Services.getGdpr(id, (err, res) => {
-      if (!err && Editor && Editor.current) {
-        const leiras = serializeValue("de", res.leiras);
-        setEditorValue(leiras, Editor);
-        setGdprObj({
-          ...gdprObj,
-          azonosito: res.azonosito,
-          tipus: res.tipus,
-          leiras: leiras,
-        });
-      }
-    });
-  };
-
-  const onChangeEditor = (value) => {
-    setGdprObj({
-      ...gdprObj,
-      leiras: value,
-    });
-  };
-
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
+  const toggleBioModal = () => {
+    setBioModal(!bioModal);
   };
 
   const toggleDeleteModal = () => {
@@ -82,14 +79,14 @@ const Gdpr = (props) => {
 
   const handleNewClick = () => {
     setCurrentId(null);
-    setGdprObj(defaultGdprObj);
-    toggleModal();
+    setBioObj(defaultBioObj);
+    toggleBioModal();
   };
 
   const handleEditClick = (id) => {
     setCurrentId(id);
-    getGdpr(id);
-    toggleModal();
+    getBio(id);
+    toggleBioModal();
   };
 
   const handleDeleteClick = (id) => {
@@ -97,16 +94,59 @@ const Gdpr = (props) => {
     toggleDeleteModal();
   };
 
+  const onChangeEditor = (value) => {
+    setBioObj({
+      ...bioObj,
+      leiras: value,
+    });
+  };
+
+  const onChangeMagyarEditor = (value) => {
+    setBioObj({
+      ...bioObj,
+      magyarleiras: value,
+    });
+  };
+
+  const onSave = () => {
+    let obj = {};
+
+    Object.assign(obj, bioObj);
+    obj.leiras = serializeValue("se", bioObj.leiras);
+    obj.magyarleiras = serializeValue("se", bioObj.magyarleiras);
+
+    if (!currentId) {
+      Services.addBio(obj, (err, res) => {
+        if (!err) {
+          getBios();
+          toggleBioModal();
+          addNotification("success", res.msg);
+        }
+      });
+    } else {
+      Services.editBio(obj, currentId, (err, res) => {
+        if (!err) {
+          getBios();
+          toggleBioModal();
+          addNotification("success", res.msg);
+        }
+      });
+    }
+  };
+
+  const onDelete = () => {
+    Services.deleteBio(currentId, (err, res) => {
+      if (!err) {
+        getBios();
+        toggleDeleteModal();
+        addNotification("success", res.msg);
+      }
+    });
+  };
+
   const tableIconFormatter = (cell, row) => {
     return (
       <React.Fragment>
-        {/* <Button
-              key={rowIndex}
-              color="link"
-              onClick={() => handleViewClick(cell)}
-            >
-              <i key={rowIndex + 1} className="fas fa-eye" />
-            </Button> */}
         <Button
           key={row.id + 1}
           color="link"
@@ -130,10 +170,6 @@ const Gdpr = (props) => {
       {
         dataField: "azonosito",
         text: "Azonosító",
-      },
-      {
-        dataField: "tipus",
-        text: "Típus",
       },
       {
         dataField: "id",
@@ -169,61 +205,46 @@ const Gdpr = (props) => {
       <DataTable
         bordered
         columns={columns}
-        datas={gdprJson}
+        datas={biosJson}
         paginationOptions={paginationOptions}
       />
     );
   };
 
-  const onSave = () => {
-    let obj = {};
-
-    Object.assign(obj, gdprObj);
-    obj.leiras = serializeValue("se", gdprObj.leiras);
-
-    if (!currentId) {
-      Services.addGdpr(obj, (err, res) => {
-        if (!err) {
-          listGdpr();
-          toggleModal();
-          addNotification("success", res.msg);
-        }
-      });
-    } else {
-      Services.editGdpr(obj, currentId, (err, res) => {
-        if (!err) {
-          listGdpr();
-          toggleModal();
-          addNotification("success", res.msg);
-        }
-      });
-    }
-  };
-
-  const onDelete = () => {
-    Services.deleteGdpr(currentId, (err, res) => {
-      if (!err) {
-        listGdpr();
-        toggleDeleteModal();
-        addNotification("success", res.msg);
-      }
-    });
-  };
-
   const renderWysiwyg = () => {
-    return <WysiwygEditor onChange={onChangeEditor} value={gdprObj.leiras} />;
+    return (
+      <WysiwygEditor
+        onChange={onChangeEditor}
+        editorKey="Editor1"
+        ref={Editor1}
+        id="w1"
+        value={bioObj.leiras}
+      />
+    );
+  };
+
+  const renderWysiwygMagyar = () => {
+    return (
+      <WysiwygEditor
+        onChange={onChangeMagyarEditor}
+        editorKey="Editor2"
+        ref={Editor2}
+        id="w2"
+        value={bioObj.leirasMagyar}
+      />
+    );
   };
 
   const renderModal = () => {
     return (
       <Modal
-        isOpen={modalOpen}
-        toggle={toggleModal}
+        isOpen={bioModal}
+        toggle={toggleBioModal}
         size="xl"
         backdrop="static"
       >
         <ModalHeader>
-          {!currentId ? "GDPR hozzáadása" : "GDPR módosítása"}
+          {!currentId ? "Bio hozzáadása" : "Bio módosítása"}
         </ModalHeader>
         <ModalBody>
           <div className="col-md-12">
@@ -232,42 +253,26 @@ const Gdpr = (props) => {
               type="text"
               name="azonosito"
               id="azonosito"
-              value={gdprObj.azonosito}
-              onChange={(e) => handleInputChange(e, gdprObj, setGdprObj)}
+              value={bioObj.azonosito}
+              onChange={(e) => handleInputChange(e, bioObj, setBioObj)}
             />
           </div>
           <br />
           <div className="col-md-12">
-            <Label>Típus:</Label>
-            <Input
-              type="select"
-              name="tipus"
-              id="tipus"
-              value={gdprObj.tipus}
-              onChange={(e) => handleInputChange(e, gdprObj, setGdprObj)}
-            >
-              <option key="" value="">
-                Kérjük válasszon GDPR típust...
-              </option>
-              <option
-                key="adatkezelesi_nyilatkozat"
-                value="Adatkezelési nyilatkozat"
-              >
-                Adatkezelési nyilatkozat
-              </option>
-            </Input>
+            <Label>Német leíras:</Label>
+            {renderWysiwyg()}
           </div>
           <br />
           <div className="col-md-12">
-            <Label>Leíras:</Label>
-            {renderWysiwyg()}
+            <Label>Magyar leíras:</Label>
+            {renderWysiwygMagyar()}
           </div>
         </ModalBody>
         <ModalFooter>
           <Button color="success" onClick={onSave}>
             Mentés
           </Button>
-          <Button color="secondary" onClick={() => toggleModal()}>
+          <Button color="secondary" onClick={() => toggleBioModal()}>
             Mégsem
           </Button>
         </ModalFooter>
@@ -278,7 +283,7 @@ const Gdpr = (props) => {
   const renderDeleteModal = () => {
     return (
       <Modal isOpen={deleteModal} toggle={toggleDeleteModal}>
-        <ModalHeader>GDPR törlése</ModalHeader>
+        <ModalHeader>Bio törlése</ModalHeader>
         <ModalBody>
           <div className="col-md-12">
             {"Valóban törölni kívánja az adott tételt?"}
@@ -299,11 +304,15 @@ const Gdpr = (props) => {
   return (
     <div className="row">
       <div className="col-md-12">
-        <Button color="success" onClick={() => handleNewClick()}>
-          + GDPR hozzáadása
-        </Button>
-        <br />
-        <br />
+        {biosJson.length < 1 && (
+          <React.Fragment>
+            <Button color="success" onClick={() => handleNewClick()}>
+              + Bio hozzáadása
+            </Button>
+            <br />
+            <br />
+          </React.Fragment>
+        )}
         {renderTable()}
         {renderModal()}
         {renderDeleteModal()}
@@ -312,8 +321,8 @@ const Gdpr = (props) => {
   );
 };
 
-Gdpr.propTypes = {
+Bio.propTypes = {
   addNotification: PropTypes.func.isRequired,
 };
 
-export default Gdpr;
+export default Bio;

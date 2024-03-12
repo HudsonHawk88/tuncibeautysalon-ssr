@@ -5,6 +5,8 @@
         "/api/login",
         "/api/szolgaltatasok",
         "/api/galeria",
+        "/api/bio",
+        "/api/admin/bio",
         "/api/admin/szolgaltatasok",
         "/api/admin/szolgaltataskategoria",
         "/api/admin/galeria",
