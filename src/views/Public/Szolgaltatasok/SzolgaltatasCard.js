@@ -44,20 +44,24 @@ const SzolgaltatasCard = (props) => {
             style={{ cursor: "pointer" }}
             onClick={() => goToService(data.id)}
           >
-            <div className="szolg_logo">
-              <img src={szolgaltatasKat.logo} />
+            <a href="">
+              <div className="szolg_logo">
+                <img src={szolgaltatasKat.logo} />
+              </div>
+              <div className="szolg_rovidnev">{szolgaltatasKat.katnev}</div>
+              <div className="szolg_leiras">{szolgaltatasKat.katleiras}</div>
+              {/* <div className="szolg_idotartam">{szolgaltatasKat.idotartam}</div> */}
+              {/* <div className="szolg_ar">{szolgaltatasKat.ar}</div> */}
+            </a>
+          </div>
+            <div
+              className="idopont_button"
+              onClick={() => goToTerminBuch(data.kategorianev)}
+            >
+              <a href="">
+                {lang === "hu" ? "Időpontfoglalás" : "Termin buchen"}
+              </a>
             </div>
-            <div className="szolg_rovidnev">{szolgaltatasKat.katnev}</div>
-            <div className="szolg_leiras">{szolgaltatasKat.katleiras}</div>
-            {/* <div className="szolg_idotartam">{szolgaltatasKat.idotartam}</div> */}
-            {/* <div className="szolg_ar">{szolgaltatasKat.ar}</div> */}
-          </div>
-          <div
-            className="idopont_button"
-            onClick={() => goToTerminBuch(data.kategorianev)}
-          >
-            {lang === "hu" ? "Időpotfoglalás" : "Termin buchen"}
-          </div>
         </div>
       </div>
     );

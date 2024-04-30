@@ -8,7 +8,8 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import cookieParser from 'cookie-parser';
 import publicIdopontfoglaloServices from './routes/PublicRoutes/Idopontfoglalo/PublicIdopontfoglalo.js';
-import publicUnnepnapokServices from './routes/PublicRoutes/Unnepnapok/PublicUnnepnapokServices.js'
+import adminSzabadnapokServices from './routes/AdminRoutes/AdminSzabadnapokServices/AdminSzabadnapokServices.js';
+import publicSzabadnapokServices from './routes/PublicRoutes/Szabadnapok/PublicSzabadnapokServices.js';
 import adminAuthService from './routes/AdminRoutes/AdminAuthServices/AdminAuthServices.js';
 import adminusersServices from './routes/AdminRoutes/AdminUsersServices/AdminUsersServices.js';
 import adminrolesServices from './routes/AdminRoutes/AdminRoles/AdminRoles.js';
@@ -120,8 +121,9 @@ app.use(['/api/options'], OptionServices);
 app.use(['/api/recaptcha'], RecaptchaServices);
 // IDOPONTOK
 app.use(['/api/idopontok'], publicIdopontfoglaloServices)
-// UNNEPNAPOK
-app.use(['/api/unnepnapok'], publicUnnepnapokServices)
+// SZABADNAPOK
+app.use(['/api/szabadnapok'], publicSzabadnapokServices)
+app.use(['/api/admin/szabadnapok'], adminSzabadnapokServices)
 
 app.get('*', actionIndex);
 

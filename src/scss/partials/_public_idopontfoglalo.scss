@@ -1,3 +1,19 @@
+body.accessibility {
+  .idopontfoglalo__ido {
+    border: 2px solid rgba(255, 255,255, 1);
+    background-color: black;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .idopontfoglalo__ido.active {
+    border: 2px solid rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+  }
+}
+
+
+
 .idopontfoglalo__idopontok {
   display: flex;
   flex-wrap: wrap;

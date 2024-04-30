@@ -1,6 +1,44 @@
 @use "../variables/colors";
 @use "../functions/var" as *;
 
+body.accessibility {
+
+  .nav-link {
+    color: rgba(255,255,255, 1) !important;
+    /*             border: unset;
+          text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+
+    /*           @media screen and (min-width: 992px) {
+              border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+              background-color: unset;
+          } */
+  }
+
+  .nav-link:hover {
+    background-color: white;
+    color: black !important;
+    /*             border: unset;
+          text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+
+    /*           @media screen and (min-width: 992px) {
+              border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+              background-color: unset;
+          } */
+  }
+
+  .nav-link.active {
+    background-color: white;
+    color: black !important;
+    /*             border: unset;
+          text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+
+    /*           @media screen and (min-width: 992px) {
+              border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+              background-color: unset;
+          } */
+  }
+}
+
 .public_full header {
   display: flex;
   min-height: 70px;
@@ -69,7 +107,7 @@
 
       & i {
         font-size: 30px;
-        color: rgba(240, 3, 3, 1) !important;
+        color: inherit;
 
         @media screen and (min-width: 992px) {
           font-size: 30px;
@@ -148,7 +186,7 @@
     transition-timing-function: ease-in;
     transition-duration: 0.2s;
     border-radius: 15px;
-    color: var(themes-public-navbarlinkcolor) !important;
+    color: red !important;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -165,6 +203,8 @@
                 background-color: unset;
             } */
     }
+
+    
 
     &.active {
       background-color: var(themes-public-navlinkhoveractive);
@@ -183,6 +223,10 @@
       align-items: center;
       padding: 10px !important;
     }
+  }
+
+  .dropdown:focus-within .dropdown-content {
+    display: block
   }
 
   // .dropdown-toggle {

@@ -1,3 +1,22 @@
+body.accessibility {
+  .galeria_buttongroup {
+    .galeria_kategoriabutton {
+      background: black !important;
+      color: rgba(255,255,255,1) !important;
+
+      &:hover {
+        background: white !important;
+        color: black !important;
+      }
+
+      &.active {
+        background: white !important;
+        color: black !important;
+      }
+    }
+  }
+}
+
 .public_galeria {
   width: 100%;
 

@@ -11,10 +11,15 @@ html {
 html body {
   font-family: Merienda, Arial, Helvetica, sans-serif;
   position: relative;
-  overflow: scroll;
+  overflow: visible;
   scrollbar-width: thin;
   background-color: #000;
   color: rgb(240, 3, 3);
+  /*  scrollbar-width: thin; */
+}
+
+html body.accessibility {
+  color: white !important;
   /*  scrollbar-width: thin; */
 }
 
@@ -36,6 +41,10 @@ tr {
   table-layout: fixed;
   word-wrap: break-word;
   /* overflow-wrap: break-word; */
+}
+
+.modal-open {
+  color: rgb(0, 0, 0) !important;
 }
 
 .bio {
@@ -98,6 +107,10 @@ html body::-webkit-scrollbar {
 .wysiwyg-editor-toolbar select {
   height: 60px;
   width: 95px;
+}
+
+.public_full.accessibility {
+  color: white !important;
 }
 
 .public_full {
@@ -331,6 +344,9 @@ html body::-webkit-scrollbar {
     margin: unset; */
   }
 }
+.kozossegi li {
+  list-style-type: none;
+}
 .kozossegi a {
   display: flex;
   justify-content: center;
@@ -430,13 +446,20 @@ html body::-webkit-scrollbar {
   background-color: black; /* Set track color for Chrome and Safari */
 }
 
+.tartalom.accessibility {
+  color: white !important;
+}
+.tartalom.accessibility a {
+  text-decoration: underline;
+}
+
 .tartalom {
   /* position: relative;
     top: 110px; */
   /*  height: 100vh; */
   /* height: calc(100% - 140px); */
   /* max-height: calc(100% - 170px); */
-  overflow-y: scroll !important;
+  overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   height: 100%;
@@ -455,6 +478,10 @@ html body::-webkit-scrollbar {
   /* background-color: var(themes-public-bgcolor2); */
   /*     background-image: var(themes-public-navbarbgimage); */
   /*  background-size: contain; */
+}
+.tartalom a, .tartalom a:hover {
+  text-decoration: none;
+  color: inherit;
 }
 @media screen and (min-width: 992px) {
   .tartalom {
@@ -693,7 +720,7 @@ html body::-webkit-scrollbar {
   max-height: inherit;
   background-color: white;
   padding: 10px;
-  color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0) !important;
 }
 .tartalom-admin .react-data-table-pagination-buttons .btn.btn-outline-primary {
   border-color: #333;
@@ -1282,6 +1309,66 @@ html body::-webkit-scrollbar {
     min-height: calc(100vh - 60px);
     max-height: calc(100vh - 60px);
 } */
+#cookieConsentLayer {
+  z-index: 99999;
+  flex: 1 1 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#cookieConsentLayer.hidden {
+  display: none;
+}
+
+#cookieConsent {
+  position: sticky;
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  flex: 1 0;
+  bottom: unset;
+  top: 0;
+  bottom: unset;
+  left: 0;
+  background-color: red;
+  color: black;
+  justify-content: center;
+  padding: 10px 0px;
+}
+#cookieConsent .tajekoztatoszoveg {
+  text-align: center;
+  width: 100%;
+}
+#cookieConsent .tajekoztatoszoveg a {
+  color: black;
+}
+#cookieConsent button {
+  background: black !important;
+  color: red !important;
+  border: none !important;
+  padding: 0px 5px !important;
+}
+#cookieConsent._also {
+  top: unset !important;
+  bottom: 0;
+}
+
+body.accessibility .idopontfoglalo__ido {
+  border: 2px solid rgb(255, 255, 255);
+  background-color: black;
+  color: rgb(255, 255, 255);
+}
+body.accessibility .idopontfoglalo__ido.active {
+  border: 2px solid rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
+  color: black;
+}
+
 .idopontfoglalo__idopontok {
   display: flex;
   flex-wrap: wrap;
@@ -1303,6 +1390,36 @@ html body::-webkit-scrollbar {
   border: 2px solid rgb(241, 24, 24);
   background-color: rgb(241, 24, 24);
   color: black;
+}
+
+body.accessibility .nav-link {
+  color: rgb(255, 255, 255) !important;
+  /*             border: unset;
+        text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+  /*           @media screen and (min-width: 992px) {
+            border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+            background-color: unset;
+        } */
+}
+body.accessibility .nav-link:hover {
+  background-color: white;
+  color: black !important;
+  /*             border: unset;
+        text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+  /*           @media screen and (min-width: 992px) {
+            border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+            background-color: unset;
+        } */
+}
+body.accessibility .nav-link.active {
+  background-color: white;
+  color: black !important;
+  /*             border: unset;
+        text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
+  /*           @media screen and (min-width: 992px) {
+            border-bottom: 5px solid var(themes-public-navlinkhoveractive);
+            background-color: unset;
+        } */
 }
 
 .public_full header {
@@ -1375,7 +1492,7 @@ html body::-webkit-scrollbar {
 }
 .public-navbar .container-fluid .navbar-toggler i {
   font-size: 30px;
-  color: rgb(240, 3, 3) !important;
+  color: inherit;
 }
 @media screen and (min-width: 992px) {
   .public-navbar .container-fluid .navbar-toggler i {
@@ -1450,7 +1567,7 @@ html body::-webkit-scrollbar {
   transition-timing-function: ease-in;
   transition-duration: 0.2s;
   border-radius: 15px;
-  color: rgb(241, 24, 24) !important;
+  color: red !important;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -1484,6 +1601,9 @@ html body::-webkit-scrollbar {
     align-items: center;
     padding: 10px !important;
   }
+}
+.public-navbar .dropdown:focus-within .dropdown-content {
+  display: block;
 }
 .public-navbar .dropdown-item {
   background: black;
@@ -1742,6 +1862,16 @@ html body::-webkit-scrollbar {
   text-align: justify;
 }
 
+body.accessibility .idopont_button {
+  background-color: rgb(255, 255, 255) !important;
+  color: black;
+  border: 2px solid rgb(255, 255, 255) !important;
+}
+body.accessibility .idopont_button:hover {
+  color: rgb(0, 0, 0) !important;
+  background-color: rgb(255, 255, 255) !important;
+}
+
 .fooldalszolgok {
   min-width: 100%;
   max-width: 100%;
@@ -1839,6 +1969,19 @@ html body::-webkit-scrollbar {
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button:hover {
   color: rgb(241, 24, 24);
   background-color: black;
+}
+
+body.accessibility .galeria_buttongroup .galeria_kategoriabutton {
+  background: black !important;
+  color: rgb(255, 255, 255) !important;
+}
+body.accessibility .galeria_buttongroup .galeria_kategoriabutton:hover {
+  background: white !important;
+  color: black !important;
+}
+body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
+  background: white !important;
+  color: black !important;
 }
 
 .public_galeria {
@@ -2870,6 +3013,10 @@ html body::-webkit-scrollbar {
   color: #222222 !important;
 }
 
+body.accessibility .linkek a {
+  color: rgb(255, 255, 255);
+}
+
 .public-footer {
   /* position: relative; */
   /* top: 110px; */
@@ -2931,6 +3078,9 @@ html body::-webkit-scrollbar {
 .public-footer__div .linkek {
   min-width: 100%;
   max-width: 100%;
+}
+.public-footer__div .linkek a {
+  color: rgb(241, 24, 24);
 }
 
 .admin-footer {

@@ -101,9 +101,11 @@ const Galeria = (props) => {
                   }`}
                   onClick={() => toggleKategoriak(kategoria.id)}
                 >
-                  {lang === "hu"
-                    ? kategoria.magyarkategorianev
-                    : kategoria.kategorianev}
+                  <a href="#" onClick={() => toggleKategoriak(kategoria.id)}>
+                    {lang === "hu"
+                        ? kategoria.magyarkategorianev
+                        : kategoria.kategorianev}
+                  </a>
                 </Button>
               );
             })}
@@ -156,7 +158,6 @@ const Galeria = (props) => {
   return (
     <div className="public_galeria">
       {renderKategoriaButtons()}
-      <button className="new">Időpontfoglaló</button>
       {renderGaleria()}
     </div>
   );

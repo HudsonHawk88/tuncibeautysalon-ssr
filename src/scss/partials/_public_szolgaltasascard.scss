@@ -1,3 +1,16 @@
+body.accessibility {
+  .idopont_button {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: black;
+    border: 2px solid rgba(255, 255, 255, 1) !important;
+
+    &:hover {
+      color: rgba(0, 0, 0, 1) !important;
+      background-color: rgba(255, 255, 255, 1) !important;
+    }
+  }
+}
+
 .fooldalszolgok {
   min-width: 100%;
   max-width: 100%;

@@ -34,6 +34,9 @@ const Adatkezeles = (props) => {
   }, []);
 
   const renderAdatkezeles = () => {
+    /* TODO: A böngészője által támogatott helyi adattárolókat is alkalmazunk (local storage és
+    session storage) abból a célból, hogy a weboldal működéséhez szükséges adatokat az Ön
+    eszközén tároljuk.  */
     return (
       <React.Fragment>
         <div

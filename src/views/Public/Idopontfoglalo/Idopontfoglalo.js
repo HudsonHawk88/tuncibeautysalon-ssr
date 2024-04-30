@@ -19,13 +19,13 @@ const defaultIdopont = {
 };
 
 const Idopontfoglalo = (props) => {
-  const { lang, szolgaltatas } = props;
+  const { lang, szolgaltatas, accessibility } = props;
 
   const [idopont, setIdopont] = useState(defaultIdopont);
   const [groups, setGroups] = useState([]);
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
   const [szabadIdopontok, setSzabadIdopontok] = useState([]);
-  const [unnepnapok, setUnnepnapok] = useState([]);
+  const [szabadnapok, setSzabadnapok] = useState([]);
   const [message, setMessage] = useState(null);
   const [searchParams] = useSearchParams();
 
@@ -70,7 +70,7 @@ const Idopontfoglalo = (props) => {
   useEffect(() => {
     setIdopont({ ...idopont, szolgaltatas: szolgaltatas });
     if (!szolgaltatas) {
-      getUnnepnapok();
+      getSzabadnapok();
       listSzolgaltatasok();
     }
   }, [szolgaltatas]);
@@ -83,10 +83,10 @@ const Idopontfoglalo = (props) => {
     });
   };
 
-  const getUnnepnapok = () => {
-    Services.getUnnepnapok((err, res) => {
+  const getSzabadnapok = () => {
+    Services.getSzabadnapok((err, res) => {
       if (!err) {
-        setUnnepnapok(res);
+        setSzabadnapok(res);
       }
     });
   };
@@ -234,7 +234,7 @@ const Idopontfoglalo = (props) => {
               const selectedMonth = moment(v).get("month");
               const selectedDay = moment(v).format("DD");
               console.log(selectedDay, selectedMonth);
-              const found = unnepnapok.find(
+              const found = szabadnapok.find(
                 (un) =>
                   un.honap - 1 === selectedMonth &&
                   un.nap === parseInt(selectedDay, 10)
@@ -275,7 +275,9 @@ const Idopontfoglalo = (props) => {
                       className="idopontfoglalo__ido"
                       id={szi}
                     >
-                      {szi}
+                      <a href="#" onClick={() => setActive(szi)}>
+                        {szi}
+                      </a>
                     </div>
                   );
                 })
@@ -357,7 +359,7 @@ const Idopontfoglalo = (props) => {
                   !idopont.ugyfelelfogad
                 }
                 style={{
-                  background: "rgba(241, 24, 24, 1)",
+                  background: `${accessibility === 'true' ? 'rgba(255,255,255, 1)' : 'rgba(241, 24, 24, 1)'}`,
                   color: "black",
                   width: "100%",
                 }}
@@ -378,6 +380,7 @@ const Idopontfoglalo = (props) => {
 };
 
 Idopontfoglalo.propTypes = {
+  accessibility: PropTypes.string.isRequired,
   lang: PropTypes.string.isRequired,
   addNotification: PropTypes.func,
   szolgaltatas: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

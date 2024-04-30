@@ -13,6 +13,7 @@ import AdmRoutes from "./routes/Adminroutes.js";
 import { hasRole } from "./commons/Lib.js";
 import { useLocation } from "react-router-dom";
 import "react-widgets/styles.css";
+import CookieConsent from "./views/Public/CookieConsent/CookieConsent.js";
 
 const createNotification = (type, msg) => {
   switch (type) {
@@ -36,6 +37,8 @@ const createNotification = (type, msg) => {
 function App() {
   const [user, setUser] = useState(null);
   const [lang, setLang] = useState("ch");
+  const [accessibility, setAccessibility] = useState('false');
+
   let location = useLocation();
 
   const isAdmin = __isBrowser__ && location.pathname.startsWith("/admin");
@@ -44,6 +47,23 @@ function App() {
     setLang(value);
     localStorage.setItem("lang", value);
   };
+
+  const toggleAccessibility = (value) => {
+    setAccessibility(value);
+    localStorage.setItem('accessibility', value);
+    const body = document.body;
+
+    if (body) {
+      if (value === 'true') {
+        if (!location.pathname.startsWith('/admin')) {
+          body.classList.add('accessibility')
+        }
+      } else {
+        body.classList.remove('accessibility')
+      }
+      
+    }
+  }
 
   const setDefaultLang = () => {
     const language = localStorage.getItem("lang")
@@ -55,6 +75,16 @@ function App() {
     }
     toggleLang(language);
   };
+
+  const setDefaultAccessibility = () => {
+    const acc = localStorage.getItem("accessibility")
+      ? localStorage.getItem("accessibility")
+      : "false";
+    if (!localStorage.getItem("accessibility")) {
+      localStorage.setItem("accessibility", acc);
+    }
+    toggleAccessibility(acc);
+  }
 
   useEffect(() => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";
@@ -120,6 +150,7 @@ function App() {
 
   useEffect(() => {
     if (__isBrowser__) {
+      setDefaultAccessibility();
       setDefaultLang();
       window.scrollTo(0, 0);
       const navbar = document.getElementById("public_navbar_collapse");
@@ -191,9 +222,12 @@ function App() {
             addNotification={createNotification}
             lang={lang}
             setLang={toggleLang}
+            toggleAccessibility={toggleAccessibility}
+            accessibility={accessibility}
           />
         </React.Fragment>
       )}
+      <CookieConsent lang={lang} />
     </React.Fragment>
   );
 }

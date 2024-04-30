@@ -14,7 +14,7 @@ import { HU, CH } from "country-flag-icons/react/3x2";
 import PropTypes from "prop-types";
 
 const PublicHeader = (props) => {
-  const { setLang, lang } = props;
+  const { setLang, lang, accessibility, toggleAccessibility } = props;
 
   const toggleNavbar = (id) => {
     const collapse = document.getElementById(id);
@@ -23,9 +23,12 @@ const PublicHeader = (props) => {
     }
   };
 
+
+
   return (
     <React.Fragment>
-      <div id="logo" />
+    <h1><img id="logo" alt="logo" /></h1>
+      
 
       <Navbar expand="lg" light className="public-navbar" dark>
         <div
@@ -150,26 +153,50 @@ const PublicHeader = (props) => {
                 &nbsp; {lang === "hu" ? "Kapcsolat" : "Kontakt"}
               </NavLink>
             </NavItem>
-            <div>
-              <CH
-                width={50}
-                height={30}
-                style={{ cursor: "pointer" }}
-                onMouseDown={() => {
-                  setLang("ch");
-                  toggleNavbar("public_navbar_collapse");
-                }}
-              />
-              <HU
-                width={50}
-                height={30}
-                style={{ cursor: "pointer" }}
-                onMouseDown={() => {
-                  setLang("hu");
-                  toggleNavbar("public_navbar_collapse");
-                }}
-              />
-            </div>
+            <li>
+              <a href="" rel="noreferrer" onClick={() => {
+                const currAcc = (/true/).test(accessibility);
+                toggleAccessibility((!currAcc).toString());
+                toggleNavbar("public_navbar_collapse");
+              }}>
+                <i
+                  className="fa-brands fa-accessible-icon"
+                  width={50}
+                  height={30}
+                  style={{ cursor: "pointer", color: (/true/).test(accessibility) ? 'green' : 'red', padding: '10px', fontSize: '30px' }}
+                  // onMouseDown={() => {
+                  //   const currAcc = (/true/).test(accessibility);
+                  //   toggleAccessibility((!currAcc).toString());
+                  //   toggleNavbar("public_navbar_collapse");
+                  // }}           
+                />
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <CH
+                  width={50}
+                  height={30}
+                  style={{ cursor: "pointer" }}
+                  onMouseDown={() => {
+                    setLang("ch");
+                    toggleNavbar("public_navbar_collapse");
+                  }}
+                />
+              </a>
+              <a href="">
+                <HU
+                  width={50}
+                  height={30}
+                  style={{ cursor: "pointer" }}
+                  onMouseDown={() => {
+                    setLang("hu");
+                    toggleNavbar("public_navbar_collapse");
+                  }}
+                />
+              </a>
+              
+            </li>
             {/*<NavItem className="nav-item public-navbar__nav-item">
               <NavLink className="nav-link public-navbar__nav-link" to="/ubermich">
                 <i aria-hidden className="fas fa-info-circle"></i>
@@ -184,6 +211,8 @@ const PublicHeader = (props) => {
 };
 
 PublicHeader.propTypes = {
+  accessibility: PropTypes.string.isRequired,
+  toggleAccessibility: PropTypes.func.isRequired,
   setLang: PropTypes.func.isRequired,
   lang: PropTypes.string.isRequired,
 };

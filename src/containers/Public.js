@@ -8,7 +8,7 @@ import PublicFooter from "../components/Footer/PublicFooter.js";
 import Loading from "../commons/Loading.js";
 
 const Public = (props) => {
-  const { children, isAdmin } = props;
+  const { children, isAdmin, accessibility } = props;
   const [loading] = useState(false);
   const location = useLocation();
 
@@ -18,24 +18,25 @@ const Public = (props) => {
     <React.Fragment>{children}</React.Fragment>
   ) : (
     <React.Fragment>
-      <div className="public_full">
+      <main className={`public_full ${(/true/).test(accessibility) ? "accessibility" : ""}`}>
         <header>
           <PublicHeader {...props} />
         </header>
         {loading ? (
-          <div className="tartalom">
+          <div className={`tartalom ${(/true/).test(accessibility) ? "accessibility" : ""}`}>
             <Loading isLoading={loading} />
           </div>
         ) : (
-          <div className="tartalom">{children}</div>
+          <div className={`tartalom ${(/true/).test(accessibility) ? "accessibility" : ""}`}>{children}</div>
         )}
         <PublicFooter {...props} />
-      </div>
+      </main>
     </React.Fragment>
   );
 };
 
 Public.propTypes = {
+  accessibility: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   isAdmin: PropTypes.bool.isRequired,
 };

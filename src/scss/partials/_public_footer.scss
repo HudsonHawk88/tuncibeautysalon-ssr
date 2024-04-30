@@ -1,6 +1,12 @@
 @use "../variables/colors";
 @use "../functions/var" as *;
 
+body.accessibility {
+  & .linkek a {
+    color: rgba(255,255,255,1);
+  }
+}
+
 .public-footer {
   /* position: relative; */
   /* top: 110px; */
@@ -63,6 +69,10 @@
     & .linkek {
       min-width: 100%;
       max-width: 100%;
+
+      & a {
+        color: rgba(241, 24, 24, 1);
+      }
     }
   }
 }

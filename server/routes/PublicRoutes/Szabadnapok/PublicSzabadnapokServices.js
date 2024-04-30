@@ -1,15 +1,15 @@
 import express from 'express';
 const router = express.Router();
 import { pool } from '../../../common/QueryHelpers.js';
-const unnepnapok = pool;
+const szabadnapok = pool;
 
-// UNNEPNAPOK START
+// SZABADNAPOK START
 
 router.get('/', (req, res) => {
     const id = req.headers.id;
     if (id) {
-        const sql = `SELECT * FROM unnepnapok WHERE id='${id}';`;
-        unnepnapok.query(sql, (err, result) => {
+        const sql = `SELECT * FROM szabadnapok WHERE id='${id}';`;
+        szabadnapok.query(sql, (err, result) => {
             if (!err) {
                 res.status(200).send(result);
             } else {
@@ -17,8 +17,8 @@ router.get('/', (req, res) => {
             }
         });
     } else {
-        const sql = `SELECT honap, nap FROM unnepnapok;`;
-        unnepnapok.query(sql, (err, result) => {
+        const sql = `SELECT honap, nap FROM szabadnapok;`;
+        szabadnapok.query(sql, (err, result) => {
             if (!err) {
                 res.status(200).send(result);
             } else {
@@ -28,6 +28,6 @@ router.get('/', (req, res) => {
     }
 });
 
-// UNNEPNAPOK END
+// SZABADNAPOK END
 
 export default router;

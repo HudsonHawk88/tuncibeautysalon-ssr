@@ -1,70 +1,9 @@
 import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
-const szolgaltatasokUrl = location.origin + "/api/szolgaltatasok";
-const idopontokUrl = location.origin + "/api/idopontok";
-const szabadnapokUrl = location.origin + "/api/szabadnapok";
+const szabadnapokUrl = location.origin + "/api/admin/szabadnapok";
 
 export default class Services {
-  // IDOPONTOK START
-
-  static listSzolgaltatasok = (fnDone) => {
-    let result = Microservices.fetchApi(
-      szolgaltatasokUrl,
-      {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-        },
-      },
-      fnDone
-    );
-
-    return result;
-  };
-
-  static getIdopontok = (nap, szolgaltatas, lang, fnDone) => {
-    let result = Microservices.fetchApi(
-      idopontokUrl + `?nap=${nap}&szolgaltatas=${szolgaltatas}`,
-      {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-          lang: lang,
-        },
-      },
-      fnDone
-    );
-
-    return result;
-  };
-
-  static foglalas = (foglalasObj, lang, fnDone) => {
-    let result = Microservices.fetchApi(
-      idopontokUrl,
-      {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-          lang: lang,
-        },
-        body: JSON.stringify(foglalasObj),
-      },
-      fnDone
-    );
-
-    return result;
-  };
-
-  static getSzabadnapok = (fnDone) => {
+  static listSzabadnapok = (fnDone) => {
     let result = Microservices.fetchApi(
       szabadnapokUrl,
       {
@@ -73,6 +12,7 @@ export default class Services {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
         },
       },
@@ -82,16 +22,74 @@ export default class Services {
     return result;
   };
 
-  static deleteFoglalas = (id, fnDone) => {
+  static getSzabadnap = (id, fnDone) => {
     let result = Microservices.fetchApi(
-      idopontokUrl,
+      szabadnapokUrl,
       {
-        method: "DELETE",
-        mode: "cors",
+        method: "GET",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          Accept: "application/json",
+          id: id,
+          // "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+        },
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static addSzabadnap = (szabadnapObj, fnDone) => {
+    let result = Microservices.fetchApi(
+      szabadnapokUrl,
+      {
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+        },
+        body: JSON.stringify(szabadnapObj),
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static editSzabadnap = (szabadnapObj, id, fnDone) => {
+    let result = Microservices.fetchApi(
+      szabadnapokUrl,
+      {
+        method: "PUT",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          id: id,
+        },
+        body: JSON.stringify(szabadnapObj),
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static deleteSzabadnap = (id, fnDone) => {
+    let result = Microservices.fetchApi(
+      szabadnapokUrl,
+      {
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
           id: id,
         },
       },
@@ -100,6 +98,4 @@ export default class Services {
 
     return result;
   };
-
-  // IDOPONTOK END
 }

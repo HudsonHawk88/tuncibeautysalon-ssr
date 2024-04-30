@@ -16,10 +16,12 @@ const PublicFooter = (props) => {
           >
             Inftechsol
           </a>{" "}
+          &nbsp;
           <sup>
             <i aria-hidden className="far fa-copyright"></i>
           </sup>
         </div>
+        &nbsp;
         <div className="linkek">
           <a href={"/datenverarbeitung"}>
             {lang === "hu"
@@ -29,32 +31,38 @@ const PublicFooter = (props) => {
         </div>
         <div className="plus_nav">
           <div className="plus_content">
-            <div className="kozossegi">
-              <a
-                href="https://www.facebook.com/profile.php?id=61555853729992"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i aria-hidden className="fab fa-facebook-square"></i>
-              </a>
-              <a
-                href="https://www.instagram.com/myhomeingatlan/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i aria-hidden className="fab fa-instagram"></i>
-              </a>
-              <a
-                href="https://www.tiktok.com/@tnci58?_t=8iq2E1QsvGD&_r=1"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fab fa-tiktok"></i>
-              </a>
+            <ul className="kozossegi">
+              <li>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61555853729992"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <i aria-hidden className="fab fa-facebook-square"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/myhomeingatlan/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <i aria-hidden className="fab fa-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.tiktok.com/@tnci58?_t=8iq2E1QsvGD&_r=1"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <i className="fab fa-tiktok"></i>
+                </a>
+              </li>
               {/*<a href="#" target="_blank" rel="noreferrer">
                 <i aria-hidden className="fab fa-whatsapp"></i>
               </a>*/}
-            </div>
+            </ul>
           </div>
         </div>
       </div>
