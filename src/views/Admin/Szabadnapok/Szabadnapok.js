@@ -11,6 +11,7 @@ import {
   Label,
 } from "reactstrap";
 import { RVForm, RVInput } from "@inftechsol/reactstrap-form-validation";
+import moment from 'moment';
 import PropTypes from "prop-types";
 
 import Services from "./Services.js";
@@ -18,8 +19,8 @@ import { handleInputChange } from "../../../commons/InputHandlers.js";
 
 const defaultSzabadnapObj = {
   megnevezes: "",
-  honap: "",
-  nap: "",
+  kezdete: null,
+  vege: null,
 };
 
 const paginationOptions = {
@@ -66,8 +67,12 @@ const Szabadnapok = (props) => {
     });
   };
 
-  const honapFormatter = (cell, row) => {
-    return `${row.honap}`;
+  const kezdeteFormatter = (cell, row) => {
+    return `${moment(row.kezdete).format('YYYY-MM-DD')}`;
+  };
+
+  const vegeFormatter = (cell, row) => {
+    return `${moment(row.vege).format('YYYY-MM-DD')}`;
   };
 
   const handleViewClick = (cell) => {
@@ -109,8 +114,8 @@ const Szabadnapok = (props) => {
   const renderSzabadnapokTable = () => {
     const columns = [
       { text: "Megnevezés", dataField: "megnevezes" },
-      { text: "Hónap", dataField: "honap", formatter: honapFormatter },
-      { text: "Nap", dataField: "nap" },
+      { text: "Kezdete", dataField: "kezdete", formatter: kezdeteFormatter },
+      { text: "Vége", dataField: "vege", formatter: vegeFormatter },
       { text: "Műveletek", dataField: "id", formatter: tableIconFormatter },
     ];
 
@@ -140,17 +145,8 @@ const Szabadnapok = (props) => {
 
   const onSubmit = () => {
     let submitObj = szabadnapObj;
-    submitObj.honap = parseInt(szabadnapObj.honap, 10);
-    submitObj.nap = parseInt(szabadnapObj.nap, 10);
-
-    if (submitObj.honap > 12) {
-      addNotification("error", "A hónap 1-12 között kell lennie!");
-      return;
-    }
-    if (submitObj.nap > 31) {
-      addNotification("error", "A napnak 1-31 között kell lennie!");
-      return;
-    }
+    submitObj.kezdete = new Date(szabadnapObj.kezdete)
+    submitObj.vege = new Date(szabadnapObj.vege);
 
     if (currentId === undefined) {
       Services.addSzabadnap(submitObj, (err, res) => {
@@ -213,33 +209,32 @@ const Szabadnapok = (props) => {
             </Row>
             <Row style={{ margin: "10px 0px 0px 0px" }}>
               <Col>
-                <Label>{"Szabadnap hónapja: *"}</Label>
+                <Label>{"Szabadnap kezdete: *"}</Label>
                 <RVInput
-                  name="honap"
-                  id="honap"
+                  type="date"
+                  name="kezdete"
+                  id="kezdete"
                   required
-                  maxLength={2}
-                  pattern="[1-9]+"
                   onChange={(e) =>
                     handleInputChange(e, szabadnapObj, setSzabadnapObj)
                   }
-                  value={szabadnapObj.honap}
+                  value={szabadnapObj.kezdete}
                 />
               </Col>
             </Row>
             <Row style={{ margin: "10px 0px 0px 0px" }}>
               <Col>
-                <Label>{"Szabadnap napja: *"}</Label>
+                <Label>{"Szabadnap vege: *"}</Label>
                 <RVInput
-                  name="nap"
-                  id="nap"
-                  maxLength={2}
-                  pattern="[1-9]+"
+                  type="date"
+                  minDate={new Date(szabadnapObj.kezdete) || null}
+                  name="vege"
+                  id="vege"
                   required
                   onChange={(e) =>
                     handleInputChange(e, szabadnapObj, setSzabadnapObj)
                   }
-                  value={szabadnapObj.nap}
+                  value={szabadnapObj.vege}
                 />
               </Col>
             </Row>

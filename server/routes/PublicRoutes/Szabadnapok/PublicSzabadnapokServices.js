@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
             }
         });
     } else {
-        const sql = `SELECT honap, nap FROM szabadnapok;`;
+        const sql = `SELECT kezdete, vege FROM szabadnapok;`;
         szabadnapok.query(sql, (err, result) => {
             if (!err) {
                 res.status(200).send(result);

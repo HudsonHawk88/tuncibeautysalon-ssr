@@ -169,6 +169,23 @@ const Idopontfoglalo = (props) => {
     });
   };
 
+  const isSzabadnapos = (value) => {
+    let result = false;
+    if (szabadnapok && szabadnapok.length > 0) {
+      for (let i = 0; i < szabadnapok.length; i++) {
+        const isKezdete = moment(value).format('YYYY-MM-DD') === moment(szabadnapok[i].kezdete).format('YYYY-MM-DD');
+        const isVege = moment(value).format('YYYY-MM-DD') === moment(szabadnapok[i].vege).format('YYYY-MM-DD');
+        const isBetween = moment(value).isBetween(szabadnapok[i].kezdete, szabadnapok[i].vege);
+
+        if (isKezdete || isVege || isBetween) {
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
   return (
     <div style={{ width: "100%", minHeight: "100vh" }}>
       {console.log(idopont)}
@@ -240,11 +257,8 @@ const Idopontfoglalo = (props) => {
               const selectedMonth = moment(v).get("month");
               const selectedDay = moment(v).format("DD");
               console.log(selectedDay, selectedMonth);
-              const found = szabadnapok.find(
-                (un) =>
-                  un.honap - 1 === selectedMonth &&
-                  un.nap === parseInt(selectedDay, 10)
-              );
+              
+              const found = isSzabadnapos(v);
               console.log(found);
               setIdopont({ ...idopont, nap: v, kezdete: null });
               if (found) {

@@ -62,13 +62,13 @@ router.post('/', async (req, res) => {
                     const sql = `CREATE TABLE IF NOT EXISTS szabadnapok (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     megnevezes text DEFAULT NULL,
-                    honap int NOT NULL,
-                    nap int NOT NULL
+                    kezdete DATE NOT NULL,
+                    vege DATE NOT NULL
                   ) ENGINE=InnoDB;`;
                     szabadnapok.query(sql, async (error) => {
                         if (!error) {
-                            const sql = `INSERT INTO szabadnapok (megnevezes, honap, nap)
-                            VALUES ('${felvitelObj.megnevezes}', '${felvitelObj.honap}', '${felvitelObj.nap}');`;
+                            const sql = `INSERT INTO szabadnapok (megnevezes, kezdete, vege)
+                            VALUES ('${felvitelObj.megnevezes}', '${felvitelObj.kezdete}', '${felvitelObj.vege}');`;
                                 szabadnapok.query(sql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
@@ -120,7 +120,7 @@ router.put('/', async (req, res) => {
                 if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                     if (id) {
                         modositoObj = JSON.parse(JSON.stringify(modositoObj));
-                        const sql = `UPDATE szabadnapok SET megnevezes = '${modositoObj.megnevezes}', honap = '${modositoObj.honap}', nap = '${modositoObj.nap}' WHERE id = '${id}';`;
+                        const sql = `UPDATE szabadnapok SET megnevezes = '${modositoObj.megnevezes}', kezdete = '${modositoObj.kezdete}', vege = '${modositoObj.vege}' WHERE id = '${id}';`;
                         szabadnapok.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({
