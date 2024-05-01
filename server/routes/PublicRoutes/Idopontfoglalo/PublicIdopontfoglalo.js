@@ -522,17 +522,18 @@ router.post("/", async (req, res) => {
     if (!err) {
       const insertSql = `INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipus) VALUES ('${foglalasObj.kezdete}', date_add('${foglalasObj.kezdete}',interval (SELECT (uresjarat + idotartam) FROM szolgaltatasok WHERE id = ${foglalasObj.szolgaltatas}) minute), '${foglalasObj.ugyfelnev}', '${foglalasObj.ugyfelemail}', '${foglalasObj.ugyfeltelefon}', '${foglalasObj.ugyfelelfogad}', NOW(), ${foglalasObj.szolgaltatas});`;
       console.log("SQL: ", sql);
-      let total = 0;
+      let idotartam = 0;
       let szolgrovidnev = '';
       let magyarszolgnev = '';
 
-      const totalQuery = await UseQuery(`SELECT (uresjarat + idotartam) as total, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id = ${foglalasObj.szolgaltatas}`);
+      const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id = ${foglalasObj.szolgaltatas}`);
       if (totalQuery) {
-        total = totalQuery[0].total;
+        idotartam = totalQuery[0].idotartam;
         szolgrovidnev = totalQuery[0].nemetszolg;
         magyarszolgnev = totalQuery[0].magyarszolg;
       }
       console.log('INSERTSQL: ', insertSql)
+      console.log(foglalasObj.kezdete)
       
       idopontok.query(insertSql, (e, r) => {
         if (!e) {
@@ -541,7 +542,7 @@ router.post("/", async (req, res) => {
             <ul><li>Név: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
             <li>Szolgaltatás: ${lang === 'hu' ? magyarszolgnev : szolgrovidnev}</li>
-            <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}</li></ul><br>
+            <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Lemondani az alábbi linken tudja: <br>
             ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
             <strong>Amennyiben kevesebb, mint 2 nappal mondja le az időpontot, úgy rendszerünk a 3. lemondást követően nem engedi időpontot foglalni 30 napig!</strong><br> 
@@ -552,7 +553,7 @@ router.post("/", async (req, res) => {
                 <ul><li>Dienstleistungen: ${lang === 'hu' ? magyarszolgnev : szolgrovidnev}</li>
             <li>Name: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
-            <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}</li></ul><br>
+            <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Sie können über den folgenden Link kündigen:<br>
             ${process.env.REACT_APP_mainUrl + `terminstreichung?terminId=${r.insertId}`}<br>
             <strong>Wenn Sie den Termin weniger als 2 Tage im Voraus stornieren, können Sie in unserem System 30 Tage nach der 3. Absage keinen Termin mehr buchen!</strong><br>
@@ -563,7 +564,7 @@ router.post("/", async (req, res) => {
             <ul><li>Szolgáltatás: ${magyarszolgnev}</li>
             <li>Név: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
-            <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(total, 'minutes')).format('HH:mm')}</li></ul><br>
+            <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Tisztelettel:<br>
             Tünci Beauty Salon<br>`;
             transporter.sendMail({
@@ -595,6 +596,7 @@ router.post("/", async (req, res) => {
             err: null
           });
         } else {
+            // res.status(500).send({ err: e, msg: JSON.stringify(e) })
             res.status(500).send({ err: e, msg: lang === 'hu' ? 'Hiba az időpont hozzáadaásakor' : 'Fehler beim Hinzufügen des Datums' })
         }
       })

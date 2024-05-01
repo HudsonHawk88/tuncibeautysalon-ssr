@@ -479,7 +479,8 @@ html body::-webkit-scrollbar {
   /*     background-image: var(themes-public-navbarbgimage); */
   /*  background-size: contain; */
 }
-.tartalom a, .tartalom a:hover {
+.tartalom a,
+.tartalom a:hover {
   text-decoration: none;
   color: inherit;
 }

@@ -103,8 +103,8 @@ const Galeria = (props) => {
                 >
                   <a href="#" onClick={() => toggleKategoriak(kategoria.id)}>
                     {lang === "hu"
-                        ? kategoria.magyarkategorianev
-                        : kategoria.kategorianev}
+                      ? kategoria.magyarkategorianev
+                      : kategoria.kategorianev}
                   </a>
                 </Button>
               );

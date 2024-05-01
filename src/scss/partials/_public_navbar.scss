@@ -2,9 +2,8 @@
 @use "../functions/var" as *;
 
 body.accessibility {
-
   .nav-link {
-    color: rgba(255,255,255, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
     /*             border: unset;
           text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
 
@@ -204,8 +203,6 @@ body.accessibility {
             } */
     }
 
-    
-
     &.active {
       background-color: var(themes-public-navlinkhoveractive);
       border: unset;
@@ -226,7 +223,7 @@ body.accessibility {
   }
 
   .dropdown:focus-within .dropdown-content {
-    display: block
+    display: block;
   }
 
   // .dropdown-toggle {

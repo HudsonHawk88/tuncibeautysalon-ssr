@@ -21,77 +21,85 @@ const CookieConsent = (props) => {
     sessionStorage.setItem("cookieConsent", "true");
   };
 
-    return (
-        __isBrowser__ && (
-            window.location.pathname.startsWith("/datenverarbeitung") && !isHidden && !window.location.pathname.startsWith("/admin") ? (
-                <div id="cookieConsent" className={window.location.pathname.startsWith("/datenverarbeitung") ? "also" : ""}>
-                    <div className="tajekoztatoszoveg">
-                        {lang === "hu"
-                        ? "A weboldal sütiket (cookie-kat) használ, hogy biztonságos böngészés mellett a legjobb felhasználói élményt nyújtsa."
-                        : "Die Website verwendet Cookies, um das beste Benutzererlebnis und sicheres Surfen zu bieten."}
-                        &nbsp;
-                        {lang === "hu" ? (
-                        <a href="/datenverarbeitung" target="_blank">
-                            {
-                            "Részletes információ az adatkezelési nyilatkozatunkban olvasható."
-                            }
-                        </a>
-                        ) : (
-                        <a href="/datenverarbeitung" target="_blank">
-                            {
-                            "Detaillierte Informationen finden Sie in unserer Datenschutzerklärung."
-                            }
-                        </a>
-                        )}
-                    </div>
-                    <Button onClick={elfogad}>
-                        {lang === "hu" ? "Tudomásul vettem" : "Ich akzeptiere"}
-                    </Button>
-                </div>
-            ) : (
-                <div
-                id="cookieConsentLayer"
-                className={
-                    isHidden || window.location.pathname.startsWith("/admin")
-                    ? "hidden"
-                    : ""
+  return (
+    __isBrowser__ &&
+    (window.location.pathname.startsWith("/datenverarbeitung") &&
+    !isHidden &&
+    !window.location.pathname.startsWith("/admin") ? (
+      <div
+        id="cookieConsent"
+        className={
+          window.location.pathname.startsWith("/datenverarbeitung")
+            ? "also"
+            : ""
+        }
+      >
+        <div className="tajekoztatoszoveg">
+          {lang === "hu"
+            ? "A weboldal sütiket (cookie-kat) használ, hogy biztonságos böngészés mellett a legjobb felhasználói élményt nyújtsa."
+            : "Die Website verwendet Cookies, um das beste Benutzererlebnis und sicheres Surfen zu bieten."}
+          &nbsp;
+          {lang === "hu" ? (
+            <a href="/datenverarbeitung" target="_blank">
+              {
+                "Részletes információ az adatkezelési nyilatkozatunkban olvasható."
+              }
+            </a>
+          ) : (
+            <a href="/datenverarbeitung" target="_blank">
+              {
+                "Detaillierte Informationen finden Sie in unserer Datenschutzerklärung."
+              }
+            </a>
+          )}
+        </div>
+        <Button onClick={elfogad}>
+          {lang === "hu" ? "Tudomásul vettem" : "Ich akzeptiere"}
+        </Button>
+      </div>
+    ) : (
+      <div
+        id="cookieConsentLayer"
+        className={
+          isHidden || window.location.pathname.startsWith("/admin")
+            ? "hidden"
+            : ""
+        }
+      >
+        <div
+          id="cookieConsent"
+          className={
+            window.location.pathname.startsWith("/datenverarbeitung")
+              ? "also"
+              : ""
+          }
+        >
+          <div className="tajekoztatoszoveg">
+            {lang === "hu"
+              ? "A weboldal sütiket (cookie-kat) használ, hogy biztonságos böngészés mellett a legjobb felhasználói élményt nyújtsa."
+              : "Die Website verwendet Cookies, um das beste Benutzererlebnis und sicheres Surfen zu bieten."}
+            &nbsp;
+            {lang === "hu" ? (
+              <a href="/datenverarbeitung" target="_blank">
+                {
+                  "Részletes információ az adatkezelési nyilatkozatunkban olvasható."
                 }
-                >
-                    <div
-                        id="cookieConsent"
-                        className={
-                        window.location.pathname.startsWith("/datenverarbeitung")
-                            ? "also"
-                            : ""
-                        }
-                    >
-                        <div className="tajekoztatoszoveg">
-                        {lang === "hu"
-                            ? "A weboldal sütiket (cookie-kat) használ, hogy biztonságos böngészés mellett a legjobb felhasználói élményt nyújtsa."
-                            : "Die Website verwendet Cookies, um das beste Benutzererlebnis und sicheres Surfen zu bieten."}
-                        &nbsp;
-                        {lang === "hu" ? (
-                            <a href="/datenverarbeitung" target="_blank">
-                            {
-                                "Részletes információ az adatkezelési nyilatkozatunkban olvasható."
-                            }
-                            </a>
-                        ) : (
-                            <a href="/datenverarbeitung" target="_blank">
-                            {
-                                "Detaillierte Informationen finden Sie in unserer Datenschutzerklärung."
-                            }
-                            </a>
-                        )}
-                        </div>
-                        <Button onClick={elfogad}>
-                            {lang === "hu" ? "Tudomásul vettem" : "Ich akzeptiere"}
-                        </Button>
-                    </div>
-                </div>
-            )
-        )  
-    );
+              </a>
+            ) : (
+              <a href="/datenverarbeitung" target="_blank">
+                {
+                  "Detaillierte Informationen finden Sie in unserer Datenschutzerklärung."
+                }
+              </a>
+            )}
+          </div>
+          <Button onClick={elfogad}>
+            {lang === "hu" ? "Tudomásul vettem" : "Ich akzeptiere"}
+          </Button>
+        </div>
+      </div>
+    ))
+  );
 };
 
 CookieConsent.propTypes = {

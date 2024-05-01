@@ -23,12 +23,11 @@ const PublicHeader = (props) => {
     }
   };
 
-
-
   return (
     <React.Fragment>
-    <h1><img id="logo" alt="logo" /></h1>
-      
+      <h1>
+        <img id="logo" alt="logo" />
+      </h1>
 
       <Navbar expand="lg" light className="public-navbar" dark>
         <div
@@ -154,21 +153,30 @@ const PublicHeader = (props) => {
               </NavLink>
             </NavItem>
             <li>
-              <a href="" rel="noreferrer" onClick={() => {
-                const currAcc = (/true/).test(accessibility);
-                toggleAccessibility((!currAcc).toString());
-                toggleNavbar("public_navbar_collapse");
-              }}>
+              <a
+                href=""
+                rel="noreferrer"
+                onClick={() => {
+                  const currAcc = /true/.test(accessibility);
+                  toggleAccessibility((!currAcc).toString());
+                  toggleNavbar("public_navbar_collapse");
+                }}
+              >
                 <i
                   className="fa-brands fa-accessible-icon"
                   width={50}
                   height={30}
-                  style={{ cursor: "pointer", color: (/true/).test(accessibility) ? 'green' : 'red', padding: '10px', fontSize: '30px' }}
+                  style={{
+                    cursor: "pointer",
+                    color: /true/.test(accessibility) ? "green" : "red",
+                    padding: "10px",
+                    fontSize: "30px",
+                  }}
                   // onMouseDown={() => {
                   //   const currAcc = (/true/).test(accessibility);
                   //   toggleAccessibility((!currAcc).toString());
                   //   toggleNavbar("public_navbar_collapse");
-                  // }}           
+                  // }}
                 />
               </a>
             </li>
@@ -195,7 +203,6 @@ const PublicHeader = (props) => {
                   }}
                 />
               </a>
-              
             </li>
             {/*<NavItem className="nav-item public-navbar__nav-item">
               <NavLink className="nav-link public-navbar__nav-link" to="/ubermich">

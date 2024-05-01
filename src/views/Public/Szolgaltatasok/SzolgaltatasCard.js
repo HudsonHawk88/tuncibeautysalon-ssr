@@ -54,14 +54,12 @@ const SzolgaltatasCard = (props) => {
               {/* <div className="szolg_ar">{szolgaltatasKat.ar}</div> */}
             </a>
           </div>
-            <div
-              className="idopont_button"
-              onClick={() => goToTerminBuch(data.kategorianev)}
-            >
-              <a href="">
-                {lang === "hu" ? "Időpontfoglalás" : "Termin buchen"}
-              </a>
-            </div>
+          <div
+            className="idopont_button"
+            onClick={() => goToTerminBuch(data.kategorianev)}
+          >
+            <a href="">{lang === "hu" ? "Időpontfoglalás" : "Termin buchen"}</a>
+          </div>
         </div>
       </div>
     );

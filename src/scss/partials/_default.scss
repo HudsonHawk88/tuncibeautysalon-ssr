@@ -136,11 +136,8 @@ html body::-webkit-scrollbar {
   // @media screen and (min-width: 992px) {
   //     padding: 0px 5vw;
 
-  
   // }
 }
-
-
 
 .modal-body {
   /* display: grid; */
@@ -493,7 +490,6 @@ html body::-webkit-scrollbar {
 }
 
 .tartalom.accessibility {
-
   color: white !important;
 
   a {
@@ -524,8 +520,8 @@ html body::-webkit-scrollbar {
   margin: 3% 0px;
   padding: 10px 10px;
 
-
-  a, a:hover {
+  a,
+  a:hover {
     text-decoration: none;
     color: inherit;
   }

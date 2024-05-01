@@ -18,16 +18,30 @@ const Public = (props) => {
     <React.Fragment>{children}</React.Fragment>
   ) : (
     <React.Fragment>
-      <main className={`public_full ${(/true/).test(accessibility) ? "accessibility" : ""}`}>
+      <main
+        className={`public_full ${
+          /true/.test(accessibility) ? "accessibility" : ""
+        }`}
+      >
         <header>
           <PublicHeader {...props} />
         </header>
         {loading ? (
-          <div className={`tartalom ${(/true/).test(accessibility) ? "accessibility" : ""}`}>
+          <div
+            className={`tartalom ${
+              /true/.test(accessibility) ? "accessibility" : ""
+            }`}
+          >
             <Loading isLoading={loading} />
           </div>
         ) : (
-          <div className={`tartalom ${(/true/).test(accessibility) ? "accessibility" : ""}`}>{children}</div>
+          <div
+            className={`tartalom ${
+              /true/.test(accessibility) ? "accessibility" : ""
+            }`}
+          >
+            {children}
+          </div>
         )}
         <PublicFooter {...props} />
       </main>

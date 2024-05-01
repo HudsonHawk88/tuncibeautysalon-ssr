@@ -37,7 +37,7 @@ const createNotification = (type, msg) => {
 function App() {
   const [user, setUser] = useState(null);
   const [lang, setLang] = useState("ch");
-  const [accessibility, setAccessibility] = useState('false');
+  const [accessibility, setAccessibility] = useState("false");
 
   let location = useLocation();
 
@@ -50,20 +50,19 @@ function App() {
 
   const toggleAccessibility = (value) => {
     setAccessibility(value);
-    localStorage.setItem('accessibility', value);
+    localStorage.setItem("accessibility", value);
     const body = document.body;
 
     if (body) {
-      if (value === 'true') {
-        if (!location.pathname.startsWith('/admin')) {
-          body.classList.add('accessibility')
+      if (value === "true") {
+        if (!location.pathname.startsWith("/admin")) {
+          body.classList.add("accessibility");
         }
       } else {
-        body.classList.remove('accessibility')
+        body.classList.remove("accessibility");
       }
-      
     }
-  }
+  };
 
   const setDefaultLang = () => {
     const language = localStorage.getItem("lang")
@@ -84,7 +83,7 @@ function App() {
       localStorage.setItem("accessibility", acc);
     }
     toggleAccessibility(acc);
-  }
+  };
 
   useEffect(() => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";

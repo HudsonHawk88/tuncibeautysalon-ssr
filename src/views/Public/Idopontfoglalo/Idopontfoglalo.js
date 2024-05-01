@@ -127,13 +127,15 @@ const Idopontfoglalo = (props) => {
     );
   };
 
-  const setActive = (id) => {
+  const setActive = (id, e) => {
+    e.stopPropagation();
+    e.preventDefault();
     const element = document.getElementById(id);
-
     if (element) {
       const value = element.innerText ? element.innerText : null;
-      if (value) {
-        const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + value;
+      const val = value.substring(0, element.id.length);
+      if (val) {
+        const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + val;
         setIdopont({
           ...idopont,
           kezdete: moment(kezdete).format("YYYY-MM-DD HH:mm"),
@@ -141,7 +143,9 @@ const Idopontfoglalo = (props) => {
         const elements = document.getElementsByClassName("idopontfoglalo__ido");
 
         Array.from(elements).forEach((el) => {
-          if (el.id === value) {
+          const elId = el.id.replace(" ", "");
+
+          if (elId == val) {
             el.classList.add("active");
           } else {
             el.classList.remove("active");
@@ -271,11 +275,16 @@ const Idopontfoglalo = (props) => {
                   return (
                     <div
                       key={szi + "_szolgido_" + idx}
-                      onClick={(e) => setActive(e.target.id)}
+                      onClick={(e) => setActive(szi, e)}
                       className="idopontfoglalo__ido"
                       id={szi}
                     >
-                      <a href="#" onClick={() => setActive(szi)}>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          setActive(szi, e);
+                        }}
+                      >
                         {szi}
                       </a>
                     </div>
@@ -359,7 +368,11 @@ const Idopontfoglalo = (props) => {
                   !idopont.ugyfelelfogad
                 }
                 style={{
-                  background: `${accessibility === 'true' ? 'rgba(255,255,255, 1)' : 'rgba(241, 24, 24, 1)'}`,
+                  background: `${
+                    accessibility === "true"
+                      ? "rgba(255,255,255, 1)"
+                      : "rgba(241, 24, 24, 1)"
+                  }`,
                   color: "black",
                   width: "100%",
                 }}

@@ -10,7 +10,7 @@
         "@google-cloud/local-auth": "^2.1.0",
         "@googleapis/calendar": "^9.5.0",
         "@inftechsol/react-data-table": "^1.0.4",
-        "@inftechsol/react-slate-wysiwyg": "file:../react-slate-wysiwyg",
+        "@inftechsol/react-slate-wysiwyg": "^1.8.7",
         "@inftechsol/reactstrap-form-validation": "^0.3.2",
         "@loadable/component": "5.15.2",
         "@loadable/server": "5.15.2",
