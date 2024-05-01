@@ -18,6 +18,10 @@ function isObject(input) {
   }
 }
 
+function sorter(sortBy, type = 'string') {
+  return (a, b) => type === 'string' ? a[sortBy].toLowerCase() > b[sortBy].toLowerCase() ? 1 : -1 : a[sortBy] > b[sortBy] ? 1 : -1;
+}
+
 function makeFormData(dataObj, kepKey, isMod) {
   let data = new FormData();
   for (var key in dataObj) {
@@ -81,4 +85,4 @@ function arFormatter(ar) {
   return a;
 }
 
-export { hasRole, makeFormData, arFormatter };
+export { hasRole, makeFormData, arFormatter, sorter };

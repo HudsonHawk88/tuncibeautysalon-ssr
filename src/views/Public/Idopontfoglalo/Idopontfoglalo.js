@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { handleInputChange } from "../../../commons/InputHandlers.js";
 import Services from "./Services.js";
 import { Button, Label } from "reactstrap";
+import { sorter } from '../../../commons/Lib.js'
 
 const defaultIdopont = {
   szolgaltatas: "",
@@ -205,9 +206,10 @@ const Idopontfoglalo = (props) => {
                   : "Bitte wählen Sie eine Dienstleistung aus"}
               </option>
               {groups.map((group) => {
-                const szolgok = szolgaltatasok.filter(
+                let szolgok = szolgaltatasok.filter(
                   (sz) => sz.szolgkategoria === group.nemetnev
                 );
+                szolgok = szolgok.sort(sorter('sorrend', 'number'))
                 return (
                   <optgroup
                     key={lang === "hu" ? group.magyarnev : group.nemetnev}
