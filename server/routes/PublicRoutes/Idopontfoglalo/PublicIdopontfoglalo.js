@@ -42,13 +42,14 @@ router.get("/", (req, res) => {
     });
   } else {
     const nap = req.query.nap;
-    const szolgaltatas = req.query.szolgaltatas;
+    const szolgaltatasok = JSON.parse("[" + req.query.szolgaltatasok + "]");
+
     if (nap) {
       const sql = `SELECT * FROM idopontok INNER JOIN(SELECT id as aa, DAYNAME(idopontok.kezdete) as dayname FROM idopontok)st2 ON idopontok.id = st2.aa WHERE date(kezdete) = '${nap}' ORDER BY kezdete;`;
       idopontok.query(sql, async (err, result) => {
         if (!err) {
           const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
-          const getszolgaltatasSql = `SELECT (idotartam + uresjarat) as total, uresjarat FROM szolgaltatasok WHERE id = '${szolgaltatas}';`;
+          const getszolgaltatasSql = `SELECT (SUM(idotartam) + ${szolgaltatasok.length > 1 ? 15 : 10}) as total FROM szolgaltatasok WHERE id IN(${szolgaltatasok});`;
           const nyitva = await UseQuery(
             getnyitavtartasSql,
             "GET /api/idopontok"
@@ -62,7 +63,8 @@ router.get("/", (req, res) => {
            
             let nyitvatartas = nyitva[0].nyitvatartas;
             nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
-            let total = szolg[0].total;
+            let total = parseInt(szolg[0].total, 10);
+
             const dayname = moment(nap).format("dddd");
             const capitalized = "is" + dayname;
             if (nyitvatartas[capitalized]) {
@@ -195,53 +197,7 @@ router.get("/", (req, res) => {
                         }
                       }
                       // UTOLSÓ IDOŐPONT
-                    } 
-                    
-                    /* else if (idx === (result.length - 1)) {
-                      const elsoend = moment(result[idx-1].vege).format(
-                        "YYYY-MM-DD HH:mm"
-                      );
-                      const masodikstart = moment(result[idx].kezdete).format(
-                        "YYYY-MM-DD HH:mm"
-                      );
-
-                      console.log('ELSOEND: ', elsoend);
-                      console.log('MASODIKSTART: ', masodikstart);
-
-                      const differ2 = moment(masodikstart).diff(elsoend, "minutes");
-                      if (differ2 >= total) {
-                        let firstBetweenSecondLoop = elsoend;
-                        if (
-                          moment(
-                            moment(firstBetweenSecondLoop).add(total).format("YYYY-MM-DD HH:mm")
-                          ).isSameOrBefore(masodikstart)
-                        ) {
-                          const formatted = moment(firstBetweenSecondLoop)
-                            .add(total)
-                            .format("HH:mm");
-                          szabadIdopontok.push(formatted);
-                        }
-                        while (differ2 >= total && firstBetweenSecondLoop <= masodikstart) {
-                          let newDate = firstBetweenSecondLoop;
-                          firstBetweenSecondLoop = newDate;
-                          firstBetweenSecondLoop = moment(
-                            moment(newDate).add(total, "minutes")
-                          ).format("YYYY-MM-DD HH:mm");
-                          if (
-                            moment(
-                              moment(firstBetweenSecondLoop)
-                                .add(total, "minutes")
-                                .format("YYYY-MM-DD HH:mm")
-                            ).isSameOrBefore(masodikstart)
-                          ) {
-                            const formatted = moment(loop).format("HH:mm");
-                            szabadIdopontok.push(formatted);
-                          }
-                        }
-                      }
-                    }  */
-                    else {
-                      console.log('ANYÁD: ', idx === (result.length - 1) ? idx : 'NONIDX')
+                    } else {
                       // 2. IDŐPONTTÓL ZÁRÁSIG
 
                       // HA NEM AZ UTOLSÓ IDŐPONT
@@ -256,9 +212,6 @@ router.get("/", (req, res) => {
                           const masodikstart = moment(idopont.kezdete).format(
                             "YYYY-MM-DD HH:mm"
                           );
-  
-                          console.log('ELSOEND: ', elsoend);
-                          console.log('MASODIKSTART: ', masodikstart);
   
                           const differ2 = moment(masodikstart).diff(elsoend, "minutes");
                           if (differ2 >= total) {
@@ -335,7 +288,6 @@ router.get("/", (req, res) => {
                         
                         
                       } else {
-                        console.log('LKFSKLNFKLSNILFNSI')
                         // UTOLSÓ IDŐPONT KEZDETÉTŐL UTOLSÓ ELŐTTI VÉGÉIG
 
                         // ELSŐ IDŐPONT ÉS A 2. IDŐPONT KÖZÖTTI
@@ -346,9 +298,6 @@ router.get("/", (req, res) => {
                         const masodikstart = moment(idopont.kezdete).format(
                           "YYYY-MM-DD HH:mm"
                         );
-
-                        console.log('ELSOEND: ', elsoend);
-                        console.log('MASODIKSTART: ', masodikstart);
 
                         const differ2 = moment(masodikstart).diff(elsoend, "minutes");
                         if (differ2 >= total) {
@@ -514,26 +463,25 @@ router.post("/", async (req, res) => {
   foglalasObj.ugyfelelfogad = getNumberFromBoolean(foglalasObj.ugyfelelfogad);
   const lang = req.headers.lang;
 
-  const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipus INT NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL);`;
+  const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL);`;
 
-  console.log("SQL: ", sql);
+  // console.log("SQL: ", sql);
 
   idopontok.query(sql, async (err) => {
     if (!err) {
-      const insertSql = `INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipus) VALUES ('${foglalasObj.kezdete}', date_add('${foglalasObj.kezdete}',interval (SELECT (uresjarat + idotartam) FROM szolgaltatasok WHERE id = ${foglalasObj.szolgaltatas}) minute), '${foglalasObj.ugyfelnev}', '${foglalasObj.ugyfelemail}', '${foglalasObj.ugyfeltelefon}', '${foglalasObj.ugyfelelfogad}', NOW(), ${foglalasObj.szolgaltatas});`;
-      console.log("SQL: ", sql);
       let idotartam = 0;
-      let szolgrovidnev = '';
-      let magyarszolgnev = '';
-
-      const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id = ${foglalasObj.szolgaltatas}`);
-      if (totalQuery) {
-        idotartam = totalQuery[0].idotartam;
-        szolgrovidnev = totalQuery[0].nemetszolg;
-        magyarszolgnev = totalQuery[0].magyarszolg;
+      const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
+      console.log('totalQuerySql: ', `SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
+      if (totalQuery && totalQuery.length > 0) {
+        totalQuery.forEach((sz) => {
+          idotartam += sz.idotartam;
+        })
       }
-      console.log('INSERTSQL: ', insertSql)
-      console.log(foglalasObj.kezdete)
+      const insertSql = `INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipusok) VALUES ('${foglalasObj.kezdete}', date_add('${foglalasObj.kezdete}', interval ${(idotartam + (foglalasObj.szolgaltatasok.length > 1 ? 15 : 10))} minute), '${foglalasObj.ugyfelnev}', '${foglalasObj.ugyfelemail}', '${foglalasObj.ugyfeltelefon}', '${foglalasObj.ugyfelelfogad}', NOW(), '${JSON.stringify(foglalasObj.szolgaltatasok)}');`;
+      // console.log("insertSql: ", insertSql);
+      
+
+      
       
       idopontok.query(insertSql, (e, r) => {
         if (!e) {
@@ -541,7 +489,12 @@ router.post("/", async (req, res) => {
             A lefoglalt időpont adatai: <br>
             <ul><li>Név: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
-            <li>Szolgaltatás: ${lang === 'hu' ? magyarszolgnev : szolgrovidnev}</li>
+            <li>Szolgáltatás(ok): 
+            <ul>
+            ${totalQuery && totalQuery.map((sz) => {
+              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
+            })}
+            </ul>
             <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Lemondani az alábbi linken tudja: <br>
             ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
@@ -550,7 +503,14 @@ router.post("/", async (req, res) => {
             Tünci Beauty Salon<br>`;
             const ugyfeluzenetnemet = `<b>Liebe ${foglalasObj.ugyfelnev},</b><br><br>
             Angaben zum gebuchten Termin: <br>
-                <ul><li>Dienstleistungen: ${lang === 'hu' ? magyarszolgnev : szolgrovidnev}</li>
+            <ul>
+            <li>Dienstleistungen: 
+            <ul>
+            ${totalQuery && totalQuery.map((sz) => {
+              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
+            })}
+            </ul>
+            </li>
             <li>Name: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
             <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
@@ -561,7 +521,13 @@ router.post("/", async (req, res) => {
             Tünci Beauty Salon<br>`;
             const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
             Új foglalás érkezett: <br>
-            <ul><li>Szolgáltatás: ${magyarszolgnev}</li>
+            <ul>
+            <li>Szolgáltatás(ok): 
+            <ul>
+            ${totalQuery && totalQuery.map((sz) => {
+              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
+            })}
+            </ul>
             <li>Név: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
             <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>

@@ -25,9 +25,9 @@ export default class Services {
     return result;
   };
 
-  static getIdopontok = (nap, szolgaltatas, lang, fnDone) => {
+  static getIdopontok = (nap, szolgaltatasok, lang, fnDone) => {
     let result = Microservices.fetchApi(
-      idopontokUrl + `?nap=${nap}&szolgaltatas=${szolgaltatas}`,
+      idopontokUrl + `?nap=${nap}&szolgaltatasok=${szolgaltatasok}`,
       {
         method: "GET",
         mode: "cors",

@@ -12,6 +12,36 @@ body.accessibility {
   }
 }
 
+.szolgbuborek {
+  display: flex;
+  padding: 5px;
+  min-height: 100px;
+  border: 1px solid red;
+
+  & .szoveg {
+    width: 90%;
+  }
+
+  & .torles {
+    display: flex;
+    text-align: right;
+    width: 10%;
+    height: 30%;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: black !important;
+    cursor: pointer;
+
+    // & span {
+    //   background-color: red;
+    //   padding: 2px 7px;
+    //   color: black !important;
+    //   cursor: pointer;
+    // }
+  }
+}
+
 .idopontfoglalo__idopontok {
   display: flex;
   flex-wrap: wrap;
