@@ -471,7 +471,6 @@ router.post("/", async (req, res) => {
     if (!err) {
       let idotartam = 0;
       const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
-      console.log('totalQuerySql: ', `SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
       if (totalQuery && totalQuery.length > 0) {
         totalQuery.forEach((sz) => {
           idotartam += sz.idotartam;

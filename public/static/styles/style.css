@@ -27,6 +27,10 @@ html body::-webkit-scrollbar {
   width: 10px;
 }
 
+html body.accessibility::-webkit-scrollbar-thumb {
+  background-color: white !important; /* Set thumb color for Chrome and Safari */
+}
+
 html body::-webkit-scrollbar-thumb {
   background-color: red; /* Set thumb color for Chrome and Safari */
 }
@@ -1324,6 +1328,17 @@ html body::-webkit-scrollbar {
   display: none;
 }
 
+body.accessibility #cookieConsent {
+  background-color: white;
+  color: black;
+}
+body.accessibility #cookieConsent button {
+  background: black !important;
+  color: white !important;
+  border: none !important;
+  padding: 0px 5px !important;
+}
+
 #cookieConsent {
   position: sticky;
   display: flex;
@@ -1368,6 +1383,13 @@ body.accessibility .idopontfoglalo__ido.active {
   border: 2px solid rgb(255, 255, 255);
   background-color: rgb(255, 255, 255);
   color: black;
+}
+body.accessibility .szolgbuborek {
+  border: 1px solid white;
+}
+body.accessibility .szolgbuborek .torles {
+  background-color: white;
+  color: black !important;
 }
 
 .szolgbuborek {

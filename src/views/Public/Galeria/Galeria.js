@@ -75,7 +75,6 @@ const Galeria = (props) => {
     let selected = 1;
 
     for (let i = 0; i < galok.length; i++) {
-      console.log(galok[i]);
       if (galok[i].kepek && galok[i].kepek.length > 0) {
         selected = galok[i].kategoriaid;
         break;
@@ -86,7 +85,6 @@ const Galeria = (props) => {
   };
 
   const renderKategoriaButtons = () => {
-    console.log(kategoriak);
     return (
       <div className="galeria_buttonsdiv">
         <ButtonGroup className="galeria_buttongroup">
@@ -115,7 +113,6 @@ const Galeria = (props) => {
   };
 
   const renderGaleria = () => {
-    console.log(selectedGaleria);
     return (
       selectedGaleria &&
       selectedGaleria.length > 0 && (

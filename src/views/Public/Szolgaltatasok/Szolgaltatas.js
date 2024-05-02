@@ -24,7 +24,6 @@ const Szolgaltatas = (props) => {
     Services.getSzolgaltatasKategoria(szolgId, (err, res) => {
       if (!err) {
         const kat = res[0];
-        console.log(kat);
         if (kat) {
           translateKategoria(kat);
         }
@@ -33,7 +32,6 @@ const Szolgaltatas = (props) => {
   };
 
   useEffect(() => {
-    console.log(id);
     if (id) {
       getKategoria(id);
     }

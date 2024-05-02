@@ -86,7 +86,6 @@ const Kapcsolat = (props) => {
       const isKey = `is${
         nyit.charAt(0).toUpperCase() + nyit.substring(1, nyit.length)
       }`;
-      console.log(nyitvatartas[nyit]);
       const isNyitva = nyitvatartas[isKey];
       if (!isNyitva) {
         day = `${getDay(nyit)}: ${

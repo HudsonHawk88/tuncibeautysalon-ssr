@@ -73,7 +73,6 @@ router.post('/', async (req, res) => {
                 szolgaltatasok.query(sql, async (err) => {
                     if (!err) {
                         const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}');`;
-                        console.log('SQL: ', sql);
                         szolgaltatasok.query(sql, (error) => {
                             if (!err) {
                                 res.status(200).send({

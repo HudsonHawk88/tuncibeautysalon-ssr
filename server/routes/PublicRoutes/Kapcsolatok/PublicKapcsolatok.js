@@ -28,7 +28,6 @@ router.get('/', async (req, res) => {
                     if (!err) {
                         const newResult = [];
                         result.forEach((r) => {
-                            console.log(typeof r.helyseg)
                             const newR = getJSONfromLongtext(r);
                             newResult.push(newR);
                         })

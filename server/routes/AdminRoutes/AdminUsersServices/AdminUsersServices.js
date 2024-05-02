@@ -196,14 +196,12 @@ router.put('/', upload.array('uj_avatar'), async (req, res) => {
 
                         let kepek = [];
                         if (modositoObj.avatar) {
-                            console.log('AVATAR: ', modositoObj.avatar);
                             if (Array.isArray(modositoObj.avatar)) {
                                 modositoObj.avatar.forEach((item) => {
                                     kepek.push(JSON.parse(item));
                                 });
                             } else {
                                 kepek = JSON.parse(modositoObj.avatar) || [];
-                                console.log(kepek);
                             }
                         }
 

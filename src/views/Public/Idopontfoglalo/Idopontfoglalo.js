@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Calendar } from "react-widgets";
 import moment from "moment";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
-import { useSearchParams } from "react-router-dom";
 import { handleInputChange } from "../../../commons/InputHandlers.js";
 import Services from "./Services.js";
 import { Button, Label } from "reactstrap";
@@ -29,7 +28,7 @@ const Idopontfoglalo = (props) => {
   const [szabadIdopontok, setSzabadIdopontok] = useState([]);
   const [szabadnapok, setSzabadnapok] = useState([]);
   const [message, setMessage] = useState(null);
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
   const [selectedSzolgaltatas, setSelectedSzolgaltatas] = useState('')
 
   const translteSzolgaltatasok = (array) => {
@@ -49,11 +48,11 @@ const Idopontfoglalo = (props) => {
     ];
 
     setGroups(grs);
-    const kategorie = searchParams.get("kategorie");
-    if (kategorie) {
-      const kat = grs.filter((k) => k.nemetnev === kategorie);
-      setGroups(kat);
-    }
+    // const kategorie = searchParams.get("kategorie");
+    // if (kategorie) {
+    //   const kat = grs.filter((k) => k.nemetnev === kategorie);
+    //   setGroups(kat);
+    // }
     setSzolgaltatasok(szolgArr);
     setFilteredSzolgaltatasok(szolgArr);
   };

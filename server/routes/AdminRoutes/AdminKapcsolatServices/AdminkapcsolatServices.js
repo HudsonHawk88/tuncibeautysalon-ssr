@@ -79,7 +79,6 @@ router.post('/', async (req, res) => {
                 kapcsolatok.query(sql, async (err) => {
                     if (!err) {
                         const sql = `INSERT INTO kapcsolatok (cegnev, helyseg, telefon, email, web, nyitvatartas) VALUES ('${felvitelObj.cegnev}', '${JSON.stringify(felvitelObj.helyseg)}', '${felvitelObj.telefon}', '${felvitelObj.email}', '${felvitelObj.web}', '${JSON.stringify(felvitelObj.nyitvatartas)}');`;
-                        console.log('SQL: ', sql);
                         kapcsolatok.query(sql, (error) => {
                             if (!err) {
                                 res.status(200).send({

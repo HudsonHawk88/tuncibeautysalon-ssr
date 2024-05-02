@@ -47,7 +47,6 @@ const Fooldal = (props) => {
       const szolgObj = Object.assign({}, szolg);
       szolgArr.push(szolgObj);
     });
-    console.log(szolgArr);
     setSzolgaltatasok(szolgArr);
   };
 
@@ -70,11 +69,9 @@ const Fooldal = (props) => {
   }; */
 
   const renderSzolgaltatasok = () => {
-    console.log("GROUPS: ", groups);
     return (
       <div className="szolgkatblokk">
         {groups.map((group) => {
-          console.log(group);
           /* const szolgok = szolgaltatasok.filter(
             (sz) => sz.szolgkategoria === group.nemetnev
           ); */
@@ -117,7 +114,6 @@ const Fooldal = (props) => {
       <div style={{ width: "100%", textAlign: "center" }}>
         <h2>{lang === "hu" ? "Bemutatkozás" : "Über mich"}</h2>
       </div>
-      {console.log(biosJson)}
       {biosJson && biosJson.length > 0 && (
         <div
           className="bio"

@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 const Preisliste = (props) => {
   const { lang } = props;
 
-  console.log(lang, props);
-
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
   const [groups, setGroups] = useState([]);
 
@@ -42,7 +40,6 @@ const Preisliste = (props) => {
               magyarkategorianev: szolg.magyarszolgkategoria,
             }
           );
-          console.log(szolgObj);
           szolgArr.push(szolgObj);
           if (lang === "ch") {
             groups.push(szolgObj.kategorianev);
@@ -102,7 +99,6 @@ const Preisliste = (props) => {
   };
 
   const renderSzolgaltatasok = () => {
-    console.log(groups, szolgaltatasok);
 
     return groups.map((group, index) => {
       return (

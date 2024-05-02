@@ -33,6 +33,12 @@ html body::-webkit-scrollbar {
   width: 10px;
 }
 
+html body.accessibility {
+  &::-webkit-scrollbar-thumb {
+    background-color: white !important; /* Set thumb color for Chrome and Safari */
+  }
+}
+
 html body::-webkit-scrollbar-thumb {
   background-color: red; /* Set thumb color for Chrome and Safari */
 }
@@ -1502,6 +1508,20 @@ html body::-webkit-scrollbar {
 
   &.hidden {
     display: none;
+  }
+}
+
+body.accessibility {
+  #cookieConsent {
+    background-color: white;
+    color: black;
+
+    & button {
+      background: black !important;
+      color: white !important;
+      border: none !important;
+      padding: 0px 5px !important;
+    }
   }
 }
 

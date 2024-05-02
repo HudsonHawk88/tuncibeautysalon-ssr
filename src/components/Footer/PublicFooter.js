@@ -41,7 +41,7 @@ const PublicFooter = (props) => {
                   <i aria-hidden className="fab fa-facebook-square"></i>
                 </a>
               </li>
-              <li>
+              {/*<li>
                 <a
                   href="https://www.instagram.com/myhomeingatlan/"
                   target="_blank"
@@ -49,7 +49,7 @@ const PublicFooter = (props) => {
                 >
                   <i aria-hidden className="fab fa-instagram"></i>
                 </a>
-              </li>
+              </li>*/}
               <li>
                 <a
                   href="https://www.tiktok.com/@tnci58?_t=8iq2E1QsvGD&_r=1"

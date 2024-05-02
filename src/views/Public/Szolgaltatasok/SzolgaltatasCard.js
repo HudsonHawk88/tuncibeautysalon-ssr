@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const SzolgaltatasCard = (props) => {
   const { data, groupId, lang } = props;
   const navigate = useNavigate();
-  console.log(data);
 
   const getLeiras = (leiras) => {
     return leiras.length > 350 ? leiras.substring(0, 350) + "..." : leiras;
@@ -26,10 +25,8 @@ const SzolgaltatasCard = (props) => {
         : data.ar + " " + data.penznem, */
   };
 
-  console.log("DATA: ", szolgaltatasKat);
-
-  const goToTerminBuch = (kategorie) => {
-    navigate(`terminbuchen?kategorie=${kategorie}`);
+  const goToTerminBuch = () => {
+    navigate(`terminbuchen`);
   };
 
   const goToService = (id) => {
@@ -56,7 +53,7 @@ const SzolgaltatasCard = (props) => {
           </div>
           <div
             className="idopont_button"
-            onClick={() => goToTerminBuch(data.kategorianev)}
+            onClick={() => goToTerminBuch()}
           >
             <a href="">{lang === "hu" ? "Időpontfoglalás" : "Termin buchen"}</a>
           </div>

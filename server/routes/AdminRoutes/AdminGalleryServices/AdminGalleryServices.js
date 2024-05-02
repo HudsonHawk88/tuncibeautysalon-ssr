@@ -180,7 +180,6 @@ router.put('/', upload.array('uj_kepek'), async (req, res) => {
                 if (modositoObj.kepek) {
                     if (Array.isArray(JSON.parse(modositoObj.kepek))) {
                         const k = JSON.parse(modositoObj.kepek);
-                        console.log('KKKKKK: ', k, typeof k);
                         k.forEach((item) => {
                             if (!item.file) {
                                 kepek.push(item);
@@ -196,7 +195,6 @@ router.put('/', upload.array('uj_kepek'), async (req, res) => {
                         let extIndex = kep.originalname.lastIndexOf('.');
                         let fname = kep.originalname.substring(0, extIndex);
                         // if (kepek.find((k) => k.originalname === kep.originalname)) {
-                            console.log('KEP: ', kep);
                             kepek.push({
                                 filename: `${fname}.jpg`,
                                 src: `${process.env.galeriaUrl}/${modositoObj.kategoriaid}/${fname}.jpg`,
@@ -326,7 +324,6 @@ router.post('/deleteimage', async (req, res) => {
     if (token) {
         const user = await validateToken(token, jwtparams.secret);
         const { filename, kategoriaid } = req.body;
-        console.log(kategoriaid, filename, req.body)
 
         if (user === null) {
             res.status(401).send({ err: 'Nincs belépve! Kérem jelentkezzen be!' });
