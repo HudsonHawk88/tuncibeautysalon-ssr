@@ -29,7 +29,7 @@ const CookieConsent = (props) => {
       <div
         id="cookieConsent"
         className={
-          window.location.pathname.startsWith("/datenverarbeitung")
+          (window.location.pathname.startsWith("/datenverarbeitung") || window.location.pathname.startsWith("/terminstreichung"))
             ? "also"
             : ""
         }

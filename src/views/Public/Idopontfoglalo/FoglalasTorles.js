@@ -18,7 +18,7 @@ const FoglalasTorles = (props) => {
     const terminId = searchParams.get("terminId");
     if (terminId) {
       setLoading(true);
-      Services.deleteFoglalas(terminId, (err) => {
+      Services.deleteFoglalas(terminId, lang, (err) => {
         if (!err) {
           setLoading(false);
         } else {

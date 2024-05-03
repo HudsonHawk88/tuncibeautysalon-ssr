@@ -82,7 +82,7 @@ export default class Services {
     return result;
   };
 
-  static deleteFoglalas = (id, fnDone) => {
+  static deleteFoglalas = (id, lang, fnDone) => {
     let result = Microservices.fetchApi(
       idopontokUrl,
       {
@@ -93,6 +93,7 @@ export default class Services {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
           id: id,
+          lang: lang
         },
       },
       fnDone

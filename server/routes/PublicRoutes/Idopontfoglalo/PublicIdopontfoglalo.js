@@ -480,7 +480,12 @@ router.post("/", async (req, res) => {
       // console.log("insertSql: ", insertSql);
       
 
-      
+      let szolgok = '';
+      if (totalQuery && totalQuery.length > 0) {
+        totalQuery.forEach((sz) => {
+          szolgok += `<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`;
+        })
+      }
       
       idopontok.query(insertSql, (e, r) => {
         if (!e) {
@@ -490,14 +495,12 @@ router.post("/", async (req, res) => {
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
             <li>Szolgáltatás(ok): 
             <ul>
-            ${totalQuery && totalQuery.map((sz) => {
-              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
-            })}
+            ${szolgok}
             </ul>
             <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Lemondani az alábbi linken tudja: <br>
             ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
-            <strong>Amennyiben kevesebb, mint 2 nappal mondja le az időpontot, úgy rendszerünk a 3. lemondást követően nem engedi időpontot foglalni 30 napig!</strong><br> 
+            <strong>Amennyiben nem érkezik meg a foglalt időpontra és legalább 2 nappal előbb nem törli az időpontot, úgy a következő alkalommal felszámolásra kerül az elmulasztott kezelés is!</strong><br> 
             Tisztelettel:<br>
             Tünci Beauty Salon<br>`;
             const ugyfeluzenetnemet = `<b>Liebe ${foglalasObj.ugyfelnev},</b><br><br>
@@ -505,17 +508,15 @@ router.post("/", async (req, res) => {
             <ul>
             <li>Dienstleistungen: 
             <ul>
-            ${totalQuery && totalQuery.map((sz) => {
-              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
-            })}
+            ${szolgok}
             </ul>
             </li>
             <li>Name: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
             <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
             Sie können über den folgenden Link kündigen:<br>
-            ${process.env.REACT_APP_mainUrl + `terminstreichung?terminId=${r.insertId}`}<br>
-            <strong>Wenn Sie den Termin weniger als 2 Tage im Voraus stornieren, können Sie in unserem System 30 Tage nach der 3. Absage keinen Termin mehr buchen!</strong><br>
+            ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
+            <strong>Sollten Sie nicht zum gebuchten Zeitpunkt erscheinen und den Termin nicht mindestens 2 Tage vorher absagen, wird die versäumte Behandlung auch beim nächsten Mal in Rechnung gestellt!</strong><br><br>
             Aufrichtig:<br>
             Tünci Beauty Salon<br>`;
             const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
@@ -523,9 +524,7 @@ router.post("/", async (req, res) => {
             <ul>
             <li>Szolgáltatás(ok): 
             <ul>
-            ${totalQuery && totalQuery.map((sz) => {
-              return (`<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`)
-            })}
+            ${szolgok}
             </ul>
             <li>Név: ${foglalasObj.ugyfelnev}</li>
             <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
@@ -633,7 +632,7 @@ router.delete("/", async (req, res) => {
                               transporter.sendMail({
                                   from: process.env.REACT_APP_noreplyemail, // sender address
                                   to: email, // list of receivers
-                                  subject: `A(z) #${id} foglalás törölve lett`,
+                                  subject:  lang === 'hu' ? `A(z) #${id} foglalás törölve lett` : `Die #${id} Buchung wurde storniert`,
                                   html: lang === 'hu' ? ugyfeluzenetmagyar : ugyfeluzenetnemet // html body
                               }, (ugyferr) => {
                                   if (ugyferr) {

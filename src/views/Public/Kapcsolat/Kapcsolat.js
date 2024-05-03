@@ -89,7 +89,7 @@ const Kapcsolat = (props) => {
       const isNyitva = nyitvatartas[isKey];
       if (!isNyitva) {
         day = `${getDay(nyit)}: ${
-          lang === "hu" ? "Nincs nyitva" : "Es ist nicht geöffnet"
+          lang === "hu" ? "Nincsen szabad hely" : "Es gibt keinen freien Speicherplatz"
         }`;
       }
       return (
