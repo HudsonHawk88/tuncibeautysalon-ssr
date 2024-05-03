@@ -68,7 +68,7 @@
         "sass": "1.43.4",
         "sass-loader": "^14.1.1",
         "serialize-javascript": "6.0.0",
-        "sharp": "^0.31.2",
+        "sharp": "0.33.2",
         "simplelightbox": "^2.14.2",
         "source-map-loader": "4.0.1",
         "style-loader": "3.3.1",
