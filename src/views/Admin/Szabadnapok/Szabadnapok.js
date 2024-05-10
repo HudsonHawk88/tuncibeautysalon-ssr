@@ -11,7 +11,7 @@ import {
   Label,
 } from "reactstrap";
 import { RVForm, RVInput } from "@inftechsol/reactstrap-form-validation";
-import moment from 'moment';
+import moment from "moment";
 import PropTypes from "prop-types";
 
 import Services from "./Services.js";
@@ -68,11 +68,11 @@ const Szabadnapok = (props) => {
   };
 
   const kezdeteFormatter = (cell, row) => {
-    return `${moment(row.kezdete).format('YYYY-MM-DD')}`;
+    return `${moment(row.kezdete).format("YYYY-MM-DD")}`;
   };
 
   const vegeFormatter = (cell, row) => {
-    return `${moment(row.vege).format('YYYY-MM-DD')}`;
+    return `${moment(row.vege).format("YYYY-MM-DD")}`;
   };
 
   const handleViewClick = (cell) => {
@@ -145,7 +145,7 @@ const Szabadnapok = (props) => {
 
   const onSubmit = () => {
     let submitObj = szabadnapObj;
-    submitObj.kezdete = new Date(szabadnapObj.kezdete)
+    submitObj.kezdete = new Date(szabadnapObj.kezdete);
     submitObj.vege = new Date(szabadnapObj.vege);
 
     if (currentId === undefined) {

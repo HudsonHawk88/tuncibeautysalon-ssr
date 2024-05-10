@@ -78,8 +78,8 @@ router.post('/', async (req, res) => {
                             const result = await UseQuery(gdprSql);
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
-                                const sql = `INSERT INTO gdpr (azonosito, tipus, leiras)
-                          VALUES ('${felvitelObj.azonosito}', '${felvitelObj.tipus}', '${felvitelObj.leiras}');`;
+                                const sql = `INSERT INTO gdpr (azonosito, tipus, leiras, magyarleiras)
+                          VALUES ('${felvitelObj.azonosito}', '${felvitelObj.tipus}', '${felvitelObj.leiras}', '${felvitelObj.magyarleiras}');`;
                                 GDRP.query(sql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
@@ -139,7 +139,7 @@ router.put('/', async (req, res) => {
                 if (user.roles && user.roles.length !== 0 && hasRole(user.roles, ['SZUPER_ADMIN'])) {
                     if (id) {
                         modositoObj = JSON.parse(JSON.stringify(modositoObj));
-                        const sql = `UPDATE gdpr SET azonosito='${modositoObj.azonosito}', tipus='${modositoObj.tipus}', leiras='${modositoObj.leiras}' WHERE id = '${id}';`;
+                        const sql = `UPDATE gdpr SET azonosito='${modositoObj.azonosito}', tipus='${modositoObj.tipus}', leiras='${modositoObj.leiras}', magyarleiras='${modositoObj.magyarleiras}' WHERE id = '${id}';`;
                         GDRP.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({

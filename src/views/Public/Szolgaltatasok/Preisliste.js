@@ -99,7 +99,6 @@ const Preisliste = (props) => {
   };
 
   const renderSzolgaltatasok = () => {
-
     return groups.map((group, index) => {
       return (
         <div key={index} style={{ width: "100%" }}>

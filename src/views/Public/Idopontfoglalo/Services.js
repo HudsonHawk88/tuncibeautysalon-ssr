@@ -93,7 +93,7 @@ export default class Services {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
           id: id,
-          lang: lang
+          lang: lang,
         },
       },
       fnDone

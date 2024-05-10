@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Input,
@@ -10,11 +10,7 @@ import {
 } from "reactstrap";
 import { DataTable } from "@inftechsol/react-data-table";
 import PropTypes from "prop-types";
-import {
-  Editor,
-  setEditorValue,
-  initialValue,
-} from "@inftechsol/react-slate-wysiwyg";
+import { setEditorValue, initialValue } from "@inftechsol/react-slate-wysiwyg";
 import {
   WysiwygEditor,
   serializeValue,
@@ -37,6 +33,8 @@ const Gdpr = (props) => {
   const [currentId, setCurrentId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const Editor1 = useRef(null);
+  const Editor2 = useRef(null);
 
   const listGdpr = () => {
     Services.listGdpr((err, res) => {
@@ -52,9 +50,11 @@ const Gdpr = (props) => {
 
   const getGdpr = (id) => {
     Services.getGdpr(id, (err, res) => {
-      if (!err && Editor && Editor.current) {
+      if (!err && Editor1 && Editor1.current) {
         const leiras = serializeValue("de", res.leiras);
-        setEditorValue(leiras, Editor);
+        const magyarleiras = serializeValue("de", res.magyarleiras);
+        setEditorValue(leiras, Editor1);
+        setEditorValue(magyarleiras, Editor2);
         setGdprObj({
           ...gdprObj,
           azonosito: res.azonosito,
@@ -69,6 +69,13 @@ const Gdpr = (props) => {
     setGdprObj({
       ...gdprObj,
       leiras: value,
+    });
+  };
+
+  const onChangeEditor2 = (value) => {
+    setGdprObj({
+      ...gdprObj,
+      magyarleiras: value,
     });
   };
 
@@ -180,6 +187,7 @@ const Gdpr = (props) => {
 
     Object.assign(obj, gdprObj);
     obj.leiras = serializeValue("se", gdprObj.leiras);
+    obj.magyarleiras = serializeValue("se", gdprObj.magyarleiras);
 
     if (!currentId) {
       Services.addGdpr(obj, (err, res) => {
@@ -211,7 +219,23 @@ const Gdpr = (props) => {
   };
 
   const renderWysiwyg = () => {
-    return <WysiwygEditor onChange={onChangeEditor} value={gdprObj.leiras} />;
+    return (
+      <WysiwygEditor
+        onChange={onChangeEditor}
+        value={gdprObj.leiras}
+        ref={Editor1}
+      />
+    );
+  };
+
+  const renderWysiwygMagyar = () => {
+    return (
+      <WysiwygEditor
+        onChange={onChangeEditor2}
+        value={gdprObj.magyarleiras}
+        ref={Editor2}
+      />
+    );
   };
 
   const renderModal = () => {
@@ -259,8 +283,13 @@ const Gdpr = (props) => {
           </div>
           <br />
           <div className="col-md-12">
-            <Label>Leíras:</Label>
+            <Label>Német leíras:</Label>
             {renderWysiwyg()}
+          </div>
+          <br />
+          <div className="col-md-12">
+            <Label>Magyar leíras:</Label>
+            {renderWysiwygMagyar()}
           </div>
         </ModalBody>
         <ModalFooter>
@@ -295,6 +324,8 @@ const Gdpr = (props) => {
       </Modal>
     );
   };
+
+  console.log("EDITOR1: ", Editor1);
 
   return (
     <div className="row">

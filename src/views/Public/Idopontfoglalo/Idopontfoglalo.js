@@ -6,7 +6,7 @@ import { RVInput } from "@inftechsol/reactstrap-form-validation";
 import { handleInputChange } from "../../../commons/InputHandlers.js";
 import Services from "./Services.js";
 import { Button, Label } from "reactstrap";
-import { sorter } from '../../../commons/Lib.js'
+import { sorter } from "../../../commons/Lib.js";
 
 const defaultIdopont = {
   szolgaltatasok: [],
@@ -29,7 +29,7 @@ const Idopontfoglalo = (props) => {
   const [szabadnapok, setSzabadnapok] = useState([]);
   const [message, setMessage] = useState(null);
   // const [searchParams] = useSearchParams();
-  const [selectedSzolgaltatas, setSelectedSzolgaltatas] = useState('')
+  const [selectedSzolgaltatas, setSelectedSzolgaltatas] = useState("");
 
   const translteSzolgaltatasok = (array) => {
     const szolgArr = [];
@@ -65,9 +65,9 @@ const Idopontfoglalo = (props) => {
   useEffect(() => {
     const nap = idopont.nap;
     if (nap) {
-      getIdopontok(nap)
-    } 
-  }, [idopont.nap, idopont.szolgaltatasok.length])
+      getIdopontok(nap);
+    }
+  }, [idopont.nap, idopont.szolgaltatasok.length]);
 
   const listSzolgaltatasok = () => {
     Services.listSzolgaltatasok((err, res) => {
@@ -87,27 +87,28 @@ const Idopontfoglalo = (props) => {
 
   const getIdopontok = (nap) => {
     const formattedNap = moment(nap).format("YYYY-MM-DD");
-      if (nap && idopont.szolgaltatasok.length > 0) {
-        Services.getIdopontok(
-          formattedNap,
-          idopont.szolgaltatasok,
-          lang,
-          (err, res) => {
-            if (!err) {
-              if (res.length > 0) {
-                setSzabadIdopontok(res);
-                setMessage(null)
-              } else {
-                const msg =
-                  lang === "hu"
-                    ? "Ezen a napon nem foglalható időpont!"
-                    : "An diesem Tag sind keine Terminbuchungen möglich!";
-                setMessage(msg);
-              }
+    if (nap && idopont.szolgaltatasok.length > 0) {
+    const found = isSzabadnapos(nap);
+      Services.getIdopontok(
+        formattedNap,
+        idopont.szolgaltatasok,
+        lang,
+        (err, res) => {
+          if (!err) {
+            if (res.length > 0 && !found) {
+              setSzabadIdopontok(res);
+              setMessage(null);
+            } else {
+              const msg =
+                lang === "hu"
+                  ? "Ezen a napon nem foglalható időpont!"
+                  : "An diesem Tag sind keine Terminbuchungen möglich!";
+              setMessage(msg);
             }
           }
-        );
-      }
+        }
+      );
+    }
   };
 
   const getOpts = (szolg, szolgIdx) => {
@@ -118,7 +119,7 @@ const Idopontfoglalo = (props) => {
             szolg.ar
           } ${szolg.penznem}`}
       </option>
-  );
+    );
   };
 
   const setActive = (id, e) => {
@@ -163,9 +164,16 @@ const Idopontfoglalo = (props) => {
     let result = false;
     if (szabadnapok && szabadnapok.length > 0) {
       for (let i = 0; i < szabadnapok.length; i++) {
-        const isKezdete = moment(value).format('YYYY-MM-DD') === moment(szabadnapok[i].kezdete).format('YYYY-MM-DD');
-        const isVege = moment(value).format('YYYY-MM-DD') === moment(szabadnapok[i].vege).format('YYYY-MM-DD');
-        const isBetween = moment(value).isBetween(szabadnapok[i].kezdete, szabadnapok[i].vege);
+        const isKezdete =
+          moment(value).format("YYYY-MM-DD") ===
+          moment(szabadnapok[i].kezdete).format("YYYY-MM-DD");
+        const isVege =
+          moment(value).format("YYYY-MM-DD") ===
+          moment(szabadnapok[i].vege).format("YYYY-MM-DD");
+        const isBetween = moment(value).isBetween(
+          szabadnapok[i].kezdete,
+          szabadnapok[i].vege
+        );
 
         if (isKezdete || isVege || isBetween) {
           result = true;
@@ -174,19 +182,27 @@ const Idopontfoglalo = (props) => {
       }
     }
     return result;
-  }
+  };
 
   const deleteSzolgaltatas = (id) => {
-    const filtered = idopont.szolgaltatasok.length > 0 ? idopont.szolgaltatasok.filter((sz) => sz !== id) : null;
-    setIdopont({ ...idopont, szolgaltatasok: filtered ? filtered : szolgaltatasok });
+    const filtered =
+      idopont.szolgaltatasok.length > 0
+        ? idopont.szolgaltatasok.filter((sz) => sz !== id)
+        : null;
+    setIdopont({
+      ...idopont,
+      szolgaltatasok: filtered ? filtered : szolgaltatasok,
+    });
     const filteredSzolgok = szolgaltatasok.filter((sz) => {
       return filtered.some((f) => {
         return f !== sz.id;
-      })
+      });
     });
 
-    setFilteredSzolgaltatasok((filtered && filtered.length > 0) ? filteredSzolgok : szolgaltatasok);
-  }
+    setFilteredSzolgaltatasok(
+      filtered && filtered.length > 0 ? filteredSzolgok : szolgaltatasok
+    );
+  };
 
   return (
     <div style={{ width: "100%", minHeight: "100vh" }}>
@@ -239,12 +255,18 @@ const Idopontfoglalo = (props) => {
                 onChange={(e) => {
                   setIdopont({
                     ...idopont,
-                    szolgaltatasok: [...idopont.szolgaltatasok, parseInt(e.target.value)]
+                    szolgaltatasok: [
+                      ...idopont.szolgaltatasok,
+                      parseInt(e.target.value),
+                    ],
                   });
-                  const filtered = filteredSzolgaltatasok.filter((fsz) => fsz.id !== parseInt(e.target.value))
+                  const filtered = filteredSzolgaltatasok.filter(
+                    (fsz) => fsz.id !== parseInt(e.target.value)
+                  );
                   setFilteredSzolgaltatasok(filtered);
-                  setSelectedSzolgaltatas('')
+                  setSelectedSzolgaltatas("");
                   setSzabadIdopontok([]);
+                  getIdopontok(idopont.nap)
                 }}
               >
                 <option key="default">
@@ -256,12 +278,12 @@ const Idopontfoglalo = (props) => {
                   let szolgok = filteredSzolgaltatasok.filter(
                     (sz) => sz.szolgkategoria === group.nemetnev
                   );
-                  szolgok = szolgok.sort(sorter('sorrend', 'number'))
+                  szolgok = szolgok.sort(sorter("sorrend", "number"));
                   return (
                     szolgok.length > 0 && (
                       <optgroup
-                        key={'group_' + idx}
-                        id={'group_' + idx}
+                        key={"group_" + idx}
+                        id={"group_" + idx}
                         label={lang === "hu" ? group.magyarnev : group.nemetnev}
                       >
                         {szolgok.map((szolg, szolgIdx) => {
@@ -278,28 +300,40 @@ const Idopontfoglalo = (props) => {
         <div
           style={{ margin: "10px 0px" }}
           className="col-md-3"
-          hidden={
-            idopont.szolgaltatasok.length === 0
-          }
+          hidden={idopont.szolgaltatasok.length === 0}
         >
           {idopont.szolgaltatasok.map((sz) => {
-            const szolg = szolgaltatasok.find((s) => s.id === sz) ? szolgaltatasok.find((s) => s.id === sz) : null;
-            return (
-              szolg ? <div className="szolgbuborek" key={'szelszolg_'+ sz}>
+            const szolg = szolgaltatasok.find((s) => s.id === sz)
+              ? szolgaltatasok.find((s) => s.id === sz)
+              : null;
+            return szolg ? (
+              <div className="szolgbuborek" key={"szelszolg_" + sz}>
                 <div className="szoveg">
-                  {lang === 'hu' ? szolg.magyarszolgrovidnev : szolg.szolgrovidnev}<br/>
-                  {szolg.ar + ' ' + szolg.penznem}<br />
-                  {`${szolg.idotartam} ${lang === 'hu' ? 'perc' : 'minuten'}`}
+                  {lang === "hu"
+                    ? szolg.magyarszolgrovidnev
+                    : szolg.szolgrovidnev}
+                  <br />
+                  {szolg.ar + " " + szolg.penznem}
+                  <br />
+                  {`${szolg.idotartam} ${lang === "hu" ? "perc" : "minuten"}`}
                 </div>
-                <div className="torles" tabIndex={0} onClick={() => deleteSzolgaltatas(szolg.id)}>x</div>
-              </div> : null
-            );
+                <div
+                  className="torles"
+                  tabIndex={0}
+                  onClick={() => deleteSzolgaltatas(szolg.id)}
+                >
+                  x
+                </div>
+              </div>
+            ) : null;
           })}
         </div>
         <div
           style={{ margin: "10px 0px" }}
           className="col-md-3"
-          hidden={(!idopont.nap || idopont.szolgaltatasok.length === 0) && !message}
+          hidden={
+            (!idopont.nap || idopont.szolgaltatasok.length === 0) && !message
+          }
         >
           <Label style={{ fontSize: "1.8em" }}>
             {lang === "hu" ? "Időpont" : "Termin"}

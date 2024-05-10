@@ -29,7 +29,8 @@ const CookieConsent = (props) => {
       <div
         id="cookieConsent"
         className={
-          (window.location.pathname.startsWith("/datenverarbeitung") || window.location.pathname.startsWith("/terminstreichung"))
+          window.location.pathname.startsWith("/datenverarbeitung") ||
+          window.location.pathname.startsWith("/terminstreichung")
             ? "also"
             : ""
         }
@@ -61,7 +62,9 @@ const CookieConsent = (props) => {
       <div
         id="cookieConsentLayer"
         className={
-          isHidden || window.location.pathname.startsWith("/admin")
+          isHidden ||
+          window.location.pathname.startsWith("/admin") ||
+          window.location.pathname.startsWith("/terminstreichung")
             ? "hidden"
             : ""
         }
@@ -69,7 +72,8 @@ const CookieConsent = (props) => {
         <div
           id="cookieConsent"
           className={
-            window.location.pathname.startsWith("/datenverarbeitung")
+            window.location.pathname.startsWith("/datenverarbeitung") ||
+            window.location.pathname.startsWith("/terminstreichung")
               ? "also"
               : ""
           }
