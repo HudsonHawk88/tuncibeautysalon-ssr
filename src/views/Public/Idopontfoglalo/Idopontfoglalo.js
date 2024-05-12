@@ -88,7 +88,7 @@ const Idopontfoglalo = (props) => {
   const getIdopontok = (nap) => {
     const formattedNap = moment(nap).format("YYYY-MM-DD");
     if (nap && idopont.szolgaltatasok.length > 0) {
-    const found = isSzabadnapos(nap);
+      const found = isSzabadnapos(nap);
       Services.getIdopontok(
         formattedNap,
         idopont.szolgaltatasok,
@@ -123,30 +123,44 @@ const Idopontfoglalo = (props) => {
   };
 
   const setActive = (id, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      const value = element.innerText ? element.innerText : null;
-      const val = value.substring(0, element.id.length);
-      if (val) {
-        const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + val;
-        setIdopont({
-          ...idopont,
-          kezdete: moment(kezdete).format("YYYY-MM-DD HH:mm"),
-        });
-        const elements = document.getElementsByClassName("idopontfoglalo__ido");
+    if (id) {
+      e.stopPropagation();
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        const value = element.innerText ? element.innerText : null;
+        const val = value.substring(0, element.id.length);
+        if (val) {
+          const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + val;
+          setIdopont({
+            ...idopont,
+            kezdete: moment(kezdete).format("YYYY-MM-DD HH:mm"),
+          });
+          const elements = document.getElementsByClassName(
+            "idopontfoglalo__ido"
+          );
 
-        Array.from(elements).forEach((el) => {
-          const elId = el.id.replace(" ", "");
+          Array.from(elements).forEach((el) => {
+            const elId = el.id.replace(" ", "");
 
-          if (elId == val) {
-            el.classList.add("active");
-          } else {
-            el.classList.remove("active");
-          }
-        });
+            if (elId == val) {
+              el.classList.add("active");
+            } else {
+              el.classList.remove("active");
+            }
+          });
+        }
       }
+    } else {
+      const elements = document.getElementsByClassName("idopontfoglalo__ido");
+
+      Array.from(elements).forEach((el) => {
+        el.classList.remove("active");
+      });
+      setIdopont({
+        ...idopont,
+        kezdete: null,
+      });
     }
   };
 
@@ -156,6 +170,12 @@ const Idopontfoglalo = (props) => {
     Services.foglalas(idopont, lang, (err) => {
       if (!err) {
         window.location.href = "/erfolgreich";
+      } else {
+        console.log(err.err.ok);
+        if (err.err.ok === "OVERLAP") {
+          getIdopontok(submitObj.nap);
+          setActive(null);
+        }
       }
     });
   };
@@ -226,19 +246,8 @@ const Idopontfoglalo = (props) => {
                 min={new Date(moment().add(1, "days"))}
                 value={idopont.nap ? new Date(idopont.nap) : null}
                 onChange={(v) => {
-                  const found = isSzabadnapos(v);
                   setIdopont({ ...idopont, nap: v, kezdete: null });
-                  if (found) {
-                    const msg =
-                      lang === "hu"
-                        ? "Ezen a napon nem foglalható időpont!"
-                        : "An diesem Tag sind keine Terminbuchungen möglich!";
-                    setMessage(msg);
-                  } else {
-                    setMessage(null);
-
-                    // getIdopontok(v);
-                  }
+                  getIdopontok(v);
                 }}
               />
             </div>
@@ -266,7 +275,7 @@ const Idopontfoglalo = (props) => {
                   setFilteredSzolgaltatasok(filtered);
                   setSelectedSzolgaltatas("");
                   setSzabadIdopontok([]);
-                  getIdopontok(idopont.nap)
+                  getIdopontok(idopont.nap);
                 }}
               >
                 <option key="default">

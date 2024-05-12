@@ -2,6 +2,7 @@ import Fooldal from '../src/views/Admin/Fooldal/Fooldal.js';
 import Jogosultsagok from '../src/views/Admin/Jogosultsagok/Jogosultsagok.js';
 import AdminUsers from '../src/views/Admin/Adminusers/AdminUsers.js';
 import AdminBio from '../src/views/Admin/Bio/AdminBio.js';
+import AdminIdopontok from '../src/views/Admin/Idopontok/Idopontok.js'
 import Szabadnapok from '../src/views/Admin/Szabadnapok/Szabadnapok.js'
 import SzolgaltatasKategoriak from '../src/views/Admin/SzolgaltatasKategoriak/SzolgaltatasKategoriak.js';
 import Szolgaltatasok from '../src/views/Admin/Szolgaltatasok/Szolgaltatasok.js';
@@ -14,6 +15,7 @@ const AdminRoutes = [
     { path: '/admin/felhasznalok', element: AdminUsers },
     { path: '/admin/jogosultsagok', element: Jogosultsagok },
     { path: '/admin/bio', element: AdminBio },
+    { path: '/admin/idopontok', element: AdminIdopontok },
     { path: '/admin/szabadnapok', element: Szabadnapok },
     { path: '/admin/szolgaltataskategoriak', element: SzolgaltatasKategoriak },
     { path: '/admin/szolgaltatasok', element: Szolgaltatasok },

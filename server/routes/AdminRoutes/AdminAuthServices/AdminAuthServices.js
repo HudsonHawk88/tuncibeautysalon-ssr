@@ -14,7 +14,10 @@ router.post('/token', async (req, res) => {
         const sql = `UPDATE adminusers SET token=NULL WHERE token='${token}';`;
         adminusers.query(sql, (error, result) => {
             if (!error || result.length === 1) {
-                res.sendStatus(200);
+                res.write(JSON.stringify({ err: null, user: null }));
+                res.end();
+                // res.sendStatus(200);
+                
             } else {
                 res.status(500).send({ err: error });
             }
@@ -26,10 +29,9 @@ router.post('/token', async (req, res) => {
         const sql = `SELECT username, roles, avatar, email, nev, telefon FROM adminusers WHERE token = '${token}';`;
         const result = await UseQuery(sql);
         if (result.length === 0) {
-            res.status(401).send({ msg: 'Nincs bejelentkezve! Kérem jelentkezzen be újból!' });
+            res.status(401).send({ err: 'Nincs bejelentkezve! Kérem jelentkezzen be újból!', msg: 'Nincs bejelentkezve! Kérem jelentkezzen be újból!' });
         } else {
             const user = result[0];
-            let ertekesito = {};
             const getUserAvatarSql = `SELECT avatar FROM adminusers WHERE email='${user.email}'`;
             const userAvatar = await UseQuery(getUserAvatarSql);
             user.roles = user.roles ? user.roles : [];
@@ -78,7 +80,6 @@ router.post('/login', async (req, res) => {
             //logged in successfully generate session
             if (successResult === true) {
                 const user = result[0];
-                let ertekesito = {};
                 // const getUserAvatarSql = `SELECT avatar FROM adminusers WHERE email='${user.email}'`;
                 // const userAvatar = await UseQuery(getUserAvatarSql);
                 user.roles = user.roles ? user.roles : null;

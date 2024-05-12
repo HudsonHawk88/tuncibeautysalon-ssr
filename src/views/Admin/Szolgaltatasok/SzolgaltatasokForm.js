@@ -191,6 +191,20 @@ const SzolgaltatasokForm = (props) => {
           </RVInputGroup>
         </Col>
       </Row>
+      <Row style={{ margin: "10px 0px" }}>
+      <Col>
+        <Label>{"Aktív?: "}</Label>&nbsp;
+        <RVInput
+          type="checkbox"
+          name="isAktiv"
+          id="isAKtiv"
+          checked={szolgaltatasObj.isAktiv}
+          onChange={(e) =>
+            handleInputChange(e, szolgaltatasObj, setSzolgaltatasObj)
+          }
+        />
+      </Col>
+    </Row>
     </Fragment>
   );
 };

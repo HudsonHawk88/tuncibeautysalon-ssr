@@ -1,4 +1,4 @@
-import { jwtparams, pool, validateToken, hasRole, isTableExists } from '../../../common/QueryHelpers.js';
+import { jwtparams, pool, validateToken, hasRole, isTableExists, getNumberFromBoolean, getBooleanFromNumber } from '../../../common/QueryHelpers.js';
 import express from 'express';
 const router = express.Router();
 const szolgaltatasok = pool;
@@ -19,7 +19,9 @@ router.get('/', async (req, res) => {
                 const sql = `SELECT * FROM szolgaltatasok WHERE id='${id}';`;
                 szolgaltatasok.query(sql, (err, result) => {
                     if (!err) {
-                        res.status(200).send(result[0]);
+                        let newRes = result[0];
+                        newRes.isAktiv = getBooleanFromNumber(newRes.isAktiv);
+                        res.status(200).send(newRes);
                     } else {
                         res.status(500).send({
                             err: err,
@@ -33,7 +35,15 @@ router.get('/', async (req, res) => {
                 if (vanTabla) {
                     szolgaltatasok.query(sql, (err, result) => {
                         if (!err) {
-                            res.status(200).send(result);
+                            const newRes = [];
+                            if (result.length > 0) {
+                                result.forEach((r) => {
+                                    let newR = r;
+                                    newR.isAktiv = getBooleanFromNumber(r.isAktiv);
+                                    newRes.push(newR);
+                                })
+                            }
+                            res.status(200).send(newRes);
                         } else {
                             res.status(500).send({
                                 err: err,
@@ -68,11 +78,12 @@ router.post('/', async (req, res) => {
             });
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
-                const felvitelObj = req.body;
-                const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltatasok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, szolgkategoria text NOT NULL, magyarszolgkategoria text NOT NULL, szolgrovidnev text NOT NULL, magyarszolgrovidnev text NOT NULL, szolgreszletek text DEFAULT NULL, magyarszolgreszletek text DEFAULT NULL, ar text NOT NULL, magyarar text NOT NULL, penznem VARCHAR(10) NOT NULL DEFAULT 'CHF', magyarpenznem VARCHAR(10) NOT NULL DEFAULT 'HUF', idotartam INT NOT NULL);`;
+                let felvitelObj = req.body;
+                felvitelObj.isAktiv = getNumberFromBoolean(felvitelObj.isAktiv);
+                const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltatasok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, szolgkategoria text NOT NULL, magyarszolgkategoria text NOT NULL, szolgrovidnev text NOT NULL, magyarszolgrovidnev text NOT NULL, szolgreszletek text DEFAULT NULL, magyarszolgreszletek text DEFAULT NULL, ar text NOT NULL, magyarar text NOT NULL, penznem VARCHAR(10) NOT NULL DEFAULT 'CHF', magyarpenznem VARCHAR(10) NOT NULL DEFAULT 'HUF', idotartam INT NOT NULL, isAktiv BOOLEAN);`;
                 szolgaltatasok.query(sql, async (err) => {
                     if (!err) {
-                        const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}');`;
+                        const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}', '${felvitelObj.isAktiv}');`;
                         szolgaltatasok.query(sql, (error) => {
                             if (!err) {
                                 res.status(200).send({
@@ -117,10 +128,11 @@ router.put('/', async (req, res) => {
             });
         } else {
             const id = req.headers.id;
-            const modositoObj = req.body;
+            let modositoObj = req.body;
+            modositoObj.isAktiv = getNumberFromBoolean(modositoObj.isAktiv);
                 if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                     if (id) {
-                        const sql = `UPDATE szolgaltatasok SET szolgkategoria = (SELECT kategorianev from szolgaltataskategoriak WHERE id = '${modositoObj.szolgkategoria}'), magyarszolgkategoria = (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${modositoObj.szolgkategoria}'), szolgrovidnev = '${modositoObj.szolgrovidnev}', magyarszolgrovidnev = '${modositoObj.magyarszolgrovidnev}', szolgreszletek = '${modositoObj.szolgreszletek}', magyarszolgreszletek = '${modositoObj.magyarszolgreszletek}', ar = '${modositoObj.ar}', magyarar = '${modositoObj.magyarar}', penznem = '${modositoObj.penznem}', magyarpenznem = '${modositoObj.magyarpenznem}', idotartam = '${modositoObj.idotartam}' WHERE id = '${id}';`;
+                        const sql = `UPDATE szolgaltatasok SET szolgkategoria = (SELECT kategorianev from szolgaltataskategoriak WHERE id = '${modositoObj.szolgkategoria}'), magyarszolgkategoria = (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${modositoObj.szolgkategoria}'), szolgrovidnev = '${modositoObj.szolgrovidnev}', magyarszolgrovidnev = '${modositoObj.magyarszolgrovidnev}', szolgreszletek = '${modositoObj.szolgreszletek}', magyarszolgreszletek = '${modositoObj.magyarszolgreszletek}', ar = '${modositoObj.ar}', magyarar = '${modositoObj.magyarar}', penznem = '${modositoObj.penznem}', magyarpenznem = '${modositoObj.magyarpenznem}', idotartam = '${modositoObj.idotartam}', isAktiv = '${modositoObj.isAktiv}' WHERE id = '${id}';`;
                         szolgaltatasok.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({

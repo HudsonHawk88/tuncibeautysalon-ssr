@@ -79,6 +79,18 @@ const AdminSidebar = (props) => {
               <NavItem className="admin-sidebar__navitem">
                 <NavLink
                   className="admin-sidebar__navlink nav-link"
+                  to="/admin/idopontok"
+                  id="idopontok"
+                >
+                  &nbsp;&nbsp;<i className="fa-solid fa-calendar-check"></i>
+                  &nbsp;&nbsp; Időpontok
+                </NavLink>
+              </NavItem>
+            )}
+            {hasRole(user.roles, ["SZUPER_ADMIN"]) && (
+              <NavItem className="admin-sidebar__navitem">
+                <NavLink
+                  className="admin-sidebar__navlink nav-link"
                   to="/admin/szabadnapok"
                   id="szabadnapok"
                 >

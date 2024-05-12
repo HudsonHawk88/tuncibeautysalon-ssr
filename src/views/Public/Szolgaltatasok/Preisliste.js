@@ -91,7 +91,7 @@ const Preisliste = (props) => {
           <td key={"2_cell"}>{obj.szolgreszletek}</td>
           <td key={"3_cell"}>{`${obj.ar} ${obj.penznem}`}</td>
           <td key={"4_cell"}>{`${obj.idotartam} ${
-            lang === "ch" ? "minuten" : "perc"
+            lang === "ch" ? "Minuten" : "perc"
           }`}</td>
         </tr>
       );

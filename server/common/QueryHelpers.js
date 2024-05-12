@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
 /* import { google } from 'googleapis'; */
+import { Microservices } from '../../shared/MicroServices.js';
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env')
@@ -51,6 +52,11 @@ const log = (endPoint, error) => {
 
     logger.write(`ERROR: ${endPoint}: ${time} - ${error}\n`);
 };
+
+const fetchOwnEndpoint = (url, options, fnDone) => {
+    const result = Microservices.fetchApi(url,options, fnDone);
+    return result;
+}
 
 /* const addEvent = (event) => {
     const calendar = google.calendar('v3');
@@ -519,7 +525,7 @@ const hasRole = (userRoles, minRoles) => {
 const isTableExists = async (tableName) => {
     const isExistSql = `SHOW TABLES LIKE "${tableName}";`;
     const isExist = await UseQuery(isExistSql);
-
+    console.log(isExist)
     if (isExist.length !== 0) {
         return true;
     } else {
@@ -636,6 +642,7 @@ END IF;
 export {
     pool,
     mailUrl,
+    fetchOwnEndpoint,
     log,
     stringToBool,
     getId,
