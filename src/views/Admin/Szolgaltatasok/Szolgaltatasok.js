@@ -18,7 +18,7 @@ const defaultSzolgaltatasObj = {
   penznem: "",
   magyarpenznem: "",
   idotartam: "",
-  isAktiv: false
+  isAktiv: false,
 };
 
 const penznemek = [

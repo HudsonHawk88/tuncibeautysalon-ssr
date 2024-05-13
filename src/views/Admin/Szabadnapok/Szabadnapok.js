@@ -63,8 +63,8 @@ const Szabadnapok = (props) => {
     Services.getSzabadnap(id, (err, res) => {
       if (!err) {
         let result = res;
-        result.kezdete = moment(result.kezdete).format('YYYY-MM-DD');
-        result.vege = moment(result.vege).format('YYYY-MM-DD');
+        result.kezdete = moment(result.kezdete).format("YYYY-MM-DD");
+        result.vege = moment(result.vege).format("YYYY-MM-DD");
         setSzabadnapObj(result);
       }
     });

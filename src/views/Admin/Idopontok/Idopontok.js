@@ -102,8 +102,6 @@ const Idopontok = (props) => {
     }
   };
 
-
-
   const isSzabadnapos = (value) => {
     let result = false;
     if (szabadnapok && szabadnapok.length > 0) {
@@ -136,7 +134,7 @@ const Idopontok = (props) => {
 
   useEffect(() => {
     init();
-    [].filter((f) => !f.value)
+    [].filter((f) => !f.value);
   }, []);
 
   const toggleModal = () => {
@@ -224,30 +222,28 @@ const Idopontok = (props) => {
     const szolgArr = [];
     const groups = [];
     if (array && array.length > 0) {
-        
-        array.forEach((szolg) => {
-          const szolgObj = Object.assign({}, szolg);
-          szolgArr.push(szolgObj);
-          groups.push({
-            nemetnev: szolgObj.szolgkategoria,
-            magyarnev: szolgObj.magyarszolgkategoria,
-          });
+      array.forEach((szolg) => {
+        const szolgObj = Object.assign({}, szolg);
+        szolgArr.push(szolgObj);
+        groups.push({
+          nemetnev: szolgObj.szolgkategoria,
+          magyarnev: szolgObj.magyarszolgkategoria,
         });
-    
-        if (groups) {
-            const grs = [
-                ...new Map(groups.map((item) => [item.nemetnev, item])).values(),
-              ];
-          
-              setGroups(grs);
-        }
-        
-        // const kategorie = searchParams.get("kategorie");
-        // if (kategorie) {
-        //   const kat = grs.filter((k) => k.nemetnev === kategorie);
-        //   setGroups(kat);
-        // }
-        
+      });
+
+      if (groups) {
+        const grs = [
+          ...new Map(groups.map((item) => [item.nemetnev, item])).values(),
+        ];
+
+        setGroups(grs);
+      }
+
+      // const kategorie = searchParams.get("kategorie");
+      // if (kategorie) {
+      //   const kat = grs.filter((k) => k.nemetnev === kategorie);
+      //   setGroups(kat);
+      // }
     }
     setSzolgaltatasok(szolgArr);
     setFilteredSzolgaltatasok(szolgArr);

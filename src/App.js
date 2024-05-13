@@ -97,7 +97,7 @@ function App() {
   const refreshToken = () => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";
     Services.refreshToken(token, isAdmin, (err, res) => {
-      console.log(err, res)
+      console.log(err, res);
       if (!err) {
         setUser(res.user);
       } else {

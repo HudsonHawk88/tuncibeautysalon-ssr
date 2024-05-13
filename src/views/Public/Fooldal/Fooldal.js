@@ -10,6 +10,7 @@ const Fooldal = (props) => {
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
   const [biosJson, setBiosJson] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [showMore, setShowMore] = useState(false);
 
   const getSzolgaltatasok = () => {
     Services.listSzolgaltatasok((err, res) => {
@@ -114,107 +115,41 @@ const Fooldal = (props) => {
       <div style={{ width: "100%", textAlign: "center" }}>
         <h2>{lang === "hu" ? "Bemutatkozás" : "Über mich"}</h2>
       </div>
-      {biosJson && biosJson.length > 0 && (
-        <div
-          className="bio"
-          dangerouslySetInnerHTML={{
-            __html:
-              lang === "hu" ? biosJson[0].magyarleiras : biosJson[0].leiras,
-          }}
-        />
-      )}
-      {/* }lang === "hu" ? (
-          <div>
-            <h3>
-              Szeretettel üdvözlöm minden kedves meglévő és leendő vendégemet a
-              weboldalamon!
-            </h3>
-            <br />
-            <p style={{ fontSize: "1.1rem", textAlign: "justify" }}>
-              Honfi-Németh Tündének hívnak. 2020-tól végeztem el Bernben az
-              összes képzést amivel hozzá tudok járulni ahhoz, hogy minden
-              vendégemnek tökéletes megjelenése legyen. Szalonomban megtalálható
-              a Smink, műkörömépítés, pedikűr, műszempilla, Lifting, kozmetikai
-              kezelések, gyantázás stb. Munkám során mind a szakmai elvárásokat,
-              mind a vendégek igényeit szem előtt tartva, igyekszem bővíteni a
-              szolgáltatásaimat miközben folyamatosan fejlesztem önmagam.
-              Segítségemre vannak a professzionális gépeim amelyek a
-              kezelésekben kítűnő eredményt mutatnak ilyen a hideg/meleg
-              ultrahangos kezelések, ozongép, parafinosgép, gyémánt
-              mikrodermabrázió, bőrvasaló, Gyantázó , illetve a Galvánáramos VIO
-              készülék. A tudatos bőrápolás lényege, hogy azt nyújtsuk a
-              bőrünknek, amire valóban szüksége van a saját igényeire szabva.
-              Ezt pedig egy szakember által elvégzett bőrtípus megállapításnak,
-              némi kutatómunkának vagy probléma esetén a kiváltó ok
-              megvizsgálásának kell megelőznie. Az is fontos, hogy a különböző
-              bőrhibáknak ne az eltakarására, hanem inkább a megoldására
-              törekedjünk. Ezek után jöhetnek csak a kozmetikumok kiválasztásai
-              a bennük lévő összetevőkre koncentrálva. Ha mindezekkel tisztába
-              vagyunk, akkor máris tudni fogjuk, hogy az egyes hatóanyagok
-              pontosan milyen hatásokat fejtenek ki a bőrünkben.Természetesen
-              időközben a külső-belső tényezők hozzájárulhatnak a bőr
-              állapotának változásához. Ilyenkor finomítgatni kell a rutinunkon
-              az egyedi igények figyelembevételével. A kezelések kialakításánál
-              mindig törekszem, hogy bőrbarát és környezet tudatos
-              hatóanyagokkal dolgozzak. Bőrmegújítás és fiatal bőr struktúra
-              javítása a cél minden vendégemnél.Minőségi és Naturál termékekkel
-              dolgozom (Börlind, Bio Altearek, arcaya, Solane, Clinique,
-              Eucerin, Nu Skin,) termékekkel dolgozom előnyben részesítem a tű
-              nélküli kezeléseket. Ide tartozik sokak által nem ismert
-              MESOPEPTIDE (Tű nélküli arc illetve ránckezelés) Amennyiben
-              felkeltettem az érdeklődését jelentkezzen be itt onlíne. <br />
-              <br /> Várom sok szeretettel a szépülni vágyó vendégeimet egy
-              nyugodt környezetben. <br />
-              <br /> 3302 Moosseedorf, Kirchgasse 3, 3emelet/ Jobbra
-            </p>
-          </div>
+      {biosJson &&
+        biosJson.length > 0 &&
+        (lang === "hu" ? (
+          !showMore ? (
+            <React.Fragment>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: biosJson[0].magyarleiras.slice(0, 500) + '...',
+                }}
+              />
+              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Kevesebb' : '...továbbiak'}</a>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div dangerouslySetInnerHTML={{ __html: biosJson[0].magyarleiras }} />
+              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Kevesebb' : '...továbbiak'}</a>
+            </React.Fragment>
+            
+          )
         ) : (
-          <div>
-            <h3>
-              Ich begrüße alle meine lieben bestehenden und zukünftigen Gäste
-              herzlich auf meiner Website!
-            </h3>
-            <br />
-            <p style={{ fontSize: "1.1rem", textAlign: "justify" }}>
-              Ich heiße Tünde Honfi-Németh. Seit 2020 habe ich in Bern alle
-              Ausbildungen absolviert, die dazu beitragen, dass alle meine Gäste
-              einen perfekten Auftritt bekommen. In meinem Salon finden Sie
-              Make-up, künstliche Nägel, Pediküre, künstliche Wimpern, Lifting,
-              kosmetische Behandlungen, Waxing usw. Im Rahmen meiner Arbeit
-              versuche ich, sowohl die beruflichen Erwartungen als auch die
-              Bedürfnisse der Gäste im Auge zu behalten, meine Dienstleistungen
-              zu erweitern und mich dabei ständig zu verbessern. Ich verfüge
-              über professionelle Geräte, die bei den Behandlungen hervorragende
-              Ergebnisse zeigen, wie z. B. Kalt-/Warm-Ultraschallbehandlungen,
-              Ozongerät, Paraffingerät, Diamant-Mikrodermabrasion, Hautglättung,
-              Wachsen und das Galvanic VIO-Gerät. Die Essenz einer bewussten
-              Hautpflege besteht darin, unserer Haut das zu geben, was sie
-              wirklich braucht, abgestimmt auf ihre eigenen Bedürfnisse. Dem
-              sollte eine Hauttypbestimmung durch eine Fachperson, eine
-              Recherchearbeit oder im Problemfall eine Untersuchung der
-              Grundursache vorausgehen. Wichtig ist auch, diverse Hautprobleme
-              nicht zu vertuschen, sondern zu beheben. Erst danach können wir
-              die Kosmetika auswählen und uns dabei auf die darin enthaltenen
-              Inhaltsstoffe konzentrieren. Wenn wir uns darüber im Klaren sind,
-              wissen wir bereits genau, welche Auswirkungen die einzelnen
-              Wirkstoffe auf unsere Haut haben. In solchen Fällen müssen wir
-              unsere Routine unter Berücksichtigung individueller Bedürfnisse
-              verfeinern. Bei der Entwicklung von Behandlungen lege ich stets
-              Wert darauf, mit hautfreundlichen und umweltbewussten Wirkstoffen
-              zu arbeiten. Die Hauterneuerung und Verbesserung der jungen
-              Hautstruktur ist das Ziel bei jedem meiner Gäste. Ich arbeite mit
-              hochwertigen und natürlichen Produkten (Börlind, Bio Altearek,
-              Arcaya, Solane, Clinique, Eucerin, Nu Skin) und bevorzuge
-              nadelfreie Behandlungen. Dazu gehört das vielen unbekannte
-              MESOPEPTIDE (nadelfreie Gesichts- und Faltenbehandlung) Bei
-              Interesse melden Sie sich hier online an. <br />
-              <br /> Ich heiße meine Gäste herzlich willkommen, die sich in
-              einer ruhigen Umgebung verschönern möchten. <br />
-              <br /> 3302 ,Moosseedorf Kirchgasse 3 Tünci Beauty Salon
-            </p>
-          </div>
-        )} */}
-      {/* </div> */}
+          !showMore ? (
+          <React.Fragment>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: biosJson[0].leiras.slice(0, 500) + '...',
+              }}
+            />
+            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Weniger' : '...mehr'}</a>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div dangerouslySetInnerHTML={{ __html: biosJson[0].leiras }} />
+            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Weniger' : '...mehr'}</a>
+          </React.Fragment>
+        )))}
       <div className="fooldalszolgok">{renderSzolgaltatasok()}</div>
     </div>
   );
