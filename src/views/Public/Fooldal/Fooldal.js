@@ -125,12 +125,12 @@ const Fooldal = (props) => {
                   __html: biosJson[0].magyarleiras.slice(0, 500) + '...',
                 }}
               />
-              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Kevesebb' : '...továbbiak'}</a>
+              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline"><strong>{showMore ? 'Kevesebb' : '...továbbiak'}</strong></a>
             </React.Fragment>
           ) : (
             <React.Fragment>
               <div dangerouslySetInnerHTML={{ __html: biosJson[0].magyarleiras }} />
-              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Kevesebb' : '...továbbiak'}</a>
+              <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline"><strong>{showMore ? 'Kevesebb' : '...továbbiak'}</strong></a>
             </React.Fragment>
             
           )
@@ -142,12 +142,12 @@ const Fooldal = (props) => {
                 __html: biosJson[0].leiras.slice(0, 500) + '...',
               }}
             />
-            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Weniger' : '...mehr'}</a>
+            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline"><strong>{showMore ? 'Weniger' : '...mehr'}</strong></a>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <div dangerouslySetInnerHTML={{ __html: biosJson[0].leiras }} />
-            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline">{showMore ? 'Weniger' : '...mehr'}</a>
+            <a style={{ /* padding: '5px 10px', border: '1px solid red', borderRadius: '10px',*/ textDecoration: 'underline' }} href="#" onClick={() => setShowMore(!showMore)} className="underline"><strong>{showMore ? 'Weniger' : '...mehr'}</strong></a>
           </React.Fragment>
         )))}
       <div className="fooldalszolgok">{renderSzolgaltatasok()}</div>
