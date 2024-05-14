@@ -10,7 +10,6 @@ import {
 } from "reactstrap";
 import { DataTable } from "@inftechsol/react-data-table";
 import {
-  Editor,
   setEditorValue,
   initialValue,
 } from "@inftechsol/react-slate-wysiwyg";
@@ -36,8 +35,8 @@ const Bio = (props) => {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const { addNotification } = props;
-  let Editor1 = useRef(Editor);
-  let Editor2 = useRef(Editor);
+  const Editor1 = useRef(null);
+  const Editor2 = useRef(null);
 
   const getBios = () => {
     Services.listBio((err, res) => {
@@ -49,14 +48,14 @@ const Bio = (props) => {
 
   const getBio = (id) => {
     Services.getBio(id, (err, res) => {
-      if (!err && Editor) {
+      if (!err && Editor1.current && Editor2.current) {
         let obj = res;
         const leiras = serializeValue("de", res.leiras);
         const magyarleiras = serializeValue("de", res.magyarleiras);
         // console.log("Editor1, Editor2: ", Editor1, Editor2);
         if (Editor1 && Editor2 && Editor1.current && Editor2.current) {
-          setEditorValue(leiras, Editor1.current);
-          setEditorValue(magyarleiras, Editor2.current);
+          setEditorValue(leiras, Editor1);
+          setEditorValue(magyarleiras, Editor2);
         }
         obj.leiras = leiras;
         obj.magyarleiras = magyarleiras;
