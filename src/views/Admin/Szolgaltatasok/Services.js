@@ -97,6 +97,24 @@ export default class Services {
     return result;
   };
 
+  static editSzolgaltatasok = (szolgaltatasok, fnDone) => {
+    let result = Microservices.fetchApi(
+      szolgUrl + "/tomeges",
+      {
+        method: "PUT",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(szolgaltatasok),
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
   static deleteSzolgaltatas = (id, fnDone) => {
     let result = Microservices.fetchApi(
       szolgUrl,

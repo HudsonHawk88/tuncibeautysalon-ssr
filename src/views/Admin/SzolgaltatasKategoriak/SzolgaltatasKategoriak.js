@@ -6,12 +6,14 @@ import PropTypes from "prop-types";
 
 import Services from "./Services.js";
 import KategoriaForm from "./KategoriaForm.js";
+import { makeFormData } from "../../../commons/Lib.js";
 
 const defaultKategoriaObj = {
   kategorianev: "",
   magyarkategorianev: "",
   kategorialeiras: "",
   magyarkategorialeiras: "",
+  kepek: [],
 };
 
 const SzolgaltatasKategoriak = (props) => {
@@ -150,10 +152,26 @@ const SzolgaltatasKategoriak = (props) => {
     toggleKategoriaModal();
   };
 
-  const onSubmit = () => {
-    console.log(currentId !== undefined);
+  const deleteImage = (filename) => {
+    let kepek = kategoriaObj.kep || [];
+    let filtered = kepek.filter((kep) => kep.filename !== filename);
+
+    setKategoriaObj({
+      ...kategoriaObj,
+      kep: filtered,
+    });
+    Services.deleteKategoriaKep({ filename: filename }, (err, res) => {
+      if (!err) {
+        addNotification("success", res.msg);
+      }
+    });
+  };
+
+  const onSubmit = (e, modosit) => {
+    e.preventDefault();
     let submitObj = kategoriaObj;
-    if (currentId === undefined) {
+    submitObj = makeFormData(kategoriaObj, ["kep"], modosit);
+    if (!modosit) {
       Services.addSzolgaltatasKategoria(submitObj, (err, res) => {
         if (!err) {
           toggleKategoriaModal();
@@ -182,7 +200,11 @@ const SzolgaltatasKategoriak = (props) => {
         backdrop="static"
         style={{ color: "black" }}
       >
-        <RVForm noValidate onSubmit={onSubmit}>
+        <RVForm
+          encType="multipart/form-data"
+          noValidate
+          onSubmit={(e) => onSubmit(e, currentId !== undefined)}
+        >
           <ModalHeader>
             {currentId !== undefined
               ? "Szolgáltatás módosítása"
@@ -193,6 +215,7 @@ const SzolgaltatasKategoriak = (props) => {
               currentId={currentId}
               kategoriaObj={kategoriaObj}
               setKategoriaObj={setKategoriaObj}
+              deleteImage={deleteImage}
             />
           </ModalBody>
           <ModalFooter>

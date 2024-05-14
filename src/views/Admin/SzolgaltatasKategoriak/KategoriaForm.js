@@ -1,14 +1,85 @@
-import React, { Fragment } from "react";
+import React, { useCallback } from "react";
 import { Row, Col, Label } from "reactstrap";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
+import { useDropzone } from "react-dropzone";
 import PropTypes from "prop-types";
 
 import { handleInputChange } from "../../../commons/InputHandlers.js";
+import KepCard from "./KepCard.js";
 
 const KategoriaForm = (props) => {
-  const { kategoriaObj, setKategoriaObj } = props;
+  const { deleteImage, kategoriaObj, setKategoriaObj } = props;
+
+  const Kepek = () => {
+    return (
+      <div
+        className="row"
+        style={{
+          margin: "10px 0px",
+          maxHeight: "665px",
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
+      >
+        {kategoriaObj &&
+          kategoriaObj.kep &&
+          kategoriaObj.kep.map((kep, index) => {
+            return (
+              <KepCard
+                key={index.toString() + "_kepcard"}
+                kep={kep}
+                index={index}
+                deleteImage={deleteImage}
+              />
+            );
+          })}
+      </div>
+    );
+  };
+
+  const MyDropzone = () => {
+    const onDrop = useCallback((acceptedFiles) => {
+      const kepek = acceptedFiles.map((file) => {
+        // Do whatever you want with the file contents
+        let obj = {
+          filename: file.name,
+          src: URL.createObjectURL(file),
+          file: file,
+        };
+
+        return obj;
+      });
+      if (kategoriaObj.kep) {
+        setKategoriaObj({
+          ...kategoriaObj,
+          kep: [...kategoriaObj.kep, ...kepek],
+        });
+      } else {
+        setKategoriaObj({
+          ...kategoriaObj,
+          kep: [...[], ...kepek],
+        });
+      }
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+    return (
+      <React.Fragment>
+        <div
+          hidden={kategoriaObj.kep && kategoriaObj.kep.length > 0}
+          {...getRootProps({ className: "dropzone" })}
+        >
+          <input {...getInputProps()} />
+          <p>Kattintson vagy húzza id a feltöltendő képet...</p>
+        </div>
+        {<Kepek />}
+      </React.Fragment>
+    );
+  };
+
   return (
-    <Fragment>
+    <React.Fragment>
       <Row style={{ margin: "10px 0px 0px 0px" }}>
         <Col>
           <Label>{"Német kategórianév: *"}</Label>
@@ -71,11 +142,18 @@ const KategoriaForm = (props) => {
           />
         </Col>
       </Row>
-    </Fragment>
+      <Row style={{ margin: "10px 0px" }}>
+        <Col>
+          <Label>{"Kategóriakép: *"}</Label>
+          <MyDropzone />
+        </Col>
+      </Row>
+    </React.Fragment>
   );
 };
 
 KategoriaForm.propTypes = {
+  deleteImage: PropTypes.func.isRequired,
   kategoriaObj: PropTypes.object.isRequired,
   setKategoriaObj: PropTypes.func.isRequired,
 };

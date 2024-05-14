@@ -1,4 +1,4 @@
-import { jwtparams, pool, validateToken, hasRole, isTableExists, getNumberFromBoolean, getBooleanFromNumber } from '../../../common/QueryHelpers.js';
+import { jwtparams, pool, validateToken, hasRole, isTableExists, getNumberFromBoolean, getBooleanFromNumber, UseQuery } from '../../../common/QueryHelpers.js';
 import express from 'express';
 const router = express.Router();
 const szolgaltatasok = pool;
@@ -80,10 +80,12 @@ router.post('/', async (req, res) => {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 let felvitelObj = req.body;
                 felvitelObj.isAktiv = getNumberFromBoolean(felvitelObj.isAktiv);
-                const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltatasok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, szolgkategoria text NOT NULL, magyarszolgkategoria text NOT NULL, szolgrovidnev text NOT NULL, magyarszolgrovidnev text NOT NULL, szolgreszletek text DEFAULT NULL, magyarszolgreszletek text DEFAULT NULL, ar text NOT NULL, magyarar text NOT NULL, penznem VARCHAR(10) NOT NULL DEFAULT 'CHF', magyarpenznem VARCHAR(10) NOT NULL DEFAULT 'HUF', idotartam INT NOT NULL, isAktiv BOOLEAN);`;
+                const sql = `CREATE TABLE IF NOT EXISTS szolgaltatasok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, szolgkategoria text NOT NULL, magyarszolgkategoria text NOT NULL, szolgrovidnev text NOT NULL, magyarszolgrovidnev text NOT NULL, szolgreszletek text DEFAULT NULL, magyarszolgreszletek text DEFAULT NULL, ar text NOT NULL, magyarar text NOT NULL, penznem VARCHAR(10) NOT NULL DEFAULT 'CHF', magyarpenznem VARCHAR(10) NOT NULL DEFAULT 'HUF', idotartam INT NOT NULL, isAktiv BOOLEAN);`;
                 szolgaltatasok.query(sql, async (err) => {
                     if (!err) {
-                        const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}', '${felvitelObj.isAktiv}');`;
+                        const maxSorrend = await UseQuery(`SELECT (MAX(sorrend) + 1) as next from szolgaltatasok WHERE szolgkategoria = '${felvitelObj.szolgkategoria}';`);
+                        const sorrend = parseInt(maxSorrend[0].next, 10);
+                        const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam, isAktiv, sorrend) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}', '${felvitelObj.isAktiv}', '${sorrend}');`;
                         szolgaltatasok.query(sql, (error) => {
                             if (!err) {
                                 res.status(200).send({
@@ -151,6 +153,60 @@ router.put('/', async (req, res) => {
                             msg: 'Id megadása kötelező'
                         });
                     }
+                } else {
+                    res.status(403).send({
+                        err: 'Nincs jogosultsága az adott művelethez!',
+                        msg: 'Nincs jogosultsága az adott művelethez!'
+                    });
+                }
+        }
+    } else {
+        res.status(401).send({
+            err: 'Nincs belépve! Kérem jelentkezzen be!',
+            msg: 'Nincs belépve! Kérem jelentkezzen be!'
+        });
+    }
+});
+
+router.put('/tomeges', async (req, res) => {
+    const token = req.cookies.JWT_TOKEN;
+    if (token) {
+        const user = await validateToken(token, jwtparams.secret);
+        if (user === null) {
+            res.status(401).send({
+                err: 'Nincs belépve! Kérem jelentkezzen be!',
+                msg: 'Nincs belépve! Kérem jelentkezzen be!'
+            });
+        } else {
+            let modositoArray = req.body;
+                if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
+                        if (modositoArray && modositoArray.length > 0) {
+                            // let sql = `BEGIN;\n`;
+                            let sql = ``;
+                            modositoArray.forEach((mo) => {
+                                sql =  sql.concat(`UPDATE szolgaltatasok SET sorrend = ${mo.sorrend} WHERE id = ${mo.id};`);
+                            })
+                            // sql = sql.concat(`\nCOMMIT;`);
+                            console.log('SQL: ', sql);
+                            szolgaltatasok.query(sql, (err) => {
+                                if (!err) {
+                                    res.status(200).send({
+                                        msg: 'Szolgáltatások sikeresen módosítva!'
+                                    });
+                                } else {
+                                    res.status(500).send({
+                                        err: err,
+                                        msg: 'Szolgáltatások módosítása sikertelen!'
+                                    });
+                                }
+                            });
+                        } else {
+                            res.status(500).send({
+                                err: err,
+                                msg: 'Nincsenek szolgáltatások kijelölve!'
+                            });
+                        }
+                        
                 } else {
                     res.status(403).send({
                         err: 'Nincs jogosultsága az adott művelethez!',

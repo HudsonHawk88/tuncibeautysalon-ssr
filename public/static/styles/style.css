@@ -717,6 +717,19 @@ html body::-webkit-scrollbar {
   }
 }
 
+.szolgSorrendek {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 100%;
+  max-width: 100%;
+}
+.szolgSorrendek .szolgSorrendekDiv {
+  display: block;
+  width: 50%;
+  padding: 10px;
+  border: 1px solid black;
+}
+
 .tartalom-admin {
   display: flex;
   min-width: 100%;
