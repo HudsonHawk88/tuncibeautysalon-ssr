@@ -181,12 +181,12 @@ router.put('/tomeges', async (req, res) => {
             let modositoArray = req.body;
                 if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                         if (modositoArray && modositoArray.length > 0) {
-                            // let sql = `BEGIN;\n`;
                             let sql = ``;
-                            modositoArray.forEach((mo) => {
-                                sql =  sql.concat(`UPDATE szolgaltatasok SET sorrend = ${mo.sorrend} WHERE id = ${mo.id};`);
+                            let sorr = ``;
+                            modositoArray.forEach((mo, idx) => {
+                                sql =  sql.concat(`UPDATE szolgaltatasok SET sorrend = ${mo.sorrend} WHERE id = ${mo.id};\n`);
+                                sorr = sorr.concat(`(${mo.sorrend})${modositoArray.length === (idx + 1) ? '' : ','}`)
                             })
-                            // sql = sql.concat(`\nCOMMIT;`);
                             console.log('SQL: ', sql);
                             szolgaltatasok.query(sql, (err) => {
                                 if (!err) {

@@ -20,7 +20,8 @@ const db_params = {
     host: process.env.dbhost,
     user: process.env.dbuser,
     password: process.env.dbpass,
-    database: process.env.database
+    database: process.env.database,
+    multipleStatements: true
 };
 
 const pool = createPool(db_params);

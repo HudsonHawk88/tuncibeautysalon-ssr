@@ -13,9 +13,10 @@ import {
 import { RVForm, RVInput } from "@inftechsol/reactstrap-form-validation";
 import PropTypes from "prop-types";
 
-import { sorter } from "../../../commons/Lib.js";
 import Services from "./Services.js";
 import SzolgaltatasokForm from "./SzolgaltatasokForm.js";
+import Sortable from "../../../commons/Sortable.js";
+import { sorter } from "../../../commons/Lib.js";
 
 const defaultSzolgaltatasObj = {
   szolgkategoria: "",
@@ -71,8 +72,6 @@ const Szolgaltatasok = (props) => {
   const [szolgKategoriak, setSzolgKategoriak] = useState([]);
   const [szolgKat, setSzolgKat] = useState(null);
   const [szolgSorrendek, setSzolgSorrendek] = useState([]);
-  const [sorrend, setSorrend] = useState([]);
-  const [sorrendValues, setSorrendValues] = useState(null);
 
   const { addNotification } = props;
 
@@ -257,7 +256,9 @@ const Szolgaltatasok = (props) => {
     let submitArr = szolgSorrendek;
     Services.editSzolgaltatasok(submitArr, (err, res) => {
       if (!err) {
-        console.log(res);
+        setSzolgKat(null);
+        toggleSorrendModal();
+        addNotification('success', res.msg)
       }
     });
   };
@@ -318,12 +319,12 @@ const Szolgaltatasok = (props) => {
     );
   };
 
-  const move = (arr, from, to) => {
-    let akt = arr.splice(from, 1)[0];
-    let rem = arr;
-    rem.splice(to - 1, 0, akt);
-    return rem;
-  };
+  // const move = (arr, from, to) => {
+  //   let akt = arr.splice(from, 1)[0];
+  //   let rem = arr;
+  //   rem.splice(to - 1, 0, akt);
+  //   return rem;
+  // };
 
   const onChangeSzolgKat = (e) => {
     const { target } = e;
@@ -332,88 +333,11 @@ const Szolgaltatasok = (props) => {
 
     setSzolgKat(value);
     if (value) {
-      console.log(value);
-      const newSorrend = [];
-      let SorValues = {};
-      // let sV = [];
-      // const sorKeys = []
-      console.log(value);
       let szolgSor = szolgaltatasokJson.filter(
         (sz) => sz.szolgkategoria === value
       );
       szolgSor = szolgSor.sort(sorter("sorrend", "number"));
-      // for (let i = 0; i < szolgSor.length; i++) {
-      //   newSorrend.push({ label: szolgSor[i].sorrend, value: szolgSor[i].sorrend });
-      //   const sorrendValue = { [szolgSor[i].szolgkategoria]: szolgSor[i].sorrend }
-      //   console.log(szolgSor)
-      //   SorValues = SorValues.concat(`"${[szolgSor[i].szolgrovidnev]}": ${szolgSor[i].sorrend}${(i === (szolgSor.length - 1)) ? '' : ','}`)
-      //   // sV.push(sorrendValue)
-      // }
-      // let anyad = '{' + SorValues + '}';
-      // console.log(JSON.parse(anyad))
-      szolgSor.forEach((sz) => {
-        newSorrend.push({
-          label: sz.sorrend,
-          value: sz.sorrend,
-          name: sz.szolgrovidnev,
-        });
-        const sorrendValues = { [sz.szolgrovidnev]: sz.sorrend };
-        Object.assign(SorValues, sorrendValues);
-      });
-      // const anyad = {};
-      // for (let i = 0; i < sV.length; i++) {
-      //   console.log(sV[i])
-      //   Object.assign(anyad, { [`szolgKatObj_${sV[i].name}`.replaceAll(' ', '')]: sV[i] })
-      // }
-      // console.log(anyad)
-      console.log("szolgSor: ", szolgSor);
-      console.log("newSorrend: ", newSorrend);
-      console.log("SorValues: ", SorValues);
       setSzolgSorrendek(szolgSor);
-      setSorrend(newSorrend);
-      setSorrendValues(SorValues);
-    }
-  };
-
-  const onChangeSorrend = (e, name, index, oldSorrend, id) => {
-    const { target } = e;
-
-    let value =
-      target.value && target.value !== "" ? parseInt(target.value, 10) : null;
-
-    if (value) {
-      const newSorrend = [];
-      let newSzolgsor = move(szolgSorrendek, index, parseInt(value));
-      let regiSz = null;
-      newSzolgsor.forEach((sz) => {
-        newSorrend.push({ label: sz.sorrend, value: sz.sorrend });
-
-        if (sz.szolgrovidnev === name) {
-          sz.sorrend = value;
-        } else {
-          if (sz.sorrend == value) {
-            sz.sorrend = oldSorrend;
-            regiSz = sz;
-          }
-        }
-        Services.editSzolgaltatas(sz, id, (err) => {
-          if (!err) {
-            Services.editSzolgaltatas(regiSz, regiSz.id, (error, result) => {
-              if (error) {
-                addNotification('success', result.msg);
-              }
-            })
-          }
-        })
-      });
-
-      
-
-      newSzolgsor = newSzolgsor.sort(sorter("sorrend", "number"));
-      console.log("newSzolgsor: ", newSzolgsor);
-      setSorrendValues({ ...sorrendValues, [name]: value });
-      setSzolgSorrendek(newSzolgsor);
-      setSorrend(newSorrend);
     }
   };
 
@@ -457,54 +381,13 @@ const Szolgaltatasok = (props) => {
           {szolgKat && szolgSorrendek && szolgSorrendek.length > 0 && (
             <Row style={{ margin: "10px 0px" }}>
               <Col>
-                <div className="szolgSorrendek">
-                  {szolgSorrendek.map((newSz, idx) => {
-                    console.log(
-                      "sorrendValues[newSz.szolgrovidnev]: ",
-                      newSz.szolgrovidnev +
-                        " " +
-                        sorrendValues[newSz.szolgrovidnev]
-                    );
-                    return (
-                      <div
-                        key={`szolgKat_${newSz.id}`}
-                        className="szolgSorrendekDiv"
-                      >
-                        <span>{newSz.magyarszolgrovidnev}</span>{" "}
-                        <div>
-                          <RVInput
-                            type="select"
-                            name="sorrend"
-                            value={newSz.sorrend}
-                            onChange={(e) =>
-                              onChangeSorrend(
-                                e,
-                                newSz.szolgrovidnev,
-                                idx,
-                                newSz.sorrend,
-                                newSz.id
-                              )
-                            }
-                          >
-                            {sorrend &&
-                              sorrend.length > 0 &&
-                              sorrend
-                                .filter((ss) => ss.sorrend !== newSz.sorrend)
-                                .map((s, ind) => {
-                                  return (
-                                    <option
-                                      key={`sorropt_${ind}`}
-                                      value={s.value}
-                                    >
-                                      {s.label}
-                                    </option>
-                                  );
-                                })}
-                          </RVInput>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="flex min-h-screen flex-col items-center space-y-4" style={{ padding: '20px' }} /* className="szolgSorrendek" */>
+                  <Sortable
+                    items={szolgSorrendek}
+                    setItems={setSzolgSorrendek}
+                    innerParam={"magyarszolgrovidnev"}
+                    {...props}
+                  />
                 </div>
               </Col>
             </Row>
@@ -527,15 +410,11 @@ const Szolgaltatasok = (props) => {
           {" "}
           + Szolgáltatás hozzáadása{" "}
         </Button>
-        {/* &nbsp;
-        <Button
-          type="button"
-          color="info"
-          onClick={() => toggleSorrendModal()}
-        >
+        &nbsp;
+        <Button type="button" color="info" onClick={() => toggleSorrendModal()}>
           {" "}
           + Szolgáltatások sorrendjének módosítása{" "}
-        </Button>*/}
+        </Button>
         <br />
         <br />
         {szolgaltatasokJson && szolgaltatasokJson.length > 0
