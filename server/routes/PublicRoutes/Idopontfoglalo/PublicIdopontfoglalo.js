@@ -572,7 +572,7 @@ router.post("/", async (req, res) => {
               </ul>
               <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
               Lemondani az alábbi linken tudja: <br>
-              ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
+              <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
               <strong>Amennyiben nem érkezik meg a foglalt időpontra és legalább 2 nappal előbb nem törli az időpontot, úgy a következő alkalommal felszámolásra kerül az elmulasztott kezelés is!</strong><br> 
               Tisztelettel:<br>
               Tünci Beauty Salon<br>`;
@@ -588,7 +588,7 @@ router.post("/", async (req, res) => {
               <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
               <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
               Sie können über den folgenden Link kündigen:<br>
-              ${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}<br>
+              <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
               <strong>Sollten Sie nicht zum gebuchten Zeitpunkt erscheinen und den Termin nicht mindestens 2 Tage vorher absagen, wird die versäumte Behandlung auch beim nächsten Mal in Rechnung gestellt!</strong><br><br>
               Aufrichtig:<br>
               Tünci Beauty Salon<br>`;
