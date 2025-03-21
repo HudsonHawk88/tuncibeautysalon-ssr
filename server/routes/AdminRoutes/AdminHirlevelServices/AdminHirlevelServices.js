@@ -265,8 +265,8 @@ router.get('/addcron', async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 if (id) {
-                    const cronPattern = getCronPattern('teszt');
-                    // const cronPattern = getCronPattern('2_heti');
+                    // const cronPattern = getCronPattern('teszt');
+                    const cronPattern = getCronPattern(process.env.defaultCronPattern);
                 
                     new Cron(cronPattern, { 
                         name: `${process.env.jobnamePrefix}${id}`,
