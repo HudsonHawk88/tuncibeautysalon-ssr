@@ -9,10 +9,7 @@ import {
   Label,
 } from "reactstrap";
 import { DataTable } from "@inftechsol/react-data-table";
-import {
-  setEditorValue,
-  initialValue,
-} from "@inftechsol/react-slate-wysiwyg";
+import { setEditorValue, initialValue } from "@inftechsol/react-slate-wysiwyg";
 import {
   WysiwygEditor,
   serializeValue,

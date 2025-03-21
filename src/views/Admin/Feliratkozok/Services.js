@@ -1,15 +1,13 @@
 import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
-const szolgaltatasokUrl = location.origin + "/api/szolgaltatasok";
-const idopontokUrl = location.origin + "/api/idopontok";
-const szabadnapokUrl = location.origin + "/api/szabadnapok";
+const feliratkozasAdminUrl = location.origin + "/api/admin/feliratkozas";
 
 export default class Services {
-  // IDOPONTOK START
+  // FELIRATKOZOK START
 
-  static listSzolgaltatasok = (fnDone) => {
+  static listFeliratkozok = (fnDone) => {
     let result = Microservices.fetchApi(
-      szolgaltatasokUrl,
+      feliratkozasAdminUrl,
       {
         method: "GET",
         mode: "cors",
@@ -25,17 +23,17 @@ export default class Services {
     return result;
   };
 
-  static getIdopontok = (nap, lang, fnDone) => {
+  static getFeliratkozo = (id, fnDone) => {
     let result = Microservices.fetchApi(
-      idopontokUrl + `?nap=${nap}`,
+      feliratkozasAdminUrl,
       {
         method: "GET",
         mode: "cors",
         cache: "no-cache",
         headers: {
-          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-          lang: lang,
+          "Content-Type": "application/json",
+          id: id,
         },
       },
       fnDone
@@ -44,9 +42,9 @@ export default class Services {
     return result;
   };
 
-  static foglalas = (foglalasObj, lang, fnDone) => {
+  static addFeliratkozo = (data, fnDone) => {
     let result = Microservices.fetchApi(
-      idopontokUrl,
+      feliratkozasAdminUrl,
       {
         method: "POST",
         mode: "cors",
@@ -54,27 +52,27 @@ export default class Services {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-          lang: lang,
         },
-        body: JSON.stringify(foglalasObj),
+        body: JSON.stringify(data),
       },
       fnDone
     );
-
     return result;
   };
 
-  static getSzabadnapok = (fnDone) => {
+  static editFeliratkozo = (data, id, fnDone) => {
     let result = Microservices.fetchApi(
-      szabadnapokUrl,
+      feliratkozasAdminUrl,
       {
-        method: "GET",
+        method: "PUT",
         mode: "cors",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          id: id,
         },
+        body: JSON.stringify(data),
       },
       fnDone
     );
@@ -82,9 +80,9 @@ export default class Services {
     return result;
   };
 
-  static deleteFoglalas = (id, lang, fnDone) => {
+  static deleteFeliratkozo = (id, fnDone) => {
     let result = Microservices.fetchApi(
-      idopontokUrl,
+      feliratkozasAdminUrl,
       {
         method: "DELETE",
         mode: "cors",
@@ -93,7 +91,6 @@ export default class Services {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
           id: id,
-          lang: lang,
         },
       },
       fnDone
@@ -102,5 +99,5 @@ export default class Services {
     return result;
   };
 
-  // IDOPONTOK END
+  // FELIRATKOZOK END
 }

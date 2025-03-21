@@ -104,7 +104,13 @@ const Fooldal = (props) => {
   };
 
   return (
-    <div style={{ width: "100%", maxHeight: "calc(100% - 210px)" }}>
+    <div
+      style={{
+        width: "100%",
+        maxHeight: "calc(100% - 210px)",
+        padding: "10px",
+      }}
+    >
       <Helmet>
         <meta name="description" content="" />
         <meta name="og:title" content="" />

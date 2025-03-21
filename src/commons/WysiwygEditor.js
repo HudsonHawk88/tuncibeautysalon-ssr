@@ -29,7 +29,7 @@ export const serializeValue = (type, value) => {
 };
 
 export const WysiwygEditor = forwardRef(
-  ({ value, onChange, editorKey, id }, ref) => {
+  ({ value, onChange, editorKey, id, isHirlevel }, ref) => {
     return (
       <div>
         <Wysiwyg
@@ -228,12 +228,23 @@ export const WysiwygEditor = forwardRef(
               format="cta"
               icon="fa fa-globe"
             />
-            <ToolbarItem
-              className="ow-wysiwyg-toolbar-item"
-              type="custom"
-              text="Ár"
-              format="${ar}"
-            />
+            {isHirlevel && (
+              <React.Fragment>
+                <ToolbarItem
+                  className="ow-wysiwyg-toolbar-item"
+                  type="custom"
+                  text="Leiratkozó neve"
+                  // icon="fa fa"
+                  format="${__LEIRATKOZONEV__}"
+                />
+                <ToolbarItem
+                  className="ow-wysiwyg-toolbar-item"
+                  type="custom"
+                  text="Leiratkozó link"
+                  format="${__LEIRATKOZOLINK__}"
+                />
+              </React.Fragment>
+            )}
             <ToolbarItem
               className="ow-wysiwyg-toolbar-item"
               type="emoji"
@@ -252,6 +263,7 @@ WysiwygEditor.propTypes = {
   value: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
+  isHirlevel: PropTypes.bool | undefined,
   ref: PropTypes.any,
   id: PropTypes.string,
   editorKey: PropTypes.string,

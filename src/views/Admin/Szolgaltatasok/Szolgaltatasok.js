@@ -258,7 +258,7 @@ const Szolgaltatasok = (props) => {
       if (!err) {
         setSzolgKat(null);
         toggleSorrendModal();
-        addNotification('success', res.msg)
+        addNotification("success", res.msg);
       }
     });
   };
@@ -381,7 +381,10 @@ const Szolgaltatasok = (props) => {
           {szolgKat && szolgSorrendek && szolgSorrendek.length > 0 && (
             <Row style={{ margin: "10px 0px" }}>
               <Col>
-                <div className="flex min-h-screen flex-col items-center space-y-4" style={{ padding: '20px' }} /* className="szolgSorrendek" */>
+                <div
+                  className="flex min-h-screen flex-col items-center space-y-4"
+                  style={{ padding: "20px" }} /* className="szolgSorrendek" */
+                >
                   <Sortable
                     items={szolgSorrendek}
                     setItems={setSzolgSorrendek}

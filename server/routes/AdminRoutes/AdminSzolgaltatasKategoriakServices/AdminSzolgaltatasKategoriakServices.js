@@ -98,15 +98,18 @@ router.post('/', upload.array('kep'), async (req, res) => {
 
                         if (req.files) {
                             req.files.forEach( async (kep) => {
+                                const originalname = (kep.originalname + '');
+                                const kiterjesztes = originalname.slice(originalname.indexOf('.'), originalname.length);
                                 let fname = newId;
 
                                 kepek.push({
-                                    src: `${process.env.szolgkategoriaUrl}/${fname}.jpg`,
-                                    filename: `${fname}.jpg`
+                                    src: `${process.env.szolgkategoriaUrl}/${fname}${kiterjesztes}`,
+                                    filename: `${fname}${kiterjesztes}`
                                 });
 
-                                sharp(kep.buffer)
-                                    .jpeg({ quality: 80 })
+                                if (kiterjesztes === '.png') {
+                                    sharp(kep.buffer)
+                                    .png({ quality: 80 })
                                     .resize({ width: 1500, fit: 'inside' })
                                     .withMetadata()
                                     .toBuffer((err, buff) => {
@@ -116,11 +119,30 @@ router.post('/', upload.array('kep'), async (req, res) => {
                                             if (!isDirExist) {
                                                 mkdirSync(dir);
                                             }
-                                            writeFileSync(`${dir}/${newId}.jpg`, buff);
+                                            writeFileSync(`${dir}/${fname}${kiterjesztes}`, buff);
                                         } else {
                                             // console.log(err);
                                         }
                                     });
+                                } else {
+                                    sharp(kep.buffer)
+                                    .jpeg({ quality: 80 })
+                                    
+                                    .resize({ width: 1500, fit: 'inside' })
+                                    .withMetadata()
+                                    .toBuffer((err, buff) => {
+                                        if (!err) {
+                                            const dir = `${process.env.szolgkategoriadir}`;
+                                            const isDirExist = existsSync(dir);
+                                            if (!isDirExist) {
+                                                mkdirSync(dir);
+                                            }
+                                            writeFileSync(`${dir}/${fname}${kiterjesztes}`, buff);
+                                        } else {
+                                            // console.log(err);
+                                        }
+                                    });
+                                }
                             });
                         }
 
@@ -189,17 +211,19 @@ router.put('/', upload.array('uj_kep'), async (req, res) => {
 
                         if (req.files) {
                             req.files.map((kep) => {
+                                const originalname = (kep.originalname + '');
+                                const kiterjesztes = originalname.slice(originalname.indexOf('.'), originalname.length);
                                 let fname = id;
                                 // if (kepek.find((k) => k.originalname === kep.originalname)) {
                                     kepek.push({
-                                        filename: `${fname}.jpg`,
-                                        src: `${process.env.szolgkategoriaUrl}/${fname}.jpg`,
+                                        filename: `${fname}${kiterjesztes}`,
+                                        src: `${process.env.szolgkategoriaUrl}/${fname}${kiterjesztes}`,
                                     });
                                 // }
         
-        
-                                sharp(kep.buffer)
-                                    .jpeg({ quality: 80 })
+                                if (kiterjesztes === '.png') {
+                                    sharp(kep.buffer)
+                                    .png({ quality: 80 })
                                     .resize({ width: 1500, fit: 'inside' })
                                     .withMetadata()
                                     .toBuffer((err, buff) => {
@@ -209,11 +233,31 @@ router.put('/', upload.array('uj_kep'), async (req, res) => {
                                             if (!isDirExist) {
                                                 mkdirSync(dir);
                                             }
-                                            writeFileSync(`${dir}/${fname}.jpg`, buff);
+                                            writeFileSync(`${dir}/${fname}${kiterjesztes}`, buff);
                                         } else {
                                             // console.log(err);
                                         }
                                     });
+                                } else {
+                                    sharp(kep.buffer)
+                                    .jpeg({ quality: 80 })
+                                    
+                                    .resize({ width: 1500, fit: 'inside' })
+                                    .withMetadata()
+                                    .toBuffer((err, buff) => {
+                                        if (!err) {
+                                            const dir = `${process.env.szolgkategoriadir}`;
+                                            const isDirExist = existsSync(dir);
+                                            if (!isDirExist) {
+                                                mkdirSync(dir);
+                                            }
+                                            writeFileSync(`${dir}/${fname}${kiterjesztes}`, buff);
+                                        } else {
+                                            // console.log(err);
+                                        }
+                                    });
+                                }
+                                
                             });
                         }
                         modositoObj.kep = kepek;

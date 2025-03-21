@@ -16,6 +16,11 @@ const defaultIdopont = {
   ugyfeltelefon: "",
   ugyfelemail: "",
   ugyfelelfogad: false,
+  hirlevelFeliratkozas: true,
+  feliratkozoNyelv:
+    __isBrowser__ && localStorage.getItem("lang")
+      ? localStorage.getItem("lang")
+      : "ch",
 };
 
 const Idopontfoglalo = (props) => {
@@ -25,9 +30,10 @@ const Idopontfoglalo = (props) => {
   const [groups, setGroups] = useState([]);
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
   const [filteredSzolgaltatasok, setFilteredSzolgaltatasok] = useState([]);
-  const [szabadIdopontok, setSzabadIdopontok] = useState([]);
+  const [idopontok, setIdopontok] = useState([]);
   const [szabadnapok, setSzabadnapok] = useState([]);
   const [message, setMessage] = useState(null);
+  const [foundInSzabadnap, setFoundInSzabadnap] = useState(false);
   // const [searchParams] = useSearchParams();
   const [selectedSzolgaltatas, setSelectedSzolgaltatas] = useState("");
 
@@ -60,6 +66,9 @@ const Idopontfoglalo = (props) => {
   useEffect(() => {
     getSzabadnapok();
     listSzolgaltatasok();
+    setIdopont({ ...idopont, feliratkozoNyelv: lang });
+
+    console.log(idopont);
   }, [lang]);
 
   useEffect(() => {
@@ -87,26 +96,20 @@ const Idopontfoglalo = (props) => {
 
   const getIdopontok = (nap) => {
     const formattedNap = moment(nap).format("YYYY-MM-DD");
-    if (nap && idopont.szolgaltatasok.length > 0) {
-      const found = isSzabadnapos(nap);
-      Services.getIdopontok(
-        formattedNap,
-        idopont.szolgaltatasok,
-        lang,
-        (err, res) => {
-          if (!err) {
-            if (res.length > 0 && !found) {
-              setSzabadIdopontok(res);
-              setMessage(null);
-            } else {
-              const msg =
-                lang === "hu"
-                  ? "Ezen a napon nem foglalható időpont!"
-                  : "An diesem Tag sind keine Terminbuchungen möglich!";
-              setMessage(msg);
-            }
-          }
+    // const formattedNap = moment('2024-06-01').format('YYYY-MM-DD');
+    const found = isSzabadnapos(formattedNap);
+    setMessage(null);
+    if (nap && !found) {
+      Services.getIdopontok(formattedNap, lang, (err, res) => {
+        if (!err) {
+          setIdopontok(res);
         }
+      });
+    } else if (found) {
+      setMessage(
+        lang == "hu"
+          ? "Ezen a napon nem foglalható időpont!"
+          : "An diesem Tag sind keine Terminbuchungen möglich!"
       );
     }
   };
@@ -122,51 +125,58 @@ const Idopontfoglalo = (props) => {
     );
   };
 
-  const setActive = (id, e) => {
-    if (id) {
-      e.stopPropagation();
-      e.preventDefault();
-      const element = document.getElementById(id);
-      if (element) {
-        const value = element.innerText ? element.innerText : null;
-        const val = value.substring(0, element.id.length);
-        if (val) {
-          const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + val;
-          setIdopont({
-            ...idopont,
-            kezdete: moment(kezdete).format("YYYY-MM-DD HH:mm"),
-          });
-          const elements = document.getElementsByClassName(
-            "idopontfoglalo__ido"
-          );
+  // const setActive = (id, e) => {
+  //   if (id) {
+  //     e.stopPropagation();
+  //     e.preventDefault();
+  //     const element = document.getElementById(id);
+  //     if (element) {
+  //       const value = element.innerText ? element.innerText : null;
+  //       const val = value.substring(0, element.id.length);
+  //       if (val) {
+  //         const kezdete = moment(idopont.nap).format("YYYY-MM-DD") + " " + val;
+  //         setIdopont({
+  //           ...idopont,
+  //           kezdete: moment(kezdete).format("YYYY-MM-DD HH:mm"),
+  //         });
+  //         const elements = document.getElementsByClassName(
+  //           "idopontfoglalo__ido"
+  //         );
 
-          Array.from(elements).forEach((el) => {
-            const elId = el.id.replace(" ", "");
+  //         Array.from(elements).forEach((el) => {
+  //           const elId = el.id.replace(" ", "");
 
-            if (elId == val) {
-              el.classList.add("active");
-            } else {
-              el.classList.remove("active");
-            }
-          });
-        }
-      }
-    } else {
-      const elements = document.getElementsByClassName("idopontfoglalo__ido");
+  //           if (elId == val) {
+  //             el.classList.add("active");
+  //           } else {
+  //             el.classList.remove("active");
+  //           }
+  //         });
+  //       }
+  //     }
+  //   } else {
+  //     const elements = document.getElementsByClassName("idopontfoglalo__ido");
 
-      Array.from(elements).forEach((el) => {
-        el.classList.remove("active");
-      });
-      setIdopont({
-        ...idopont,
-        kezdete: null,
-      });
-    }
-  };
+  //     Array.from(elements).forEach((el) => {
+  //       el.classList.remove("active");
+  //     });
+  //     setIdopont({
+  //       ...idopont,
+  //       kezdete: null,
+  //     });
+  //   }
+  // };
 
   const foglal = () => {
     let submitObj = idopont;
     submitObj.nap = moment(submitObj.nap).format("YYYY-MM-DD");
+    const kezdete = moment(
+      moment(`${submitObj.nap} ${idopont.kezdete}:00`)
+    ).format("YYYY-MM-DD HH:mm:ss");
+    submitObj.kezdete = kezdete;
+
+    // console.log("submitObj: ", submitObj);
+
     Services.foglalas(idopont, lang, (err) => {
       if (!err) {
         window.location.href = "/erfolgreich";
@@ -201,6 +211,7 @@ const Idopontfoglalo = (props) => {
         }
       }
     }
+    setFoundInSzabadnap(result);
     return result;
   };
 
@@ -209,14 +220,17 @@ const Idopontfoglalo = (props) => {
       idopont.szolgaltatasok.length > 0
         ? idopont.szolgaltatasok.filter((sz) => sz !== id)
         : null;
-    setIdopont({
-      ...idopont,
-      szolgaltatasok: filtered ? filtered : szolgaltatasok,
-    });
+
     const filteredSzolgok = szolgaltatasok.filter((sz) => {
       return filtered.some((f) => {
         return f !== sz.id;
       });
+    });
+
+    setIdopont({
+      ...idopont,
+      kezdete: filteredSzolgok.length ? idopont.kezdete : "",
+      szolgaltatasok: filtered ? filtered : szolgaltatasok,
     });
 
     setFilteredSzolgaltatasok(
@@ -246,7 +260,7 @@ const Idopontfoglalo = (props) => {
                 min={new Date(moment().add(1, "days"))}
                 value={idopont.nap ? new Date(idopont.nap) : null}
                 onChange={(v) => {
-                  setIdopont({ ...idopont, nap: v, kezdete: null });
+                  setIdopont({ ...idopont, nap: v, kezdete: "" });
                   getIdopontok(v);
                 }}
               />
@@ -274,7 +288,7 @@ const Idopontfoglalo = (props) => {
                   );
                   setFilteredSzolgaltatasok(filtered);
                   setSelectedSzolgaltatas("");
-                  setSzabadIdopontok([]);
+                  setIdopontok([]);
                   getIdopontok(idopont.nap);
                 }}
               >
@@ -340,37 +354,62 @@ const Idopontfoglalo = (props) => {
         <div
           style={{ margin: "10px 0px" }}
           className="col-md-3"
-          hidden={
-            (!idopont.nap || idopont.szolgaltatasok.length === 0) && !message
-          }
+          hidden={!idopont.nap || idopont.szolgaltatasok.length === 0}
         >
-          <Label style={{ fontSize: "1.8em" }}>
-            {lang === "hu" ? "Időpont" : "Termin"}
-          </Label>
-          <div className="idopontfoglalo__idopontok">
-            {message
-              ? message
-              : idopont.nap && szabadIdopontok.length > 0
-              ? szabadIdopontok.map((szi, idx) => {
-                  return (
+          <div>
+            <Label style={{ fontSize: "1.8em" }}>
+              {lang === "hu" ? "Foglalt időpontok" : "Gebuchte Termine"}
+            </Label>
+            <div className="idopontfoglalo__idopontok">
+              {idopontok.length === 0
+                ? lang == "hu"
+                  ? "Nincs még foglalt időpont a napra!"
+                  : "Für diesen Tag sind noch keine Termine gebucht!"
+                : idopont.nap &&
+                  idopontok.length > 0 && (
                     <div
-                      key={szi + "_szolgido_" + idx}
-                      onClick={(e) => setActive(szi, e)}
-                      className="idopontfoglalo__ido"
-                      id={szi}
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        width: "100%",
+                        flexDirection: "row",
+                      }}
                     >
-                      <a
-                        href="#"
-                        onClick={(e) => {
-                          setActive(szi, e);
-                        }}
-                      >
-                        {szi}
-                      </a>
+                      {idopontok.map((idop, idx) => {
+                        return (
+                          <div key={"IDOP_" + idx.toString()}>
+                            <span style={{ fontSize: "1.2rem" }}>{`${moment(
+                              idop.kezdete
+                            ).format("YYYY-MM-DD HH:mm")} - ${moment(
+                              idop.vege
+                            ).format("YYYY-MM-DD HH:mm")}`}</span>
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })
-              : message}
+                  )}
+            </div>
+          </div>
+          <div>
+            <Label style={{ fontSize: "1.8em" }}>
+              {lang === "hu" ? "Foglalni kívánt időpont" : "Gewünschtes Datum"}
+            </Label>
+            <div className="idopontfoglalo__idopontok">
+              {foundInSzabadnap ? (
+                message
+              ) : (
+                <RVInput
+                  type="time"
+                  name="idopont"
+                  includeTime
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setIdopont({ ...idopont, kezdete: e.target.value });
+                  }}
+                  value={idopont.kezdete}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div
@@ -380,11 +419,11 @@ const Idopontfoglalo = (props) => {
             idopont.szolgaltatasok.length === 0 ||
             !idopont.nap ||
             !idopont.kezdete ||
-            message ||
-            szabadIdopontok.length === 0 ||
+            foundInSzabadnap ||
             idopont.kezdete === ""
           }
         >
+          {console.log(idopont)}
           <Label style={{ fontSize: "1.8em" }}>
             {lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}
           </Label>
@@ -423,6 +462,23 @@ const Idopontfoglalo = (props) => {
               <div style={{ display: "inline-block" }}>
                 <Label>
                   {lang === "hu"
+                    ? "Feliratkozom a hírlevélre"
+                    : "Ich abonniere den Newsletter"}
+                </Label>
+                &nbsp;
+                <RVInput
+                  type="checkbox"
+                  name="hirlevelFeliratkozas"
+                  id="hirlevelFeliratkozas"
+                  checked={idopont.hirlevelFeliratkozas}
+                  onChange={(e) => handleInputChange(e, idopont, setIdopont)}
+                />
+              </div>
+            </div>
+            <div style={{ margin: "10px 0" }}>
+              <div style={{ display: "inline-block" }}>
+                <Label>
+                  {lang === "hu"
                     ? "Elfogadom, hogy adataimat a szolgáltató kezelhesse."
                     : "Ich bin damit einverstanden, dass meine Daten vom Dienstleister verwaltet werden."}
                 </Label>
@@ -431,13 +487,16 @@ const Idopontfoglalo = (props) => {
                   type="checkbox"
                   name="ugyfelelfogad"
                   id="ugyfelelfogad"
-                  value={idopont.ugyfelelfogad}
+                  checked={idopont.ugyfelelfogad}
                   onChange={(e) => handleInputChange(e, idopont, setIdopont)}
                 />
               </div>
             </div>
             <div style={{ margin: "10px 0 0 0" }}>
               <Button
+                className={`foglalButton ${
+                  accessibility === "true" ? "active" : ""
+                }`}
                 disabled={
                   idopont.szolgaltatasok.length === 0 ||
                   !idopont.nap ||
@@ -447,15 +506,6 @@ const Idopontfoglalo = (props) => {
                   !idopont.ugyfeltelefon ||
                   !idopont.ugyfelelfogad
                 }
-                style={{
-                  background: `${
-                    accessibility === "true"
-                      ? "rgba(255,255,255, 1)"
-                      : "rgba(241, 24, 24, 1)"
-                  }`,
-                  color: "black",
-                  width: "100%",
-                }}
                 onClick={() => foglal()}
               >
                 <span>

@@ -11,11 +11,15 @@ const Szolgaltatas = (props) => {
   const [kategoria, setKategoria] = useState(null);
 
   const translateKategoria = (kateg) => {
+    console.log(kateg);
     const newKat = Object.assign(kateg, {
       katnev: lang === "hu" ? kateg.magyarkategorianev : kateg.kategorianev,
       katleiras:
         lang === "hu" ? kateg.magyarkategorialeiras : kateg.kategorialeiras,
-      logo: process.env.staticUrl + `/images/szolgaltataskepek/${kateg.id}.jpg`,
+      logo:
+        kateg.kep && kateg.kep[0]
+          ? kateg.kep[0].src
+          : process.env.staticUrl + `/images/szolgaltataskepek/${kateg.id}.png`,
     });
     setKategoria(newKat);
   };

@@ -9,6 +9,8 @@ import Szolgaltatasok from '../src/views/Admin/Szolgaltatasok/Szolgaltatasok.js'
 import Gdpr from '../src/views/Admin/GDPR/Gdpr.js';
 import Kapcsolat from '../src/views/Admin/Kapcsolat/Kapcsolat.js';
 import Galeria from '../src/views/Admin/Galeria/Galeria.js'
+import Hirlevelek from '../src/views/Admin/Hirlevelek/Hirlevelek.js';
+import Feliratkozok from '../src/views/Admin/Feliratkozok/Feliratkozok.js';
 
 const AdminRoutes = [
     { path: '/admin', element: Fooldal },
@@ -21,6 +23,8 @@ const AdminRoutes = [
     { path: '/admin/szolgaltatasok', element: Szolgaltatasok },
     { path: '/admin/kapcsolat', element: Kapcsolat },
     { path: '/admin/adatkezeles', element: Gdpr },
+    { path: '/admin/hirlevelek', element: Hirlevelek },
+    { path: '/admin/feliratkozok', element: Feliratkozok },
     { path: '/admin/galeria', element: Galeria },
 ];
 

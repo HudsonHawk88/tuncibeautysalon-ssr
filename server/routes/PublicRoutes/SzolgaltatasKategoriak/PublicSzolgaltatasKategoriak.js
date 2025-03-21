@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { pool } from '../../../common/QueryHelpers.js';
+import { getJSONfromLongtext, pool } from '../../../common/QueryHelpers.js';
 const szolgaltataskategoriak = pool;
 
 // SZOLGALTATASKATEGORIAK START
@@ -11,7 +11,8 @@ router.get('/', (req, res) => {
         const sql = `SELECT * FROM szolgaltataskategoriak WHERE id='${id}';`;
         szolgaltataskategoriak.query(sql, (err, result) => {
             if (!err) {
-                res.status(200).send(result);
+                const newRes = getJSONfromLongtext(result[0], 'toBool')
+                res.status(200).send([newRes]);
             } else {
                 res.status(500).send({ err: err });
             }
@@ -20,7 +21,11 @@ router.get('/', (req, res) => {
         const sql = `SELECT * FROM szolgaltataskategoriak;`;
         szolgaltataskategoriak.query(sql, (err, result) => {
             if (!err) {
-                res.status(200).send(result);
+                let newRes = result;
+                if (result && result.length) {
+                    newRes = result.map((r) => getJSONfromLongtext(r));
+                }
+                res.status(200).send(newRes);
             } else {
                 res.status(500).send({ err: err });
             }

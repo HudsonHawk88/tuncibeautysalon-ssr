@@ -7,13 +7,16 @@ const SzolgaltatasCard = (props) => {
   const navigate = useNavigate();
 
   const getLeiras = (leiras) => {
-    return leiras.length > 350 ? leiras.substring(0, 350) + "..." : leiras;
+    return leiras.length > 250 ? leiras.substring(0, 250) + "..." : leiras;
   };
 
   const szolgaltatasKat = {
     id: data.id,
     /* idotartam: data.idotartam + " " + (lang === "hu" ? "perc" : "minute"), */
-    logo: process.env.staticUrl + `/images/szolgaltataskepek/${groupId}.jpg`,
+    logo:
+      data.kep && data.kep[0]
+        ? data.kep[0].src
+        : process.env.staticUrl + `/images/szolgaltataskepek/${groupId}.png`,
     katnev: lang === "hu" ? data.magyarkategorianev : data.kategorianev,
     katleiras:
       lang === "hu"

@@ -163,20 +163,9 @@ const PublicHeader = (props) => {
                 }}
               >
                 <i
-                  className="fa-brands fa-accessible-icon"
-                  width={50}
-                  height={30}
-                  style={{
-                    cursor: "pointer",
-                    color: /true/.test(accessibility) ? "green" : "red",
-                    padding: "10px",
-                    fontSize: "30px",
-                  }}
-                  // onMouseDown={() => {
-                  //   const currAcc = (/true/).test(accessibility);
-                  //   toggleAccessibility((!currAcc).toString());
-                  //   toggleNavbar("public_navbar_collapse");
-                  // }}
+                  className={`fa-brands fa-accessible-icon ${
+                    /true/.test(accessibility) ? "active" : ""
+                  }`}
                 />
               </a>
             </li>

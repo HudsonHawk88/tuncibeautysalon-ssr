@@ -4,7 +4,7 @@
   src: url("../fonts/Merienda.ttf");
 }
 html {
-  scrollbar-color: red black !important;
+  scrollbar-color: #333 #e0c9cc !important;
   scroll-behavior: smooth;
 }
 
@@ -13,8 +13,8 @@ html body {
   position: relative;
   overflow: visible;
   scrollbar-width: thin;
-  background-color: #000;
-  color: rgb(240, 3, 3);
+  background-color: #e0c9cc;
+  color: #333;
   /*  scrollbar-width: thin; */
 }
 
@@ -32,11 +32,11 @@ html body.accessibility::-webkit-scrollbar-thumb {
 }
 
 html body::-webkit-scrollbar-thumb {
-  background-color: red; /* Set thumb color for Chrome and Safari */
+  background-color: #333; /* Set thumb color for Chrome and Safari */
 }
 
 html body::-webkit-scrollbar-track {
-  background-color: black; /* Set track color for Chrome and Safari */
+  background-color: #e0c9cc; /* Set track color for Chrome and Safari */
 }
 
 table,
@@ -62,8 +62,8 @@ tr {
 html body::-webkit-scrollbar {
   /*  display: none; */
   width: 10px;
-  background-color: #000;
-  scrollbar-color: red !important;
+  background-color: #e0c9cc;
+  scrollbar-color: #333 !important;
 }
 
 /* html body::-webkit-scrollbar-track-piece {
@@ -122,12 +122,76 @@ html body::-webkit-scrollbar {
   flex-direction: column;
   height: 100vh; */
   width: 100%;
+  display: grid;
   /*   margin: 0px 15%; */
   /* min-width: 100%; */
   /* min-height: 100%; */
   /* overflow: hidden; */
   /* overflow-y: clip; */
   /* overflow-y: clip; */
+}
+.public_full #pricelisttable {
+  border: 1px solid #333;
+}
+.public_full #pricelisttable tr .mobilheader {
+  display: none;
+}
+.public_full #pricelisttable thead {
+  display: table-header-group;
+  width: 100%;
+}
+.public_full #pricelisttable thead tr {
+  width: 100%;
+  white-space: "nowrap";
+}
+@media screen and (max-width: 992px) {
+  .public_full #pricelisttable {
+    border-collapse: collapse;
+    width: 100% !important;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+  .public_full #pricelisttable thead {
+    display: none;
+  }
+  .public_full #pricelisttable tbody {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+  }
+  .public_full #pricelisttable tr {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    line-height: 3ch;
+    border: 2px solid #333;
+  }
+  .public_full #pricelisttable tr .mobilheader {
+    display: flex;
+    font-weight: 700;
+    vertical-align: middle;
+    text-align: center;
+    border-right: 1px solid #333;
+    padding: 10px;
+  }
+  .public_full #pricelisttable tr td, .public_full #pricelisttable tr div, .public_full #pricelisttable tr span {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+  }
+  .public_full #pricelisttable tr td div, .public_full #pricelisttable tr div div, .public_full #pricelisttable tr span div {
+    width: 50%;
+  }
+  .public_full #pricelisttable tr td span, .public_full #pricelisttable tr div span, .public_full #pricelisttable tr span span {
+    width: 50%;
+  }
+  .public_full #pricelisttable tr td {
+    border: 1px solid #333;
+    padding: 0;
+  }
 }
 
 .modal-body {
@@ -148,7 +212,9 @@ html body::-webkit-scrollbar {
   position: fixed;
   top: 2px;
   left: 0px;
-  content: url("../images/logo.jpg");
+  content: url("../images/logouj.png");
+  border-radius: 50%;
+  width: 70px;
   height: 70px;
   padding: 10px;
   z-index: 222;
@@ -159,6 +225,7 @@ html body::-webkit-scrollbar {
     display: block;
     top: 0px;
     height: 150px;
+    width: 150px;
     /* height: 140px; */
     padding: 10px;
     /*  border-radius: 10px 0px 0px 10px; */
@@ -212,7 +279,6 @@ html body::-webkit-scrollbar {
 #etikus {
   display: block;
   width: 250px;
-  content: url("../images/etikus.png");
   padding: 10px;
 }
 
@@ -220,7 +286,6 @@ html body::-webkit-scrollbar {
   display: block;
   margin: 0 auto;
   width: 250px;
-  content: url("../images/hitelnet_logo.png");
   padding: 10px;
 }
 
@@ -238,32 +303,26 @@ html body::-webkit-scrollbar {
 #partnerbankok #otp {
   width: 25%;
   height: 80px;
-  content: url("../images/otp.jpg");
 }
 #partnerbankok #unicredit {
   width: 25%;
   height: 80px;
-  content: url("../images/unicredit.jpg");
 }
 #partnerbankok #erste {
   width: 25%;
   height: 80px;
-  content: url("../images/erste.jpg");
 }
 #partnerbankok #kh {
   width: 25%;
   height: 80px;
-  content: url("../images/kh.png");
 }
 #partnerbankok #mbh {
   width: 25%;
   height: 80px;
-  content: url("../images/mbh.png");
 }
 #partnerbankok #cib {
   width: 25%;
   height: 80px;
-  content: url("../images/cib.png");
 }
 
 .plus_nav {
@@ -273,7 +332,6 @@ html body::-webkit-scrollbar {
   align-items: center;
   /* width: 100vw; */
   z-index: 2;
-  background-color: black !important;
   /* height: 70px; */
   width: 100%;
   padding: 0px;
@@ -396,7 +454,7 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-youtube {
-  color: red;
+  color: #333;
 }
 
 .kozossegi .fa-whatsapp {
@@ -443,11 +501,11 @@ html body::-webkit-scrollbar {
 }
 
 .tartalom::-webkit-scrollbar-thumb {
-  background-color: red; /* Set thumb color for Chrome and Safari */
+  background-color: #333; /* Set thumb color for Chrome and Safari */
 }
 
 .tartalom::-webkit-scrollbar-track {
-  background-color: black; /* Set track color for Chrome and Safari */
+  background-color: #e0c9cc; /* Set track color for Chrome and Safari */
 }
 
 .tartalom.accessibility {
@@ -455,6 +513,11 @@ html body::-webkit-scrollbar {
 }
 .tartalom.accessibility a {
   text-decoration: underline;
+}
+
+.tartalom:first-child {
+  padding: 10px !important;
+  align-self: start;
 }
 
 .tartalom {
@@ -478,7 +541,8 @@ html body::-webkit-scrollbar {
   /* min-height: calc(100vh - 200px); */
   box-shadow: none !important;
   margin: 3% 0px;
-  padding: 10px 10px;
+  min-height: calc(100vh - 248px);
+  position: relative;
   /* background-color: var(themes-public-bgcolor2); */
   /*     background-image: var(themes-public-navbarbgimage); */
   /*  background-size: contain; */
@@ -493,6 +557,7 @@ html body::-webkit-scrollbar {
     /* max-height: calc(100% - 140px); */
     padding: 0px 7vw;
     margin: 2% 0px;
+    min-height: calc(100vh - 328px);
     /* min-height: calc(200vh + 210px); */
     /*    top: 140px; */
   }
@@ -613,7 +678,6 @@ html body::-webkit-scrollbar {
   height: 100%;
   margin: 20px 5%;
   padding: 20px 0px;
-  background-color: rgb(237, 224, 122);
   /* margin: 0px; */
 }
 @media screen and (min-width: 950px) {
@@ -696,7 +760,6 @@ html body::-webkit-scrollbar {
   padding: 0px !important;
 }
 .tartalom .reszletes_kereso {
-  background-color: rgb(58, 214, 197);
   display: flex;
   flex-wrap: wrap;
   padding: 20px;
@@ -712,7 +775,7 @@ html body::-webkit-scrollbar {
 }
 @media screen and (min-width: 992px) {
   .tartalom {
-    box-shadow: 0.25rem 0.25rem 4px 4px rgba(174, 255, 237, 0.514);
+    box-shadow: 0.25rem 0.25rem 4px 4px;
     /*         border-radius: 10px; */
   }
 }
@@ -780,7 +843,7 @@ html body::-webkit-scrollbar {
   color: #4267b2;
 }
 .tartalom-admin .fas.fa-file-pdf {
-  color: red;
+  color: #333;
 }
 .tartalom-admin table,
 .tartalom-admin tr {
@@ -870,12 +933,10 @@ html body::-webkit-scrollbar {
   border: none;
 }
 .public-sidebar .accordion-button {
-  background-color: rgba(174, 255, 237, 0.514);
-  color: rgb(0, 0, 0);
   z-index: 1 !important;
 }
 .public-sidebar .accordion-button::after {
-  color: rgb(0, 0, 0) !important;
+  color: !important;
   border: none;
   z-index: 1 !important;
 }
@@ -1106,12 +1167,8 @@ html body::-webkit-scrollbar {
     max-width: 250px;
   }
 }
-.public-inner-content .card .btn.btn-info {
-  background-color: rgb(147, 245, 98);
-  color: black;
-}
 .public-inner-content .card:hover {
-  box-shadow: 5px 5px black;
+  box-shadow: 5px 5px;
 }
 .public-inner-content .card .card-body {
   position: relative;
@@ -1179,7 +1236,7 @@ html body::-webkit-scrollbar {
   }
 }
 .public-ingatlan-lista .card:hover {
-  box-shadow: 5px 5px black;
+  box-shadow: 5px 5px;
 }
 .public-ingatlan-lista .card .card-footer {
   background-color: white;
@@ -1188,6 +1245,10 @@ html body::-webkit-scrollbar {
 
 .admin {
   padding: 10px;
+}
+
+.custom_button.ow-wysiwyg-toolbar-item {
+  padding: 10px !important;
 }
 
 .dropzone {
@@ -1211,7 +1272,7 @@ html body::-webkit-scrollbar {
   position: fixed;
   top: 50%;
   left: 50%;
-  background-color: #000 !important;
+  background-color: #333 !important;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   min-width: 300px;
@@ -1225,7 +1286,8 @@ html body::-webkit-scrollbar {
   text-align: center;
   padding: 20px;
   border-radius: 10px;
-  background-color: #000 !important;
+  background-color: #333 !important;
+  color: #e0c9cc !important;
 }
 
 .modal-dialog.modal-xl.fullscreen {
@@ -1366,8 +1428,8 @@ body.accessibility #cookieConsent button {
   top: 0;
   bottom: unset;
   left: 0;
-  background-color: red;
-  color: black;
+  background-color: #333;
+  color: #e0c9cc;
   justify-content: center;
   padding: 10px 0px;
 }
@@ -1379,8 +1441,8 @@ body.accessibility #cookieConsent button {
   color: black;
 }
 #cookieConsent button {
-  background: black !important;
-  color: red !important;
+  background: #e0c9cc !important;
+  color: #333 !important;
   border: none !important;
   padding: 0px 5px !important;
 }
@@ -1411,7 +1473,7 @@ body.accessibility .szolgbuborek .torles {
   display: flex;
   padding: 5px;
   min-height: 100px;
-  border: 1px solid red;
+  border: 1px solid #333;
 }
 .szolgbuborek .szoveg {
   width: 90%;
@@ -1423,8 +1485,8 @@ body.accessibility .szolgbuborek .torles {
   height: 30%;
   justify-content: center;
   align-items: center;
-  background-color: red;
-  color: black !important;
+  background-color: #333;
+  color: #e0c9cc !important;
   cursor: pointer;
 }
 
@@ -1449,6 +1511,12 @@ body.accessibility .szolgbuborek .torles {
   border: 2px solid rgb(241, 24, 24);
   background-color: rgb(241, 24, 24);
   color: black;
+}
+
+.idopontfoglalo__ugyfeladatok .foglalButton {
+  background: #333 !important;
+  color: #e0c9cc !important;
+  width: 100%;
 }
 
 body.accessibility .nav-link {
@@ -1494,7 +1562,7 @@ body.accessibility .nav-link.active {
 
 .public-navbar {
   font-size: 1em;
-  background-color: rgb(0, 0, 0);
+  background-color: #e0c9cc;
   /*  background-color: transparent; */
   /* min-height: 50px; */
   /* background-image: var(themes-public-navbarbgimage);
@@ -1548,10 +1616,11 @@ body.accessibility .nav-link.active {
   /* margin: -14px 5px; */
   /* border: 1px black solid; */
   border-radius: 10px;
+  border-color: #333;
 }
 .public-navbar .container-fluid .navbar-toggler i {
   font-size: 30px;
-  color: inherit;
+  color: #333;
 }
 @media screen and (min-width: 992px) {
   .public-navbar .container-fluid .navbar-toggler i {
@@ -1599,6 +1668,17 @@ body.accessibility .nav-link.active {
     font-size: 1.1em;
   }
 }
+.public-navbar__nav .fa-brands.fa-accessible-icon {
+  cursor: pointer;
+  color: #333;
+  padding: 10px;
+  font-size: 30px;
+  width: 50px;
+  height: 30px;
+}
+.public-navbar__nav .fa-brands.fa-accessible-icon.active {
+  color: rgb(0, 255, 0);
+}
 .public-navbar__nav-item:hover {
   border-bottom: 0px;
 }
@@ -1609,7 +1689,7 @@ body.accessibility .nav-link.active {
   }
 }
 .public-navbar__nav-item #myart {
-  color: rgb(58, 214, 197) !important;
+  color: !important;
 }
 @media screen and (min-width: 992px) {
   .public-navbar__nav-item {
@@ -1626,15 +1706,15 @@ body.accessibility .nav-link.active {
   transition-timing-function: ease-in;
   transition-duration: 0.2s;
   border-radius: 15px;
-  color: red !important;
+  color: #333 !important;
   display: flex;
   align-items: center;
   cursor: pointer;
   text-transform: uppercase;
 }
 .public-navbar .nav-link:hover {
-  background-color: rgb(241, 24, 24);
-  color: black !important;
+  background-color: #333;
+  color: #e0c9cc !important;
   /*             border: unset;
         text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
   /*           @media screen and (min-width: 992px) {
@@ -1643,14 +1723,14 @@ body.accessibility .nav-link.active {
         } */
 }
 .public-navbar .nav-link.active {
-  background-color: rgb(241, 24, 24);
+  background-color: #333;
   border: unset;
-  color: black !important;
+  color: #e0c9cc !important;
 }
 @media screen and (min-width: 992px) {
   .public-navbar .nav-link.active {
     /* border-bottom: 5px solid var(themes-public-navlinkhoveractive); */
-    background-color: rgb(241, 24, 24);
+    background-color: #333;
   }
 }
 @media screen and (min-width: 992px) {
@@ -1665,7 +1745,7 @@ body.accessibility .nav-link.active {
   display: block;
 }
 .public-navbar .dropdown-item {
-  background: black;
+  background: #e0c9cc;
   margin: 0px !important;
   color: inherit;
   padding: 0px 0px 0px 10px !important;
@@ -1673,13 +1753,13 @@ body.accessibility .nav-link.active {
 }
 @media screen and (min-width: 992px) {
   .public-navbar .dropdown-item {
-    background-color: rgb(0, 0, 0) !important;
-    padding: 5px !important;
+    background-color: #e0c9cc !important;
+    padding: 0px !important;
   }
 }
 .public-navbar .dropdown-item:focus, .public-navbar .dropdown-item:hover {
   color: transparent !important;
-  background: black !important;
+  background: #333 !important;
 }
 .public-navbar .dropdown-menu {
   background-color: transparent;
@@ -1726,7 +1806,6 @@ body.accessibility .nav-link.active {
   align-items: center;
   /* margin: 0px; */
   margin: 3% 0px;
-  background-color: rgb(58, 214, 197);
   padding: 0px !important;
   border-radius: 15px;
 }
@@ -1758,7 +1837,6 @@ body.accessibility .nav-link.active {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(58, 214, 197);
   padding: 0px;
   width: 100%;
   border-radius: none;
@@ -1768,17 +1846,11 @@ body.accessibility .nav-link.active {
     border-radius: 15px;
   }
 }
-.undernav .accordion-body .btn.btn-success {
-  background-color: rgb(147, 245, 98);
-  color: black;
-}
 .undernav .accordion-button {
-  background-color: rgba(174, 255, 237, 0.514);
-  color: rgb(0, 0, 0);
   z-index: 1 !important;
 }
 .undernav .accordion-button::after {
-  color: rgb(0, 0, 0) !important;
+  color: !important;
   border: none;
   z-index: 1 !important;
 }
@@ -1919,6 +1991,8 @@ body.accessibility .nav-link.active {
 .szolgkat_leiras {
   font-size: 1.2em;
   text-align: justify;
+  white-space: pre-line;
+  padding: 20px;
 }
 
 body.accessibility .idopont_button {
@@ -1992,6 +2066,7 @@ body.accessibility .idopont_button:hover {
   font-size: 0.9em;
   height: auto;
   text-align: justify;
+  display: inline-block;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .szolg_idotartam {
   height: 40px;
@@ -2012,8 +2087,8 @@ body.accessibility .idopont_button:hover {
   text-align: center;
 }
 .fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button {
-  background-color: rgb(241, 24, 24);
-  color: black;
+  background-color: #333;
+  color: #e0c9cc;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -2021,15 +2096,14 @@ body.accessibility .idopont_button:hover {
   padding: 5px 10px;
   height: 50px;
   width: 100%;
-  border: 2px solid rgb(241, 24, 24);
+  border: 2px solid #333;
   position: absolute;
   bottom: 0px;
 }
-.fooldalszolgok .szolgkatblokk .szolg_kartya .szolg_container .idopont_button:hover {
-  color: rgb(241, 24, 24);
-  background-color: black;
-}
 
+body.accessibility .galeria_buttongroup {
+  display: inline-block;
+}
 body.accessibility .galeria_buttongroup .galeria_kategoriabutton {
   background: black !important;
   color: rgb(255, 255, 255) !important;
@@ -2051,18 +2125,21 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   text-align: center;
   margin-bottom: 20px;
 }
+.public_galeria .galeria_buttonsdiv .galeria_buttongroup {
+  display: inline-block;
+}
 .public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton {
-  background: black;
-  color: red;
+  background: #e0c9cc;
+  color: #333;
   box-shadow: none !important;
 }
 .public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton:hover {
-  background: red;
-  color: black;
+  background: #333;
+  color: #e0c9cc;
 }
 .public_galeria .galeria_buttonsdiv .galeria_buttongroup .galeria_kategoriabutton.active {
-  background: red;
-  color: black;
+  background: #333;
+  color: #e0c9cc;
 }
 
 .ingat_card {
@@ -2222,7 +2299,6 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   }
 }
 .ingatlan_card .ingatlan_adatok .ingatlan_cim {
-  background-color: rgb(58, 214, 197);
   color: black;
   padding: 10px 5px;
   font-size: 1em;
@@ -2274,7 +2350,6 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 }
 .ingatlan_card .ingatlan_adatok .alapadatok {
   font-size: 25px;
-  background-color: rgb(58, 214, 197);
   color: black;
   padding: 15px;
 }
@@ -2286,7 +2361,6 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   white-space: pre-line;
 }
 .ingatlan_card .ertekesito_adatok {
-  background-color: rgb(58, 214, 197);
   display: flex;
   text-align: center;
   flex-direction: column;
@@ -2681,7 +2755,7 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 .public_rolunk__fejlec .public_rolunk__fejlec__logo {
   display: none;
   align-self: center;
-  content: url("../images/logo.jpg");
+  content: url("../images/logouj.png");
   height: 80px;
   width: 80px;
   margin-right: 10px;
@@ -2772,11 +2846,9 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 }
 .ertkartya .ertkartya_nevjegy .ertakartya_alapadatok #emailikon {
   margin: 5px 0 0 0;
-  content: url("../images/emailikon.png");
   height: 25px;
 }
 .ertkartya .ertkartya_nevjegy .ertakartya_alapadatok #telikon {
-  content: url("../images/telikon.png");
   height: 25px;
 }
 .ertkartya .ertkartya_nevjegy .ertakartya_alapadatok .spanadat {
@@ -2786,7 +2858,6 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   left: 10px;
 }
 .ertkartya .ertkartya_back {
-  content: url("../images/rolunkback2.png");
   width: 100%;
   height: 300px;
   border: 1px solid #dddddd;
@@ -2829,7 +2900,6 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   min-width: 100%;
   min-height: 60px;
   font-size: 1.2em;
-  background-color: rgb(58, 214, 197);
   color: white;
 }
 .public_kapcsolat .kapcsolat_alapadatok {
@@ -3082,20 +3152,20 @@ body.accessibility .linkek a {
   /*  bottom: 0px !important; */
   /* height: 55px; */
   /* position: absolute; */
-  top: 0px;
+  bottom: 0px;
   min-width: 100%;
   max-width: 100%;
-  min-height: 120px;
-  max-height: 120px;
   display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
   border-radius: 0px;
   box-shadow: none;
-  background-color: rgba(0, 0, 0, 0.9);
+  position: relative;
+  background-color: #333;
   /* background-image: var(themes-public-footerbgimage); */
   background-size: contain;
+  color: #333;
 }
 @media screen and (min-width: 992px) {
   .public-footer {
@@ -3111,13 +3181,14 @@ body.accessibility .linkek a {
   /* display: flex; */
   /* justify-content: center; */
   flex-wrap: wrap;
+  padding: 10px 0px;
   /* align-items: center; */
 }
 .public-footer__div .copyright {
   /* min-height: 60px; */
   min-width: 100%;
   border-radius: 0px;
-  color: rgb(255, 255, 255);
+  color: #e0c9cc;
   font-size: 1em;
   display: flex;
   justify-content: center;
@@ -3131,7 +3202,7 @@ body.accessibility .linkek a {
   }
 }
 .public-footer__div .copyright #inftechsol_link {
-  color: white !important;
+  color: #e0c9cc !important;
   text-decoration: none;
 }
 .public-footer__div .linkek {
@@ -3139,7 +3210,7 @@ body.accessibility .linkek a {
   max-width: 100%;
 }
 .public-footer__div .linkek a {
-  color: rgb(241, 24, 24);
+  color: #e0c9cc;
 }
 
 .admin-footer {

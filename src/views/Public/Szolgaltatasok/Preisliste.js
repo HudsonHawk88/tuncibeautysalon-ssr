@@ -8,9 +8,35 @@ const Preisliste = (props) => {
 
   const [szolgaltatasok, setSzolgaltatasok] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [deviceDimensions, setDeviceDimensions] = useState(
+    __isBrowser__
+      ? { height: window.innerHeight, width: window.innerWidth }
+      : { height: 0, width: 0 }
+  );
+
+  const tableHeaders = [
+    { id: 0, name: lang === "ch" ? "Dienstleistungen" : "Szolgáltatások" },
+    { id: 1, name: lang === "ch" ? "Einzelheiten" : "Részletek" },
+    { id: 2, name: lang === "ch" ? "Preis" : "Ár" },
+    { id: 3, name: lang === "ch" ? "Zeitraum" : "Időtartam" },
+  ];
+
+  const resizeListener = () => {
+    setDeviceDimensions({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
+  };
 
   useEffect(() => {
     init();
+    if (__isBrowser__) {
+      window.addEventListener("resize", resizeListener);
+    }
+
+    return () => {
+      if (__isBrowser__) window.removeEventListener("resize", resizeListener);
+    };
   }, [lang]);
 
   const init = () => {
@@ -79,22 +105,165 @@ const Preisliste = (props) => {
     return <DataTable columns={columns} datas={szolgaltatasok} />;
   }; */
 
+  const toggleSzoveg = (e, id) => {
+    const row = document.getElementsByClassName(`rowClass_${id}`);
+    if (e && e.target && row) {
+      Array.prototype.forEach.call(Array.from(row), (r) => {
+        const children = Array.from(r.children);
+        if (r.className === `rowClass_${id}`) {
+          Array.prototype.forEach.call(children, (cell) => {
+            const c =
+              Array.from(cell.children)[1] &&
+              Array.from(cell.children)[1].className
+                ? Array.from(cell.children)[1]
+                : cell;
+            if (c.className === "szolgreszletek") {
+              const tobbDiv = Array.from(c.children)[0];
+              if (c.style.whiteSpace && tobbDiv) {
+                c.style.whiteSpace =
+                  c.style.whiteSpace === "nowrap" ? "break-spaces" : "nowrap";
+                tobbDiv.innerText =
+                  c.style.whiteSpace === "nowrap"
+                    ? lang === "ch"
+                      ? "Mehr..."
+                      : "Több..."
+                    : lang === "ch"
+                    ? "Weniger..."
+                    : "Kevesebb...";
+              }
+            }
+          });
+        } else {
+          Array.prototype.forEach.call(children, (cell) => {
+            const c =
+              Array.from(cell.children)[1] &&
+              Array.from(cell.children)[1].className
+                ? Array.from(cell.children)[1]
+                : cell;
+            if (c.className === "szolgreszletek") {
+              const tobbDiv = Array.from(c.children)[0];
+              if (c.style.whiteSpace && tobbDiv) {
+                c.style.whiteSpace = "nowrap";
+                tobbDiv.innerText = lang === "ch" ? "Mehr..." : "Több...";
+              }
+            }
+          });
+        }
+      });
+    }
+  };
+
   const getRows = (group, obj) => {
+    const priceListSzolgReszletStyle = {
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      maxWidth: deviceDimensions.width < 992 ? "50%" : "200ch",
+      display: deviceDimensions.width < 992 ? "inline-block" : "table-cell",
+      padding: "10px",
+      cursor: "pointer",
+    };
+
+    const szolgReszletek =
+      deviceDimensions.width < 992 ? (
+        <span
+          key={"2_cell"}
+          className="szolgreszletek"
+          style={priceListSzolgReszletStyle}
+          // onClick={(e) => toggleSzoveg(e, obj.id)}
+        >
+          {`${obj.szolgreszletek} `}
+          {deviceDimensions.width < 992 && (
+            <div
+              style={{
+                fontWeight: 900,
+                textDecoration: "underline",
+                cursor: "pointer",
+                color: "#333",
+              }}
+              onClick={(e) => toggleSzoveg(e, obj.id)}
+            >
+              {lang === "ch" ? "Mehr..." : "Több..."}
+            </div>
+          )}
+        </span>
+      ) : (
+        <span
+          className="szolgreszletek"
+          style={priceListSzolgReszletStyle}
+          key={"2_cell"}
+          // onClick={(e) => toggleSzoveg(e, obj.id)}
+        >
+          {`${obj.szolgreszletek} `}
+          {deviceDimensions.width < 992 ||
+            (deviceDimensions.width > 992 &&
+              obj.szolgreszletek &&
+              (obj.szolgreszletek + "").length > 200 && (
+                <div
+                  style={{
+                    fontWeight: 900,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    color: "#333",
+                  }}
+                  onClick={(e) => toggleSzoveg(e, obj.id)}
+                >
+                  {lang === "ch" ? "Mehr..." : "Több..."}
+                </div>
+              ))}
+        </span>
+      );
+
     if (
       lang === "ch"
         ? group === obj.kategorianev
         : group === obj.magyarkategorianev
     ) {
-      return (
-        <tr key={obj.id}>
-          <td key={"1_cell"}>{obj.szolgrovidnev}</td>
-          <td key={"2_cell"}>{obj.szolgreszletek}</td>
-          <td key={"3_cell"}>{`${obj.ar} ${obj.penznem}`}</td>
-          <td key={"4_cell"}>{`${obj.idotartam} ${
-            lang === "ch" ? "Minuten" : "perc"
-          }`}</td>
-        </tr>
-      );
+      if (deviceDimensions.width < 992) {
+        return (
+          <tr key={obj.id} className={"rowClass_" + obj.id.toString()}>
+            <td className="szolgrovidnev">
+              <div className="mobilheader">{tableHeaders[0].name}</div>
+              <span style={{ padding: 10 }} key={"1_cell"}>
+                {obj.szolgrovidnev}
+              </span>
+            </td>
+            <td>
+              <div className="mobilheader">{tableHeaders[1].name}</div>
+              {szolgReszletek}
+            </td>
+            <td className="szolgar">
+              <div className="mobilheader">{tableHeaders[2].name}</div>
+              <span
+                style={{ padding: 10 }}
+                key={"3_cell"}
+              >{`${obj.ar} ${obj.penznem}`}</span>
+            </td>
+            <td className="szolgidotartam">
+              <div className="mobilheader">{tableHeaders[3].name}</div>
+              <span style={{ padding: 10 }} key={"4_cell"}>{`${obj.idotartam} ${
+                lang === "ch" ? "Minuten" : "perc"
+              }`}</span>
+            </td>
+          </tr>
+        );
+      } else {
+        return (
+          <tr key={obj.id} className={"rowClass_" + obj.id.toString()}>
+            <td className="szolgrovidnev" key={"1_cell"}>
+              {obj.szolgrovidnev}
+            </td>
+            {szolgReszletek}
+            <td
+              className="szolgar"
+              key={"3_cell"}
+            >{`${obj.ar} ${obj.penznem}`}</td>
+            <td className="szolgidotartam" key={"4_cell"}>{`${obj.idotartam} ${
+              lang === "ch" ? "Minuten" : "perc"
+            }`}</td>
+          </tr>
+        );
+      }
     }
   };
 
@@ -105,13 +274,25 @@ const Preisliste = (props) => {
           <div>
             <h4>{group}</h4>
           </div>
-          <Table bordered style={{ color: "white", width: "100%" }}>
-            <thead style={{ maxWidth: "100%" }}>
+          <Table bordered id="pricelisttable">
+            <thead>
               <tr>
-                <td>{lang === "ch" ? "Dienstleistungen" : "Szolgáltatások"}</td>
-                <td>{lang === "ch" ? "Einzelheiten" : "Részletek"}</td>
-                <td>{lang === "ch" ? "Preis" : "Ár"}</td>
-                <td>{lang === "ch" ? "Zeitraum" : "Időtartam"}</td>
+                {tableHeaders.map((tH, i) => {
+                  return (
+                    <td
+                      key={`TH_${i}`}
+                      style={
+                        tH.id !== 1
+                          ? tH.id === 0
+                            ? { width: "20%" }
+                            : { width: "10%" }
+                          : {}
+                      }
+                    >
+                      {tH.name}
+                    </td>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>

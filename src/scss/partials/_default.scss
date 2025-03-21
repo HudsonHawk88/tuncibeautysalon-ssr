@@ -7,7 +7,7 @@
 }
 
 html {
-  scrollbar-color: red black !important;
+  scrollbar-color: var(themes-public-foszin) var(themes-public-mellekszin) !important;
   scroll-behavior: smooth;
 }
 
@@ -17,8 +17,8 @@ html body {
   overflow: visible;
   scrollbar-width: thin;
 
-  background-color: #000;
-  color: rgba(240, 3, 3, 1);
+  background-color: var(themes-public-mellekszin);
+  color: var(themes-public-foszin);
 
   /*  scrollbar-width: thin; */
 }
@@ -40,11 +40,15 @@ html body.accessibility {
 }
 
 html body::-webkit-scrollbar-thumb {
-  background-color: red; /* Set thumb color for Chrome and Safari */
+  background-color: var(
+    themes-public-foszin
+  ); /* Set thumb color for Chrome and Safari */
 }
 
 html body::-webkit-scrollbar-track {
-  background-color: black; /* Set track color for Chrome and Safari */
+  background-color: var(
+    themes-public-mellekszin
+  ); /* Set track color for Chrome and Safari */
 }
 
 table,
@@ -72,8 +76,8 @@ tr {
 html body::-webkit-scrollbar {
   /*  display: none; */
   width: 10px;
-  background-color: #000;
-  scrollbar-color: red !important;
+  background-color: var(themes-public-mellekszin);
+  scrollbar-color: var(themes-public-foszin) !important;
 }
 
 /* html body::-webkit-scrollbar-track-piece {
@@ -132,6 +136,7 @@ html body::-webkit-scrollbar {
   flex-direction: column;
   height: 100vh; */
   width: 100%;
+  display: grid;
   /*   margin: 0px 15%; */
   /* min-width: 100%; */
   /* min-height: 100%; */
@@ -143,6 +148,94 @@ html body::-webkit-scrollbar {
   //     padding: 0px 5vw;
 
   // }
+
+  #pricelisttable {
+    border: 1px solid #333;
+  }
+
+  #pricelisttable tr .mobilheader {
+    display: none;
+  }
+
+  #pricelisttable thead {
+    display: table-header-group;
+    width: 100%;
+
+    & tr {
+      width: 100%;
+      white-space: "nowrap";
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    #pricelisttable {
+      border-collapse: collapse;
+      width: 100% !important;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+    }
+    #pricelisttable thead {
+      display: none;
+    }
+    #pricelisttable tbody {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #pricelisttable tr {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      // line-height: 5ch;
+      line-height: 3ch;
+      border: 2px solid #333;
+
+      & .mobilheader {
+        display: flex;
+        font-weight: 700;
+        vertical-align: middle;
+        text-align: center;
+        border-right: 1px solid #333;
+        padding: 10px;
+      }
+
+      & td,
+      & div,
+      & span {
+        // line-height: 2;
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+        font-size: 0.9rem;
+
+        & div {
+          width: 50%;
+        }
+
+        & span {
+          width: 50%;
+        }
+      }
+
+      & td {
+        border: 1px solid #333;
+        padding: 0;
+      }
+    }
+    // #pricelisttable tr:nth-child(even) {
+    //   background-color: #fff;
+    // }
+    // #pricelisttable tr:nth-child(odd) {
+    //  background-color: #eee;
+    // }
+    // #pricelisttable th {
+    //   background-color: #eee;
+    // }
+  }
 }
 
 .modal-body {
@@ -164,6 +257,8 @@ html body::-webkit-scrollbar {
   top: 2px;
   left: 0px;
   content: var(themes-public-navbarlogo);
+  border-radius: 50%;
+  width: 70px;
   height: 70px;
   padding: 10px;
   z-index: 222;
@@ -173,6 +268,7 @@ html body::-webkit-scrollbar {
     display: block;
     top: 0px;
     height: 150px;
+    width: 150px;
     /* height: 140px; */
     padding: 10px;
     /*  border-radius: 10px 0px 0px 10px; */
@@ -295,7 +391,7 @@ html body::-webkit-scrollbar {
   align-items: center;
   /* width: 100vw; */
   z-index: 2;
-  background-color: black !important;
+  // background-color: black !important;
   /* height: 70px; */
   width: 100%;
   padding: 0px;
@@ -433,7 +529,7 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-youtube {
-  color: red;
+  color: var(themes-public-foszin);
 }
 
 .kozossegi .fa-whatsapp {
@@ -488,11 +584,15 @@ html body::-webkit-scrollbar {
 }
 
 .tartalom::-webkit-scrollbar-thumb {
-  background-color: red; /* Set thumb color for Chrome and Safari */
+  background-color: var(
+    themes-public-foszin
+  ); /* Set thumb color for Chrome and Safari */
 }
 
 .tartalom::-webkit-scrollbar-track {
-  background-color: black; /* Set track color for Chrome and Safari */
+  background-color: var(
+    themes-public-mellekszin
+  ); /* Set track color for Chrome and Safari */
 }
 
 .tartalom.accessibility {
@@ -501,6 +601,11 @@ html body::-webkit-scrollbar {
   a {
     text-decoration: underline;
   }
+}
+
+.tartalom:first-child {
+  padding: 10px !important;
+  align-self: start;
 }
 
 .tartalom {
@@ -524,19 +629,23 @@ html body::-webkit-scrollbar {
   /* min-height: calc(100vh - 200px); */
   box-shadow: none !important;
   margin: 3% 0px;
-  padding: 10px 10px;
+  // padding: 10px 10px;
+  min-height: calc(100vh - 248px);
+  position: relative;
 
   a,
   a:hover {
     text-decoration: none;
     color: inherit;
   }
+
   /* background-color: var(themes-public-bgcolor2); */
 
   @media screen and (min-width: 992px) {
     /* max-height: calc(100% - 140px); */
     padding: 0px 7vw;
     margin: 2% 0px;
+    min-height: calc(100vh - 328px);
     /* min-height: calc(200vh + 210px); */
     /*    top: 140px; */
   }
@@ -905,7 +1014,7 @@ html body::-webkit-scrollbar {
   }
 
   .fas.fa-file-pdf {
-    color: red;
+    color: var(themes-public-foszin);
   }
 
   table,
@@ -1362,6 +1471,10 @@ html body::-webkit-scrollbar {
   padding: 10px;
 }
 
+.custom_button.ow-wysiwyg-toolbar-item {
+  padding: 10px !important;
+}
+
 .dropzone {
   flex: 1;
   display: flex;
@@ -1383,7 +1496,7 @@ html body::-webkit-scrollbar {
   position: fixed;
   top: 50%;
   left: 50%;
-  background-color: #000 !important;
+  background-color: var(themes-public-foszin) !important;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   min-width: 300px;
@@ -1397,7 +1510,8 @@ html body::-webkit-scrollbar {
     text-align: center;
     padding: 20px;
     border-radius: 10px;
-    background-color: #000 !important;
+    background-color: var(themes-public-foszin) !important;
+    color: var(themes-public-mellekszin) !important;
   }
 }
 
@@ -1553,8 +1667,8 @@ body.accessibility {
   top: 0;
   bottom: unset;
   left: 0;
-  background-color: red;
-  color: black;
+  background-color: var(themes-public-foszin);
+  color: var(themes-public-betuszin);
   justify-content: center;
   padding: 10px 0px;
 
@@ -1568,8 +1682,8 @@ body.accessibility {
   }
 
   & button {
-    background: black !important;
-    color: red !important;
+    background: var(themes-public-mellekszin) !important;
+    color: var(themes-public-foszin) !important;
     border: none !important;
     padding: 0px 5px !important;
   }

@@ -26,6 +26,9 @@ import adminKapcsolatokServices from './routes/AdminRoutes/AdminKapcsolatService
 import publicKapcsolatokServices from './routes/PublicRoutes/Kapcsolatok/PublicKapcsolatok.js';
 import adminGdpr from './routes/AdminRoutes/AdminGDPR/AdminGDPRServices.js';
 import publicGdpr from './routes/PublicRoutes/GDPR/publicGDPRServices.js';
+import adminHirlevelService from './routes/AdminRoutes/AdminHirlevelServices/AdminHirlevelServices.js';
+import adminFeliratkozasServices from './routes/AdminRoutes/AdminFeliratkozasServices/AdminFeliratkozasServices.js';
+import publicFeliratkozasServices from './routes/PublicRoutes/Feliratkozas/PublicFeliratkozasServices.js';
 import orszagokService from './routes/common/OrszagokService/OrszagokService.js';
 import telepulesekService from './routes/common/TelepulesekService/TelepulesekService.js';
 import mailerService from './routes/common/MailerService/MailerService.js';
@@ -126,6 +129,12 @@ app.use(['/api/admin/idopontok'], adminIdopontfoglaloServices)
 // SZABADNAPOK
 app.use(['/api/szabadnapok'], publicSzabadnapokServices)
 app.use(['/api/admin/szabadnapok'], adminSzabadnapokServices)
+// HIRLEVEL
+// app.use(['/api/hirlevel'], publicSzabadnapokServices)
+app.use(['/api/admin/hirlevel'], adminHirlevelService)
+// FELIRATKOZAS
+app.use(['/api/feliratkozas'], publicFeliratkozasServices)
+app.use(['/api/admin/feliratkozas'], adminFeliratkozasServices)
 
 app.get('*', actionIndex);
 

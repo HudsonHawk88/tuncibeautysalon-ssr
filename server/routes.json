@@ -17,6 +17,10 @@
         "/api/admin/idopontok",
         "/api/admin/idopontok/szabadidopontok",
         "/api/szabadnapok",
-        "/api/admin/szabadnapok"
+        "/api/admin/szabadnapok",
+        "/api/admin/hirlevel",
+        "/api/hirlevel",
+        "/api/feliratkozas",
+        "/api/admin/feliratkozas"
     ]
 }

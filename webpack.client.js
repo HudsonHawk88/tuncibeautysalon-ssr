@@ -39,7 +39,8 @@ module.exports = {
             staticUrl: process.env.REACT_APP_staticUrl,
             mainUrl: process.env.REACT_APP_mainUrl,
             devvaltoKey: process.env.REACT_APP_devvaltoAK,
-            lang: process.env.REACT_APP_defaultlang
+            lang: process.env.REACT_APP_defaultlang,
+            REACT_APP_hirelvelSendSecret: process.env.REACT_APP_hirelvelSendSecret
         }),
         new HtmlWebpackPlugin({
             template: './indexTemplate.html',

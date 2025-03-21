@@ -13,20 +13,22 @@ body.accessibility {
   /*  bottom: 0px !important; */
   /* height: 55px; */
   /* position: absolute; */
-  top: 0px;
+  bottom: 0px;
   min-width: 100%;
   max-width: 100%;
-  min-height: 120px;
-  max-height: 120px;
+  // min-height: 120px;
+  // max-height: 120px;
   display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
   border-radius: 0px;
   box-shadow: none;
+  position: relative;
   background-color: var(themes-public-footerdivbgcolor);
   /* background-image: var(themes-public-footerbgimage); */
   background-size: contain;
+  color: var(themes-public-foszin);
 
   @media screen and (min-width: 992px) {
     /* box-shadow: 0.25rem 0.25rem 4px 4px var(themes-public-boxshadowcolor); */
@@ -42,13 +44,14 @@ body.accessibility {
     /* display: flex; */
     /* justify-content: center; */
     flex-wrap: wrap;
+    padding: 10px 0px;
     /* align-items: center; */
 
     & .copyright {
       /* min-height: 60px; */
       min-width: 100%;
       border-radius: 0px;
-      color: var(themes-public-footerfontcolor);
+      color: var(themes-public-mellekszin);
       font-size: 1em;
       display: flex;
       justify-content: center;
@@ -61,7 +64,7 @@ body.accessibility {
       }
 
       & #inftechsol_link {
-        color: white !important;
+        color: var(themes-public-mellekszin) !important;
         text-decoration: none;
       }
     }
@@ -71,7 +74,7 @@ body.accessibility {
       max-width: 100%;
 
       & a {
-        color: rgba(241, 24, 24, 1);
+        color: var(themes-public-mellekszin);
       }
     }
   }

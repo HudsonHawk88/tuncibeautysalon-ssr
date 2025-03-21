@@ -103,10 +103,11 @@ body.accessibility {
       /* margin: -14px 5px; */
       /* border: 1px black solid; */
       border-radius: 10px;
+      border-color: var(themes-public-foszin);
 
       & i {
         font-size: 30px;
-        color: inherit;
+        color: var(themes-public-foszin);
 
         @media screen and (min-width: 992px) {
           font-size: 30px;
@@ -154,6 +155,19 @@ body.accessibility {
       /*   border-radius: 0px 10px 10px 0px; */
       font-size: 1.1em;
     }
+
+    .fa-brands.fa-accessible-icon {
+      cursor: pointer;
+      color: var(themes-public-foikonszin);
+      padding: 10px;
+      font-size: 30px;
+      width: 50px;
+      height: 30px;
+
+      &.active {
+        color: var(themes-public-mellekikonszin);
+      }
+    }
   }
 
   &__nav-item {
@@ -185,7 +199,7 @@ body.accessibility {
     transition-timing-function: ease-in;
     transition-duration: 0.2s;
     border-radius: 15px;
-    color: red !important;
+    color: var(themes-public-foszin) !important;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -193,7 +207,7 @@ body.accessibility {
 
     &:hover {
       background-color: var(themes-public-navlinkhoveractive);
-      color: black !important;
+      color: var(themes-public-betuszin) !important;
       /*             border: unset;
             text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
 
@@ -206,11 +220,11 @@ body.accessibility {
     &.active {
       background-color: var(themes-public-navlinkhoveractive);
       border: unset;
-      color: black !important;
+      color: var(themes-public-betuszin) !important;
 
       @media screen and (min-width: 992px) {
         /* border-bottom: 5px solid var(themes-public-navlinkhoveractive); */
-        background-color: rgba(241, 24, 24, 1);
+        background-color: var(themes-public-navlinkhoveractive);
       }
     }
 
@@ -235,7 +249,7 @@ body.accessibility {
   // }
 
   .dropdown-item {
-    background: black;
+    background: var(themes-public-navbgcolor);
     margin: 0px !important;
     color: inherit;
     padding: 0px 0px 0px 10px !important;
@@ -243,13 +257,13 @@ body.accessibility {
 
     @media screen and (min-width: 992px) {
       background-color: var(themes-public-navbgcolor) !important;
-      padding: 5px !important;
+      padding: 0px !important;
     }
 
     &:focus,
     &:hover {
       color: transparent !important;
-      background: black !important;
+      background: var(themes-public-navlinkhoveractive) !important;
     }
   }
 

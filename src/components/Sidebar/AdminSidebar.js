@@ -163,6 +163,30 @@ const AdminSidebar = (props) => {
                 </NavLink>
               </NavItem>
             )}
+            {hasRole(user.roles, ["SZUPER_ADMIN", "HIRLEVEL"]) && (
+              <NavItem className="admin-sidebar__navitem">
+                <NavLink
+                  className="admin-sidebar__navlink nav-link"
+                  to="/admin/hirlevelek"
+                  id="hirlevelek"
+                >
+                  &nbsp;&nbsp;<i className="fa-solid fa-envelope-open-text"></i>
+                  &nbsp;Hírlevelek
+                </NavLink>
+              </NavItem>
+            )}
+            {hasRole(user.roles, ["SZUPER_ADMIN", "HIRLEVEL"]) && (
+              <NavItem className="admin-sidebar__navitem">
+                <NavLink
+                  className="admin-sidebar__navlink nav-link"
+                  to="/admin/feliratkozok"
+                  id="feliratkozok"
+                >
+                  &nbsp;&nbsp;<i className="fa-solid fa-envelope-open-text"></i>
+                  &nbsp;Feliratkozók
+                </NavLink>
+              </NavItem>
+            )}
           </Nav>
         </Collapse>
       </Navbar>

@@ -10,17 +10,17 @@ const Sortable = (props) => {
   const handleSort = () => {
     const szolgSorrendekClone = [...items];
     const temp = szolgSorrendekClone[dragItem.current];
-    szolgSorrendekClone[dragItem.current] = szolgSorrendekClone[draggedOverItem.current];
+    szolgSorrendekClone[dragItem.current] =
+      szolgSorrendekClone[draggedOverItem.current];
     szolgSorrendekClone[draggedOverItem.current] = temp;
     console.log(dragItem.current, draggedOverItem.current);
 
-    console.log(setItems)
+    console.log(setItems);
     dragItem.current = 0;
     draggedOverItem.current = 0;
-    szolgSorrendekClone.forEach((s, idx) => s.sorrend = (idx + 1))
+    szolgSorrendekClone.forEach((s, idx) => (s.sorrend = idx + 1));
     setItems(szolgSorrendekClone);
   };
-
 
   return (
     <React.Fragment>
@@ -38,7 +38,7 @@ const Sortable = (props) => {
               onDragEnter={() => (draggedOverItem.current = idx)}
               onDragEnd={handleSort}
               onDragOver={(e) => e.preventDefault()}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <div>{`${idx + 1}.) ${item[innerParam]}`}</div>
             </div>
@@ -51,7 +51,7 @@ const Sortable = (props) => {
 Sortable.propTypes = {
   innerParam: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  setItems: PropTypes.func.isRequired
+  setItems: PropTypes.func.isRequired,
 };
 
 export default Sortable;

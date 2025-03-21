@@ -1,5 +1,9 @@
+@use "../variables/colors";
+@use "../functions/var" as *;
+
 body.accessibility {
   .galeria_buttongroup {
+    display: inline-block;
     .galeria_kategoriabutton {
       background: black !important;
       color: rgba(255, 255, 255, 1) !important;
@@ -26,19 +30,20 @@ body.accessibility {
     margin-bottom: 20px;
 
     .galeria_buttongroup {
+      display: inline-block;
       .galeria_kategoriabutton {
-        background: black;
-        color: red;
+        background: var(themes-public-mellekszin);
+        color: var(themes-public-foszin);
         box-shadow: none !important;
 
         &:hover {
-          background: red;
-          color: black;
+          background: var(themes-public-foszin);
+          color: var(themes-public-mellekszin);
         }
 
         &.active {
-          background: red;
-          color: black;
+          background: var(themes-public-foszin);
+          color: var(themes-public-mellekszin);
         }
       }
     }

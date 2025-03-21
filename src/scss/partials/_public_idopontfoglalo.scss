@@ -1,3 +1,6 @@
+@use "../variables/colors";
+@use "../functions/var" as *;
+
 body.accessibility {
   .idopontfoglalo__ido {
     border: 2px solid rgba(255, 255, 255, 1);
@@ -25,7 +28,7 @@ body.accessibility {
   display: flex;
   padding: 5px;
   min-height: 100px;
-  border: 1px solid red;
+  border: 1px solid var(themes-public-foszin);
 
   & .szoveg {
     width: 90%;
@@ -38,8 +41,8 @@ body.accessibility {
     height: 30%;
     justify-content: center;
     align-items: center;
-    background-color: red;
-    color: black !important;
+    background-color: var(themes-public-foszin);
+    color: var(themes-public-betuszin) !important;
     cursor: pointer;
 
     // & span {
@@ -73,5 +76,17 @@ body.accessibility {
     border: 2px solid rgba(241, 24, 24, 1);
     background-color: rgba(241, 24, 24, 1);
     color: black;
+  }
+}
+
+.idopontfoglalo__ugyfeladatok {
+  .foglalButton {
+    background: var(themes-public-foszin) !important;
+    color: var(themes-public-mellekszin) !important;
+    width: 100%;
+
+    // &.active {
+    //   background: rgba(255,255,255, 1);
+    // }
   }
 }
