@@ -279,8 +279,8 @@ router.get('/addcron', async (req, res) => {
                         new Cron(cronPattern, { 
                             name: jobName,
                             timezone: 'Europe/Budapest'
-                        }, () => {
-                                Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                        }, async () => {
+                               return await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
                                     method: 'POST',
                                     mode: "cors",
                                     cache: "no-cache",
