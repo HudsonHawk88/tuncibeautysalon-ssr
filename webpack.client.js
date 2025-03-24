@@ -40,7 +40,8 @@ module.exports = {
             mainUrl: process.env.REACT_APP_mainUrl,
             devvaltoKey: process.env.REACT_APP_devvaltoAK,
             lang: process.env.REACT_APP_defaultlang,
-            REACT_APP_hirelvelSendSecret: process.env.REACT_APP_hirelvelSendSecret
+            REACT_APP_hirelvelSendSecret: process.env.REACT_APP_hirelvelSendSecret,
+            cronUrl: process.env.REACT_APP_cronUrl
         }),
         new HtmlWebpackPlugin({
             template: './indexTemplate.html',

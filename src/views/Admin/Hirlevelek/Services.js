@@ -1,7 +1,8 @@
 import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
 const hirlevelekAdminUrl = location.origin + "/api/admin/hirlevel";
-const cronUrl = location.protocol + '//' + location.hostname + ':8081/api/admin/hirlevel';
+// const cronUrl = location.protocol + '//' + location.hostname + ':8081/api/admin/hirlevel';
+const cronUrl = __isBrowser__ ? process.env.cronUrl + '/api/admin/hirlevel' : 'http://192.168.1.76:8081/api/admin/hirlevel';
 
 export default class Services {
   // HIRLEVELEK START

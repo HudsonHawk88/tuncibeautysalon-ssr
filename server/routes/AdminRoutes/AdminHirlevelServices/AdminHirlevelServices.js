@@ -287,7 +287,7 @@ router.get('/addcron', async (req, res) => {
                                 cache: "no-cache",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    "Access-Control-Allow-Origin": "http://inftechsol.hu:8081",
+                                    "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
                                     secret: secret
                                 }
                             }, (errrr) => {
