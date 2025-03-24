@@ -288,11 +288,13 @@ router.get('/addcron', async (req, res) => {
                                     headers: {
                                         "Content-Type": "application/json",
                                         "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
-                                        secret: secret
+                                        secret: secret,
+                                        token
                                     }
                                 }, (errrr) => {
                                     if (errrr)  {
                                         log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
+                                        res.status(400).send({ err: errrr })
                                     }
                                 });
                             } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); res.status(500).send({ err: e }) }
