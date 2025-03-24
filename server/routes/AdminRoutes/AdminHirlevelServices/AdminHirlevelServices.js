@@ -295,7 +295,7 @@ router.get('/addcron', async (req, res) => {
                                         log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
                                     }
                                 });
-                            } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); }
+                            } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); res.status(500).send({ err: e }) }
                             
                         });
     
