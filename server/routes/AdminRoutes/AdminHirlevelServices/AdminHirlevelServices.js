@@ -398,7 +398,7 @@ router.delete('/stopcron', async (req, res) => {
     }
 });
 
-router.post('/send', async (req) => {
+router.post('/send', async (req, res) => {
     // const token = req.cookies.JWT_TOKEN;
     const id = req.query.id;
     const secret = req.headers.secret
@@ -436,25 +436,25 @@ router.post('/send', async (req) => {
                                 }, (error) => {
                                     if (error) {
                                         log(`/api/hirlevel/send?secret=${secret}&id=${id}`, error)
-                                        return { err: error }
+                                        res.status(400).send({ err: error })
                                     } else {
-                                        return { err: null }
+                                        res.status(200).send({ err: null })
                                     }
                                 });
                             }
                         })
                     } else {
-                        return { err: 'Nincs feliratkozó!' }
+                        res.status(400).send({ err: 'Nincs feliratkozó!' })
                     }
 
                 } else {
                     log(`/api/hirlevel/send?secret=${secret}&id=${id}`, err)
-                    return { err }
+                    res.status(400).send({ err: err })
                 }
             });
         } else {
             log(`/api/hirlevel/send?secret=${secret}&id=undefined}`, 'Id megadása kötelező')
-            return { err: 'Id megadása kötelező' }
+            res.status(400).send({ err: 'Id megadása kötelező' })
         }
     }
 });
