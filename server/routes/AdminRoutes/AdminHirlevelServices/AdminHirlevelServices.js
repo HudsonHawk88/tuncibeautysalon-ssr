@@ -280,21 +280,23 @@ router.get('/addcron', async (req, res) => {
                             name: jobName,
                             timezone: 'Europe/Budapest'
                         }, async () => {
-    
-                            await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
-                                method: 'POST',
-                                mode: "cors",
-                                cache: "no-cache",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
-                                    secret: secret
-                                }
-                            }, (errrr) => {
-                                if (errrr)  {
-                                    log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
-                                }
-                            });
+                            try {
+                                await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                    method: 'POST',
+                                    mode: "cors",
+                                    cache: "no-cache",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
+                                        secret: secret
+                                    }
+                                }, (errrr) => {
+                                    if (errrr)  {
+                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
+                                    }
+                                });
+                            } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); }
+                            
                         });
     
                         res.status(200).send({ msg: 'Hírlevél indítása sikeres!' });
