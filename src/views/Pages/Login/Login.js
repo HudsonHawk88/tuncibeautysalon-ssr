@@ -9,7 +9,7 @@ function Login(props) {
     password: "",
   });
 
-  const { setUser, setErtekesito, addNotification } = props;
+  const { setUser, setErtekesito } = props;
 
   const handleInputChange = (e) => {
     const value =
@@ -25,6 +25,7 @@ function Login(props) {
     Services.login(loginObj, props.isAdmin, (err, res) => {
       if (!err) {
         localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("token", res.token);
         setUser(res.user);
         if (res.ertekesito) {
           setErtekesito(res.ertekesito);

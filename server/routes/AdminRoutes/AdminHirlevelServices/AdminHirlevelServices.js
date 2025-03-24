@@ -12,7 +12,11 @@ const hirlevel = pool;
 
 function getCronPattern(tipus) {
     switch (tipus) {
-        case 'teszt': {
+        case 'teszt20': {
+            return `* * * * *`;
+        }
+
+        case 'teszt60': {
             return `* * * * *`;
         }
 
@@ -251,7 +255,7 @@ router.delete('/', async (req, res) => {
 });
 
 router.get('/addcron', async (req, res) => {
-    const token = req.cookies.JWT_TOKEN;
+    const token = req.headers.token;
     const id = req.headers.id;
     const secret = req.headers.secret;
     
@@ -265,34 +269,36 @@ router.get('/addcron', async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 if (id) {
-                    // const cronPattern = getCronPattern('teszt');
-                    const cronPattern = getCronPattern(process.env.defaultCronPattern);
-                
-                    new Cron(cronPattern, { 
-                        name: `${process.env.jobnamePrefix}${id}`,
-                        timezone: 'Europe/Budapest'
-                    }, async () => {
-
-                       await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
-                            method: 'POST',
-                            mode: "cors",
-                            cache: "no-cache",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-                                secret: secret
-                            }
-                        }, (errrr) => {
-                            if (!errrr)  {
-                                console.log('NINCS HIBA')
-                            } else {
-                                console.log(errrr)
-                            }
+                    const jobName = `${process.env.jobnamePrefix}${id}`;
+                    const foundJob = scheduledJobs.find((j) => j.name === jobName) ? scheduledJobs.find((j) => j.name === jobName) : null;
+                    if (foundJob && foundJob.isRunning()) {
+                        res.status(400).send({ err: 'A hírlevél már el van indítva!', msg: 'A hírlevél már el van indítva!' });
+                    } else {
+                        const cronPattern = getCronPattern(process.env.defaultCronPattern);
+            
+                        new Cron(cronPattern, { 
+                            name: jobName,
+                            timezone: 'Europe/Budapest'
+                        }, async () => {
+    
+                            await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                method: 'POST',
+                                mode: "cors",
+                                cache: "no-cache",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Access-Control-Allow-Origin": "http://inftechsol.hu:8081",
+                                    secret: secret
+                                }
+                            }, (errrr) => {
+                                if (errrr)  {
+                                    log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
+                                }
+                            });
                         });
-                    });
-
-                    console.log(scheduledJobs)
-                    res.status(200).send({})
+    
+                        res.status(200).send({ msg: 'Hírlevél indítása sikeres!' });
+                    }      
                 } else {
                     res.status(400).send({
                         err: 'Id megadása kötelező'
@@ -312,7 +318,7 @@ router.get('/addcron', async (req, res) => {
 });
 
 router.post('/pausecron', async (req, res) => {
-    const token = req.cookies.JWT_TOKEN;
+    const token = req.headers.token;
     const id = req.headers.id;
     if (token) {
         const user = await validateToken(token, jwtparams.secret);
@@ -323,8 +329,15 @@ router.post('/pausecron', async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 if (id) {
-                    const job = scheduledJobs.find((j) => j.name === `${process.env.jobnamePrefix}${id}`);
-                    job.pause();
+                    const jobName = `${process.env.jobnamePrefix}${id}`;
+                    const foundJob = scheduledJobs.find((j) => j.name === jobName) ? scheduledJobs.find((j) => j.name === jobName) : null;
+                    if (foundJob && foundJob.isRunning()) {
+                        foundJob.pause();
+                        res.status(200).send({ msg: 'A hírlevél sikeresen leállítva!' })
+                    } else {
+                        res.status(400).send({ err: 'A hírlevél még nem lett elindítva vagy leállt!', msg: 'A hírlevél még nem lett elindítva vagy leállt!' })
+                    }
+                    
                 } else {
                     res.status(400).send({
                         err: 'Id megadása kötelező'
@@ -344,7 +357,7 @@ router.post('/pausecron', async (req, res) => {
 });
 
 router.delete('/stopcron', async (req, res) => {
-    const token = req.cookies.JWT_TOKEN;
+    const token = req.headers.token;
     const id = req.headers.id;
     if (token) {
         const user = await validateToken(token, jwtparams.secret);
@@ -355,13 +368,14 @@ router.delete('/stopcron', async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 if (id) {
-                    const job = scheduledJobs.find((j) => j.name === `${process.env.jobnamePrefix}${id}`);
-                    console.log(job, `${process.env.jobnamePrefix}${id}`)
-                    if (job) {
-                        job.stop();
-                    }
-                    res.status(200).send({})
-                    
+                    const jobName = `${process.env.jobnamePrefix}${id}`;
+                    const foundJob = scheduledJobs.find((j) => j.name === jobName) ? scheduledJobs.find((j) => j.name === jobName) : null;
+                    if (foundJob) {
+                        foundJob.stop();
+                        res.status(200).send({ msg: 'A hírlevél sikeresen törölve az időzítésből!' })
+                    } else {
+                        res.status(400).send({ err: 'A hírlevél még nem lett elindítva!', msg: 'A hírlevél még nem lett elindítva!' })
+                    } 
                 } else {
                     res.status(400).send({
                         err: 'Id megadása kötelező'
@@ -393,27 +407,20 @@ router.post('/send', async (req) => {
             const sql = `SELECT azonosito, tipus, hirlevel, magyarhirlevel FROM hirlevelek WHERE id='${id}';`;
             hirlevel.query(sql, async (err, result) => {
                 if (!err) {
-                    const feliratkozokSql = `SELECT id, feliratkozoNyelv, feliratkozoNev, feliratkozoEmail FROM tuncibeautysalon.feliratkozok;`;
-                    console.log(feliratkozokSql)
-                    
+                    const feliratkozokSql = `SELECT id, feliratkozoNyelv, feliratkozoNev, feliratkozoEmail FROM tuncibeautysalon.feliratkozok;`;         
                     const f = await UseQuery(feliratkozokSql, '/api/admin/hirlevel/send');
-                    console.log('feliratkozokSql, f, f[0]: ', feliratkozokSql, f, f[0]);
                     const feliratkozok = f;
                     let html = ``;
                     const { azonosito, hirlevel, magyarhirlevel } = result[0];
 
-                    console.log("result: ", result)
-
                     if (feliratkozok && feliratkozok.length) {
                         feliratkozok.forEach((feliratkozo) => {
-                            html = feliratkozo.feliratkozonyelv === 'hu' ? magyarhirlevel : hirlevel;
+                            html = feliratkozo.feliratkozoNyelv === 'hu' ? magyarhirlevel : hirlevel;
                             const leirakozoLink = `${process.env.REACT_APP_mainUrl}/abbestellen?id=${feliratkozo.id}`
                             if (html && (html + '').length > 0) {
                                 html = html
                                 .replace('${__LEIRATKOZONEV__}', feliratkozo.feliratkozoNev)
                                 .replace('${__LEIRATKOZOLINK__}', leirakozoLink)
-
-                                console.log('html: ', html)
 
                                 transporter.sendMail({
                                     from: process.env.REACT_APP_noreplyemail,

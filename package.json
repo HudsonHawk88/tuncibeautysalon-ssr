@@ -121,8 +121,9 @@
         "build:server": "webpack --env production --mode production --config webpack.server.js",
         "build:copy": "cp server/server.config.js build/server.config.js",
         "build": "npm run copystatic && npm-run-all --parallel build:*",
-        "prod": "pm2 start build/server.config.js",
-        "stop:prod": "pm2 stop tbs & pm2 delete tbs",
+        "prod-dev": "pm2 start --env development build/server.config.js",
+        "prod": "pm2 start --env production build/server.config.js",
+        "stop:prod": "pm2 stop cron tbs & pm2 delete cron tbs",
         "dev": "prettier --write src/ && concurrently -n frontend,server,node \"npm run webpack:client\" \"npm run webpack:server\" \"npm run webpack:run\"",
         "log": "pm2 logs"
     },

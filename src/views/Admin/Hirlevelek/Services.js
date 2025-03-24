@@ -1,6 +1,7 @@
 import { Microservices } from "../../../../shared/MicroServices.js";
 const location = typeof window !== "undefined" ? window.location : {};
 const hirlevelekAdminUrl = location.origin + "/api/admin/hirlevel";
+const cronUrl = location.protocol + '//' + location.hostname + ':8081/api/admin/hirlevel';
 
 export default class Services {
   // HIRLEVELEK START
@@ -99,18 +100,19 @@ export default class Services {
     return result;
   };
 
-  static startCron = (id, secret, fnDone) => {
+  static startCron = (id, secret, token, fnDone) => {
     let result = Microservices.fetchApi(
-      hirlevelekAdminUrl + "/addcron",
+      cronUrl + "/addcron",
       {
         method: "GET",
         mode: "cors",
         cache: "no-cache",
         headers: {
-          // "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://inftechsol.hu:8080",
           id,
           secret,
+          token
         }
       },
       fnDone
@@ -118,18 +120,19 @@ export default class Services {
     return result;
   };
 
-  static pauseCron = (id, secret, fnDone) => {
+  static pauseCron = (id, secret, token, fnDone) => {
     let result = Microservices.fetchApi(
-      hirlevelekAdminUrl + "/pausecron",
+      cronUrl + "/pausecron",
       {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          "Access-Control-Allow-Origin": "http://inftechsol.hu:8080",
           id,
           secret,
+          token
         },
       },
       fnDone
@@ -137,18 +140,19 @@ export default class Services {
     return result;
   };
 
-  static stopCron = (id, secret, fnDone) => {
+  static stopCron = (id, secret, token, fnDone) => {
     let result = Microservices.fetchApi(
-      hirlevelekAdminUrl + "/stopcron",
+      cronUrl + "/stopcron",
       {
         method: "DELETE",
         mode: "cors",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+          "Access-Control-Allow-Origin": "http://inftechsol.hu:8080",
           id,
           secret,
+          token
         },
       },
       fnDone

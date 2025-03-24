@@ -78,7 +78,7 @@ router.post('/', async (req, res) => {
                             ) ENGINE=InnoDB;`;
                     pool.query(sql, async (error) => {
                         if (!error) {
-                            const hirlevelSql = `SELECT feliratkozoemail FROM feliratkozok WHERE feliratkozoemail = '${felvitelObj.feliratkozoEmail}';`;
+                            const hirlevelSql = `SELECT feliratkozoEmail FROM feliratkozok WHERE feliratkozoEmail = '${felvitelObj.feliratkozoEmail}';`;
                             const result = await UseQuery(hirlevelSql);
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
@@ -143,7 +143,7 @@ router.put('/', async (req, res) => {
                 if (user.roles && user.roles.length !== 0 && hasRole(user.roles, ['SZUPER_ADMIN'])) {
                     if (id) {
                         modositoObj = JSON.parse(JSON.stringify(modositoObj));
-                        const sql = `UPDATE feliratkozok SET feliratkozoNev='${modositoObj.feliratkozoNev}', feliratkozoEmail='${modositoObj.feliratkozoEmail}' WHERE id = '${id}';`;
+                        const sql = `UPDATE feliratkozok SET feliratkozoNev='${modositoObj.feliratkozoNev}', feliratkozoEmail='${modositoObj.feliratkozoEmail}', feliratkozoNyelv='${modositoObj.feliratkozoNyelv}' WHERE id = '${id}';`;
                         pool.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({

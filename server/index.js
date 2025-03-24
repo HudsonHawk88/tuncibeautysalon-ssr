@@ -48,6 +48,7 @@ const app = express();
 const host = process.env.HOST ? process.env.HOST : '127.0.0.1';
 const port = process.env.PORT ? process.env.PORT : 3000;
 const server = http.createServer(app);
+const allowOrigins = ['http://192.168.11.167:3000', 'http://localhost:3000', 'http://192.168.1.76:5500', 'http://inftechsol.hu:5500', 'http://inftechsol.hu:8080', 'http://inftechsol.hu:8081', 'http://localhost:7000', 'http://localhost:7001', 'http://127.0.0.1:7000', 'http://127.0.0.1:7001']
 
 app.use(
     express.json({
@@ -56,13 +57,12 @@ app.use(
 );
 app.use(cookieParser());
 app.use(routes, (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', ['http://192.168.11.167:3000', 'http://localhost:3000', 'http://192.168.1.76:5500', 'http://inftechsol.hu:5500', 'http://inftechsol.hu:8080']);
     res.header('Access-Control-Allow-Methods', '*');
     res.header('Access-Control-Allow-Headers', '*');
     return next();
 });
 
-app.options('*', cors());
+app.use('*', cors({ origin: allowOrigins }));
 app.use(cookieParser());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

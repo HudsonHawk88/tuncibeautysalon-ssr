@@ -105,27 +105,24 @@ const Hirlevelek = (props) => {
     const secret = __isBrowser__
       ? process.env.REACT_APP_hirelvelSendSecret
       : "";
-    Services.startCron(id, secret, (err, res) => {
-      if (!err) {
-        console.log(res)
-      } else {
-        console.log(err)
-      }
-    });
+    const token = localStorage.getItem('token');
+    Services.startCron(id, secret, token, (err, res) => { if (!err) { addNotification('success', res.msg) }});
   };
 
-  const handlePauseCron = (id) => {
-    const secret = __isBrowser__
-      ? process.env.REACT_APP_hirelvelSendSecret
-      : "";
-    Services.pauseCron(id, secret);
-  };
+  // const handlePauseCron = (id) => {
+  //   const secret = __isBrowser__
+  //     ? process.env.REACT_APP_hirelvelSendSecret
+  //     : "";
+  //   const token = localStorage.getItem('token');
+  //   Services.pauseCron(id, secret, token, (err, res) => {if (!err) { addNotification('success', res.msg) }});
+  // };
 
   const handleStopCron = (id) => {
     const secret = __isBrowser__
       ? process.env.REACT_APP_hirelvelSendSecret
       : "";
-    Services.stopCron(id, secret);
+    const token = localStorage.getItem('token');
+    Services.stopCron(id, secret, token, (err, res) => {if (!err) { addNotification('success', res.msg) }});
   };
 
   const handleDeleteClick = (id) => {
@@ -158,21 +155,21 @@ const Hirlevelek = (props) => {
           <i className="fas fa-trash" />
         </Button>
         <Button
-          key={row.id + 1}
+          key={row.id + 3}
           color="link"
           onClick={() => handleStartCron(row.id)}
         >
           <i className="fa-solid fa-play" />
         </Button>
-        <Button
-          key={row.id + 1}
+        {/* <Button
+          key={row.id + 4}
           color="link"
           onClick={() => handlePauseCron(row.id)}
         >
           <i className="fa-solid fa-pause" />
-        </Button>
+        </Button>*/}
         <Button
-          key={row.id + 1}
+          key={row.id + 5}
           color="link"
           onClick={() => handleStopCron(row.id)}
         >
@@ -377,8 +374,6 @@ const Hirlevelek = (props) => {
       </Modal>
     );
   };
-
-  console.log("EDITOR1: ", Editor1);
 
   return (
     <div className="row">

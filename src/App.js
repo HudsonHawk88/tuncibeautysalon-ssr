@@ -100,8 +100,10 @@ function App() {
       console.log(err, res);
       if (!err) {
         setUser(res.user);
+        localStorage.setItem("token", res.token);
       } else {
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("token")
         setTimeout(() => {
           logout("redirect");
         }, 5000);

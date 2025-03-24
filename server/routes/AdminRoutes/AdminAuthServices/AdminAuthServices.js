@@ -104,7 +104,8 @@ router.post('/login', async (req, res) => {
                                 telefon: JSON.parse(user.telefon),
                                 nev: JSON.parse(user.nev)
                             },
-                            refreshToken: refreshtoken
+                            refreshToken: refreshtoken,
+                            token: token
                         });
                     }
                 });
