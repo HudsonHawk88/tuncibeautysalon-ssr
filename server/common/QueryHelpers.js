@@ -5,6 +5,7 @@ import path from 'path';
 import { existsSync, mkdirSync, createWriteStream } from 'fs';
 /* import { google } from 'googleapis'; */
 import { Microservices } from '../../shared/MicroServices.js';
+import moment from 'moment';
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env')
@@ -42,8 +43,9 @@ const pool = createPool(db_params);
     }); */
 
 const log = (endPoint, error) => {
-    const time = new Date().toLocaleDateString(hungarian);
-    let filePath = `${process.env.REACT_APP_logDir}/${time}_error.log`;
+    const date = new Date().toLocaleDateString(hungarian);
+    const time = moment(moment.now()).format('YYYY-MM-DD HH:mm:ss');
+    let filePath = `${process.env.REACT_APP_logDir}/${date}_error.log`;
     const isDirExist = existsSync(process.env.REACT_APP_logDir);
     const logger = createWriteStream(filePath, { flags: 'a' });
 

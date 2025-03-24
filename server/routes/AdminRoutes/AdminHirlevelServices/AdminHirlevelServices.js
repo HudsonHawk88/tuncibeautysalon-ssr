@@ -275,22 +275,23 @@ router.get('/addcron', async (req, res) => {
                         res.status(400).send({ err: 'A hírlevél már el van indítva!', msg: 'A hírlevél már el van indítva!' });
                     } else {
                         const cronPattern = getCronPattern(process.env.defaultCronPattern);
-                        new Cron(cronPattern, { 
+                        const job = new Cron(cronPattern, { 
                             name: jobName,
                             timezone: 'Europe/Budapest'
-                        }, async () => {
-                            
-                            await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                        }, () => {
+                            const url = `${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`;
+                            console.log("URL: ", url);
+                            Microservices.fetchApi(url, {
                                 method: 'POST',
-                                mode: "cors",
+                                mode: "no-cors",
                                 cache: "no-cache",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
                                     secret: secret
                                 }
-                            }).then().catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); console.log("CATCH CA: ", ca); });
-                                
+                            }).then((res,rej) => console.log(res, rej)).catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); console.log("CATCH CA: ", ca); });
+                               
+                            job.trigger();
                                
                             
                         });
