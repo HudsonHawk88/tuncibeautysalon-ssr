@@ -280,26 +280,17 @@ router.get('/addcron', async (req, res) => {
                             timezone: 'Europe/Budapest'
                         }, async () => {
                             
-                            try {
-                                let result = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
-                                    method: 'POST',
-                                    mode: "cors",
-                                    cache: "no-cache",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
-                                        secret: secret
-                                    }
-                                }, (eeee) => {
-                                    if (eeee) {
-                                        console.log(eeee);
-                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, eeee);
-                                    }
-                                });
-
-                                return result
+                            await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                method: 'POST',
+                                mode: "cors",
+                                cache: "no-cache",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
+                                    secret: secret
+                                }
+                            }).then().catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); console.log("CATCH CA: ", ca); });
                                 
-                            } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); console.log("CATCH E: ", e); }
                                
                             
                         });
