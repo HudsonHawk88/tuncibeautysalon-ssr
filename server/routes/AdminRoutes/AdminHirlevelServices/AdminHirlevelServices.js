@@ -281,7 +281,7 @@ router.get('/addcron', async (req, res) => {
                             timezone: 'Europe/Budapest'
                         }, async () => {
                             try {
-                                await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                let sendResult = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
                                     method: 'POST',
                                     mode: "cors",
                                     cache: "no-cache",
@@ -291,12 +291,11 @@ router.get('/addcron', async (req, res) => {
                                         secret: secret,
                                         token
                                     }
-                                }, (errrr) => {
-                                    if (errrr)  {
-                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
-                                        res.status(400).send({ err: errrr })
-                                    }
                                 });
+
+                                if (sendResult.err) {
+                                    log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, sendResult.err);
+                                }
                             } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); res.status(500).send({ err: e }) }
                             
                         });
