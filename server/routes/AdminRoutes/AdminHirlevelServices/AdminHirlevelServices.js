@@ -291,10 +291,12 @@ router.get('/addcron', async (req, res) => {
                                 }
                             }).then((res,rej) => console.log(res, rej)).catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); console.log("CATCH CA: ", ca); });
                                
-                            job.trigger();
+                            
                                
                             
                         });
+
+                        job.trigger();
                         
                         res.status(200).send({ msg: 'Hírlevél indítása sikeres!' });
                         
