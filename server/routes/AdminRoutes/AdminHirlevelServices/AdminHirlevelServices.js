@@ -278,10 +278,10 @@ router.get('/addcron', async (req, res) => {
                         new Cron(cronPattern, { 
                             name: jobName,
                             timezone: 'Europe/Budapest'
-                        }, () => {
+                        }, async () => {
                             
                             try {
-                                Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                let result = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
                                     method: 'POST',
                                     mode: "cors",
                                     cache: "no-cache",
@@ -290,14 +290,15 @@ router.get('/addcron', async (req, res) => {
                                         "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
                                         secret: secret
                                     }
-                                }, (errrr) => {
-                                    if (errrr)  {
-                                        console.log("ERRRR: ", errrr);
-                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
-                                    } else {
-                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, "MINDEN FASZA VOLT");
+                                }, (eeee) => {
+                                    if (eeee) {
+                                        console.log(eeee);
+                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, eeee);
                                     }
                                 });
+
+                                return result
+                                
                             } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); console.log("CATCH E: ", e); }
                                
                             
