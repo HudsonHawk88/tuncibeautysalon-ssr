@@ -258,7 +258,7 @@ router.get('/addcron', async (req, res) => {
     const token = req.headers.token;
     const id = req.headers.id;
     const secret = req.headers.secret;
-    
+    console.log("ADDCRON")
 
     if (token) {
         const user = await validateToken(token, jwtparams.secret);
