@@ -275,13 +275,13 @@ router.get('/addcron', async (req, res) => {
                         res.status(400).send({ err: 'A hírlevél már el van indítva!', msg: 'A hírlevél már el van indítva!' });
                     } else {
                         const cronPattern = getCronPattern(process.env.defaultCronPattern);
-            
+                        let sendErr = null;
                         new Cron(cronPattern, { 
                             name: jobName,
                             timezone: 'Europe/Budapest'
                         }, async () => {
                             try {
-                                let sendResult = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                                await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
                                     method: 'POST',
                                     mode: "cors",
                                     cache: "no-cache",
@@ -291,16 +291,21 @@ router.get('/addcron', async (req, res) => {
                                         secret: secret,
                                         token
                                     }
+                                }, (errrr) => {
+                                    if (errrr)  {
+                                        log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
+                                        res.status(400).send({ err: errrr })
+                                    }
                                 });
-
-                                if (sendResult.err) {
-                                    log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, sendResult.err);
-                                }
-                            } catch (e) { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, e); res.status(500).send({ err: e }) }
+                            } catch (e) { sendErr = e; }
                             
                         });
-    
-                        res.status(200).send({ msg: 'Hírlevél indítása sikeres!' });
+                        if (!sendErr) {
+                            res.status(200).send({ msg: 'Hírlevél indítása sikeres!' });
+                        } else {
+                            res.status(400).send({ err: sendErr });
+                        }
+                        
                     }      
                 } else {
                     res.status(400).send({
