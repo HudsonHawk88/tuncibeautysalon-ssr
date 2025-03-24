@@ -426,6 +426,8 @@ router.post('/send', async (req) => {
                                 .replace('${__LEIRATKOZONEV__}', feliratkozo.feliratkozoNev)
                                 .replace('${__LEIRATKOZOLINK__}', leirakozoLink)
 
+                                console.log('HTML: ', html);
+
                                 transporter.sendMail({
                                     from: process.env.REACT_APP_noreplyemail,
                                     to: feliratkozo.feliratkozoEmail,
