@@ -279,7 +279,7 @@ router.get('/addcron', async (req, res) => {
                             name: jobName,
                             timezone: 'Europe/Budapest'
                         }, () => {
-                            const url = `${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`;
+                            const url = `${process.env.belsoApiUrl}/api/admin/hirlevel/send?id=${id}`;
                             console.log("URL: ", url);
                             Microservices.fetchApi(url, {
                                 method: 'POST',
