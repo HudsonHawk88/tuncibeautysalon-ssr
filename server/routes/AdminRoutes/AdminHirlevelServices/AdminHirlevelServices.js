@@ -279,25 +279,21 @@ router.get('/addcron', async (req, res) => {
                         new Cron(cronPattern, { 
                             name: jobName,
                             timezone: 'Europe/Budapest'
-                        }, async () => {
-                            try {
-                                await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
+                        }, () => {
+                                Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, {
                                     method: 'POST',
                                     mode: "cors",
                                     cache: "no-cache",
                                     headers: {
                                         "Content-Type": "application/json",
                                         "Access-Control-Allow-Origin": `${process.env.REACT_APP_mainUrl}`,
-                                        secret: secret,
-                                        token
+                                        secret: secret
                                     }
                                 }, (errrr) => {
                                     if (errrr)  {
                                         log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, errrr);
-                                        res.status(400).send({ err: errrr })
                                     }
                                 });
-                            } catch (e) { sendErr = e; }
                             
                         });
                         if (!sendErr) {
