@@ -7,7 +7,7 @@ const SzolgaltatasCard = (props) => {
   const navigate = useNavigate();
 
   const getLeiras = (leiras) => {
-    return leiras.length > 250 ? leiras.substring(0, 250) + "..." : leiras;
+    return leiras.length > 150 ? leiras.substring(0, 150) + "..." : leiras;
   };
 
   const szolgaltatasKat = {

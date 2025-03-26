@@ -35,15 +35,19 @@ body.accessibility {
       border: 2px solid grey;
       padding: 10px 20px;
       text-align: center;
-      height: 600px;
+      min-height: 360px;
+      max-height: max-content;
 
       @media screen and (min-width: 950px) {
         width: calc(33% - 10px);
-        height: 530px;
+        min-height: 400px;
+        max-height: max-content;
       }
 
       @media screen and (min-width: 1250px) {
-        width: calc(25% - 10px);
+        width: calc(33% - 10px);
+        min-height: 400px;
+        max-height: max-content;
       }
 
       & .szolg_container {

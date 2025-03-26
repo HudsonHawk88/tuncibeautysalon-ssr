@@ -7,13 +7,13 @@ import Lightbox from "react-image-lightbox-rotate-latest";
 
 const Galeria = (props) => {
   const { lang } = props;
-
   const [kategoriak, setKategoriak] = useState([]);
   const [galeriak, setGaleriak] = useState([]);
   const [selectedKategoria, setSelectedkategoria] = useState(0);
   const [selectedGaleria, setSelectedGaleria] = useState([]);
   //   const [currentImage, setCurrentImage] = useState(null);
   const [index, setIndex] = useState(-1);
+  const [buttonDivHeight, setButtonDivHeight] = useState(0);
 
   const currentImage = selectedGaleria[index];
   const nextIndex = (index + 1) % selectedGaleria.length;
@@ -26,6 +26,12 @@ const Galeria = (props) => {
   const handleClose = () => setIndex(-1);
   const handleMovePrev = () => setIndex(prevIndex);
   const handleMoveNext = () => setIndex(nextIndex);
+
+  const resizeListener = () => {
+    const galeriaButtonsDiv = document.getElementById('galeria_buttonsdiv');
+    const buttonsHeight = galeriaButtonsDiv.offsetHeight - 20;
+    setButtonDivHeight(buttonsHeight); 
+  }
 
   const getKategoriak = (callback) => {
     Services.listKategoriak((err, res) => {
@@ -86,7 +92,7 @@ const Galeria = (props) => {
 
   const renderKategoriaButtons = () => {
     return (
-      <div className="galeria_buttonsdiv">
+      <div className="galeria_buttonsdiv" id="galeria_buttonsdiv">
         <ButtonGroup className="galeria_buttongroup">
           {kategoriak.length > 0 &&
             kategoriak.map((kategoria) => {
@@ -113,8 +119,11 @@ const Galeria = (props) => {
   };
 
   const renderGaleria = () => {
+    // console.log("selectedGaleria: ", selectedGaleria);
+    // console.log("buttonDivHeight: ", buttonDivHeight);
     return (
-      selectedGaleria &&
+      <div style={{ position: 'relative', padding: `${buttonDivHeight}px 20px 20px 20px` }}>
+      {selectedGaleria &&
       selectedGaleria.length > 0 && (
         <React.Fragment>
           <Gallery
@@ -140,12 +149,21 @@ const Galeria = (props) => {
             />
           )}
         </React.Fragment>
-      )
+      )}
+      </div>
     );
   };
 
   useEffect(() => {
     getKategoriak(() => getGaleriak((galok) => setDefaultKategoria(galok)));
+    if (__isBrowser__) {
+      window.addEventListener("resize", resizeListener);
+      resizeListener();
+    }
+
+    return () => {
+      if (__isBrowser__) window.removeEventListener("resize", resizeListener);
+    };
   }, []);
 
   useEffect(() => {

@@ -23,11 +23,20 @@ body.accessibility {
 
 .public_galeria {
   width: 100%;
+  position: relative;
+  display: inline-block;
+  justify-content: center;
 
   .galeria_buttonsdiv {
+    position: fixed;
+    z-index: 1;
+    background-color: var(themes-public-mellekszin);
     width: 100%;
     text-align: center;
-    margin-bottom: 20px;
+    top: 70px;
+    padding: 20px;
+    left: 0;
+    // margin-bottom: 20px;
 
     .galeria_buttongroup {
       display: inline-block;
@@ -47,5 +56,22 @@ body.accessibility {
         }
       }
     }
+
+    @media screen and (min-width: 992px) {
+      top: 150px;
+    }
+  }
+
+  & .ReactGridGallery {
+    position: relative;
+    // top: 70px;
+
+    // @media screen and (min-width: 992px) {
+    //   top: 150px;
+    // }
+  }
+
+  @media screen and (min-width: 992px) {
+    display: inline-block;
   }
 }

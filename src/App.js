@@ -103,7 +103,7 @@ function App() {
         localStorage.setItem("token", res.token);
       } else {
         localStorage.removeItem("refreshToken");
-        localStorage.removeItem("token")
+        localStorage.removeItem("token");
         setTimeout(() => {
           logout("redirect");
         }, 5000);

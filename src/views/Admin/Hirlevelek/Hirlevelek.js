@@ -105,8 +105,12 @@ const Hirlevelek = (props) => {
     const secret = __isBrowser__
       ? process.env.REACT_APP_hirelvelSendSecret
       : "";
-    const token = localStorage.getItem('token');
-    Services.startCron(id, secret, token, (err, res) => { if (!err) { addNotification('success', res.msg) }});
+    const token = localStorage.getItem("token");
+    Services.startCron(id, secret, token, (err, res) => {
+      if (!err) {
+        addNotification("success", res.msg);
+      }
+    });
   };
 
   // const handlePauseCron = (id) => {
@@ -121,8 +125,12 @@ const Hirlevelek = (props) => {
     const secret = __isBrowser__
       ? process.env.REACT_APP_hirelvelSendSecret
       : "";
-    const token = localStorage.getItem('token');
-    Services.stopCron(id, secret, token, (err, res) => {if (!err) { addNotification('success', res.msg) }});
+    const token = localStorage.getItem("token");
+    Services.stopCron(id, secret, token, (err, res) => {
+      if (!err) {
+        addNotification("success", res.msg);
+      }
+    });
   };
 
   const handleDeleteClick = (id) => {

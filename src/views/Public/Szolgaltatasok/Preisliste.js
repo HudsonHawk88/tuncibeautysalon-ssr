@@ -221,7 +221,7 @@ const Preisliste = (props) => {
     ) {
       if (deviceDimensions.width < 992) {
         return (
-          <tr key={obj.id} className={"rowClass_" + obj.id.toString()}>
+          <tr key={obj.id} style={{ margin: '10px 0px' }} className={"rowClass_" + obj.id.toString()}>
             <td className="szolgrovidnev">
               <div className="mobilheader">{tableHeaders[0].name}</div>
               <span style={{ padding: 10 }} key={"1_cell"}>
@@ -274,7 +274,7 @@ const Preisliste = (props) => {
           <div>
             <h4>{group}</h4>
           </div>
-          <Table bordered id="pricelisttable">
+          <Table bordered={deviceDimensions.width > 992} style={{ border: deviceDimensions.width > 992 ? '1px solid #333' : 'none' }} id="pricelisttable">
             <thead>
               <tr>
                 {tableHeaders.map((tH, i) => {
