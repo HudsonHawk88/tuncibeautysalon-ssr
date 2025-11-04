@@ -69,7 +69,6 @@ const Idopontfoglalo = (props) => {
     getSzabadnapok();
     listSzolgaltatasok();
     setIdopont({ ...idopont, feliratkozoNyelv: lang });
-
   }, [lang]);
 
   useEffect(() => {

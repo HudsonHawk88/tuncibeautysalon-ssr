@@ -23,6 +23,29 @@ const defaultGaleriaObj = {
   kepek: [],
 };
 
+const paginationOptions = {
+    count: 5,
+    color: "primary",
+    rowPerPageOptions: [
+        {
+            value: 5,
+            text: "5",
+        },
+        {
+            value: 10,
+            text: "10",
+        },
+        {
+            value: 25,
+            text: "25",
+        },
+        {
+            value: 50,
+            text: "50",
+        },
+    ],
+};
+
 const Galeria = (props) => {
   const { addNotification } = props;
 
@@ -54,8 +77,14 @@ const Galeria = (props) => {
         if (kateg) {
           const galKatIds = res.map((gal) => gal.kategoriaid);
           const filtered = kateg.filter((kat) => !galKatIds.includes(kat.id));
-          // console.log('FILTERED: ', filtered);
-          setKategoriakOptions(filtered);
+          if (currentId) {
+            setKategoriakOptions(filtered);
+          } else {
+            const kategOpts = kateg.filter((kat) =>
+              res.some((r) => r.kategoria !== kat.id)
+            );
+            setKategoriakOptions(kategOpts);
+          }
         }
       }
     });
@@ -266,7 +295,7 @@ const Galeria = (props) => {
       },
     ];
 
-    return <DataTable columns={columns} datas={galeriaJson} />;
+    return <DataTable columns={columns} datas={galeriaJson} paginationOptions={paginationOptions} />;
   };
 
   const Kepek = () => {
