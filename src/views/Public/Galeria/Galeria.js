@@ -28,10 +28,10 @@ const Galeria = (props) => {
   const handleMoveNext = () => setIndex(nextIndex);
 
   const resizeListener = () => {
-    const galeriaButtonsDiv = document.getElementById('galeria_buttonsdiv');
+    const galeriaButtonsDiv = document.getElementById("galeria_buttonsdiv");
     const buttonsHeight = galeriaButtonsDiv.offsetHeight - 20;
-    setButtonDivHeight(buttonsHeight); 
-  }
+    setButtonDivHeight(buttonsHeight);
+  };
 
   const getKategoriak = (callback) => {
     Services.listKategoriak((err, res) => {
@@ -122,34 +122,38 @@ const Galeria = (props) => {
     // console.log("selectedGaleria: ", selectedGaleria);
     // console.log("buttonDivHeight: ", buttonDivHeight);
     return (
-      <div style={{ position: 'relative', padding: `${buttonDivHeight}px 20px 20px 20px` }}>
-      {selectedGaleria &&
-      selectedGaleria.length > 0 && (
-        <React.Fragment>
-          <Gallery
-            images={selectedGaleria}
-            onClick={handleClick}
-            enableImageSelection={false}
-          />
-          {!!currentImage && (
-            /* @ts-ignore */
-            <Lightbox
-              mainSrc={currentImage.src}
-              // imageTitle={currentImage.caption}
-              mainSrcThumbnail={currentImage.src}
-              nextSrc={nextImage.src}
-              nextSrcThumbnail={nextImage.src}
-              prevSrc={prevImage.src}
-              prevSrcThumbnail={prevImage.src}
-              onCloseRequest={handleClose}
-              onMovePrevRequest={handleMovePrev}
-              onMoveNextRequest={handleMoveNext}
-              animationDuration={200}
-              //   toolbarButtons={[<button key='1' onClick={() => alert('JBKJJBJKB')}>+</button>]}
+      <div
+        style={{
+          position: "relative",
+          padding: `${buttonDivHeight}px 20px 20px 20px`,
+        }}
+      >
+        {selectedGaleria && selectedGaleria.length > 0 && (
+          <React.Fragment>
+            <Gallery
+              images={selectedGaleria}
+              onClick={handleClick}
+              enableImageSelection={false}
             />
-          )}
-        </React.Fragment>
-      )}
+            {!!currentImage && (
+              /* @ts-ignore */
+              <Lightbox
+                mainSrc={currentImage.src}
+                // imageTitle={currentImage.caption}
+                mainSrcThumbnail={currentImage.src}
+                nextSrc={nextImage.src}
+                nextSrcThumbnail={nextImage.src}
+                prevSrc={prevImage.src}
+                prevSrcThumbnail={prevImage.src}
+                onCloseRequest={handleClose}
+                onMovePrevRequest={handleMovePrev}
+                onMoveNextRequest={handleMoveNext}
+                animationDuration={200}
+                //   toolbarButtons={[<button key='1' onClick={() => alert('JBKJJBJKB')}>+</button>]}
+              />
+            )}
+          </React.Fragment>
+        )}
       </div>
     );
   };

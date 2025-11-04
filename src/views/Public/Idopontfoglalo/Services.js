@@ -3,6 +3,7 @@ const location = typeof window !== "undefined" ? window.location : {};
 const szolgaltatasokUrl = location.origin + "/api/szolgaltatasok";
 const idopontokUrl = location.origin + "/api/idopontok";
 const szabadnapokUrl = location.origin + "/api/szabadnapok";
+const kapcsolatUrl = location.origin + "/api/kapcsolat";
 
 export default class Services {
   // IDOPONTOK START
@@ -67,6 +68,24 @@ export default class Services {
   static getSzabadnapok = (fnDone) => {
     let result = Microservices.fetchApi(
       szabadnapokUrl,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+        },
+      },
+      fnDone
+    );
+
+    return result;
+  };
+
+  static getNyitvatartas = (fnDone) => {
+    let result = Microservices.fetchApi(
+      kapcsolatUrl + "/nyitvatartasok",
       {
         method: "GET",
         mode: "cors",

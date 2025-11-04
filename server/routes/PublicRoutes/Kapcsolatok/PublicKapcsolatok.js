@@ -49,6 +49,20 @@ router.get('/', async (req, res) => {
         }
 });
 
+router.get('/nyitvatartasok', async (req, res) => {
+    const sql = `SELECT nyitvatartas FROM kapcsolatok;`;
+
+    kapcsolatok.query(sql, (err, result) => {
+        if (!err) {
+            const eredmeny = getJSONfromLongtext(result[0]);
+            res.status(200).send(eredmeny);
+        } else {
+            res.status(500).send({ err: "Hiba történt a nyitvatartás lekérdezésekor!" })
+        }
+    })
+
+})
+
 // KAPCSOLATOK END
 
 export default router;

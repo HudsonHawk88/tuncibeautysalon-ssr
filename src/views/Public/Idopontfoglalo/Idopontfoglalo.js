@@ -32,6 +32,7 @@ const Idopontfoglalo = (props) => {
   const [filteredSzolgaltatasok, setFilteredSzolgaltatasok] = useState([]);
   const [idopontok, setIdopontok] = useState([]);
   const [szabadnapok, setSzabadnapok] = useState([]);
+  const [nyitvatartas, setNyitvatartas] = useState(null);
   const [message, setMessage] = useState(null);
   const [foundInSzabadnap, setFoundInSzabadnap] = useState(false);
   // const [searchParams] = useSearchParams();
@@ -64,11 +65,11 @@ const Idopontfoglalo = (props) => {
   };
 
   useEffect(() => {
+    getNyitvatartasok();
     getSzabadnapok();
     listSzolgaltatasok();
     setIdopont({ ...idopont, feliratkozoNyelv: lang });
 
-    console.log(idopont);
   }, [lang]);
 
   useEffect(() => {
@@ -82,6 +83,16 @@ const Idopontfoglalo = (props) => {
     Services.listSzolgaltatasok((err, res) => {
       if (!err) {
         translteSzolgaltatasok(res);
+      }
+    });
+  };
+
+  const getNyitvatartasok = () => {
+    Services.getNyitvatartas((err, res) => {
+      if (!err) {
+        if (res && res.nyitvatartas) {
+          setNyitvatartas(res.nyitvatartas ? res.nyitvatartas : null);
+        }
       }
     });
   };
@@ -181,10 +192,9 @@ const Idopontfoglalo = (props) => {
       if (!err) {
         window.location.href = "/erfolgreich";
       } else {
-        console.log(err.err.ok);
         if (err.err.ok === "OVERLAP") {
           getIdopontok(submitObj.nap);
-          setActive(null);
+          // setActive(null);
         }
       }
     });
@@ -192,6 +202,9 @@ const Idopontfoglalo = (props) => {
 
   const isSzabadnapos = (value) => {
     let result = false;
+    const isOpen = nyitvatartas
+      ? nyitvatartas[`is${moment(value).format("dddd")}`]
+      : false;
     if (szabadnapok && szabadnapok.length > 0) {
       for (let i = 0; i < szabadnapok.length; i++) {
         const isKezdete =
@@ -205,12 +218,14 @@ const Idopontfoglalo = (props) => {
           szabadnapok[i].vege
         );
 
-        if (isKezdete || isVege || isBetween) {
+        if ((isKezdete || isVege || isBetween) && !isOpen) {
           result = true;
           break;
         }
       }
     }
+
+    result = isOpen ? result : true;
     setFoundInSzabadnap(result);
     return result;
   };
@@ -403,7 +418,6 @@ const Idopontfoglalo = (props) => {
                   name="idopont"
                   includeTime
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setIdopont({ ...idopont, kezdete: e.target.value });
                   }}
                   value={idopont.kezdete}
@@ -423,7 +437,6 @@ const Idopontfoglalo = (props) => {
             idopont.kezdete === ""
           }
         >
-          {console.log(idopont)}
           <Label style={{ fontSize: "1.8em" }}>
             {lang === "hu" ? "Ügyfél adatok" : "Kundendaten"}
           </Label>
