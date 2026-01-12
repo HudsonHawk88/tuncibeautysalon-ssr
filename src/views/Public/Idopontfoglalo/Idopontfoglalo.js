@@ -191,7 +191,8 @@ const Idopontfoglalo = (props) => {
       if (!err) {
         window.location.href = "/erfolgreich";
       } else {
-        if (err.err.ok === "OVERLAP") {
+        if (err.ok === "OVERLAP") {
+          setIdopont({ ...idopont, kezdete: "" });
           getIdopontok(submitObj.nap);
           // setActive(null);
         }

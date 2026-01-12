@@ -69,12 +69,28 @@ router.post("/", async (req, res) => {
   const totalVege = moment(foglalasObj.vege).add(uresjarat, 'minutes').format('YYYY-MM-DD HH:mm:ss');
 
   const isSzabadQsl = `SELECT * FROM idopontok WHERE((vege > '${foglalasObj.kezdete}') AND (kezdete < '${totalVege}'));`
-
+  const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
   const overLappedAppointments = await UseQuery(isSzabadQsl, '/api/idopontok POST');
 
+  const nyitva = await UseQuery(getnyitavtartasSql, "GET /api/idopontok");
   const isSzabad = overLappedAppointments.length === 0;
-
-  if (isSzabad) {
+  let nyitvatartas = nyitva[0].nyitvatartas;
+  nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
+  const dayname = moment(foglalasObj.kezdete).format("dddd");
+  const capitalized = "is" + dayname;
+  const kezdo = nyitvatartas[(dayname + "").toLowerCase()].tol;
+  const zaro = nyitvatartas[(dayname + "").toLowerCase()].ig;
+  const uzletnyit = moment(
+      moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + kezdo
+  ).format("YYYY-MM-DD HH:mm");
+  const uzletzar = moment(
+      moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + zaro
+  ).format("YYYY-MM-DD HH:mm");
+  const isNyitva = foglalasObj.kezdete && moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
+      foglalasObj.vege && moment(foglalasObj.vege).isSameOrBefore(uzletzar);
+  console.log("foglalasObj.kezdete, foglalasObj.vege: ", foglalasObj.kezdete, foglalasObj.vege);
+  console.log("uzletnyit, uzletzar, isNyitva: ", uzletnyit, uzletzar, isNyitva);
+  if (isSzabad && isNyitva) {
     const createSql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL);`;
   
     idopontok.query(createSql, async (err) => {
@@ -88,10 +104,6 @@ router.post("/", async (req, res) => {
           })
         }
 
-
-
-        
-        
         idopontok.query(insertSql, (e, r) => {
           if (!e) {
               const kezdete = moment(foglalasObj.kezdete).format('YYYYMMDDTHHmmSS');
@@ -209,7 +221,7 @@ router.post("/", async (req, res) => {
       }
     })
   } else {
-    res.status(409).send({ err: { ok: 'OVERLAP' }, msg: lang === 'hu' ? 'A fogalásakor a rendszerbe került egy másik foglalás is. Kérjük válasszon másik időpontot!' : 'Zum Zeitpunkt der Buchung wurde dem System eine weitere Reservierung hinzugefügt. Bitte wählen Sie einen anderen Termin!' })
+    res.status(409).send({ err: { ok: 'OVERLAP' }, msg: lang === 'hu' ? 'A fogalásakor a rendszerbe került egy másik foglalás is vagy az időpont a nyitvatartási időn kívül van. Kérjük válasszon másik időpontot!' : 'Zum Zeitpunkt der Buchung wurde dem System eine weitere Reservierung hinzugefügt oder der gewünschte Zeitpunkt liegt außerhalb unserer Öffnungszeiten.. Bitte wählen Sie einen anderen Termin!' })
   }
   
 })

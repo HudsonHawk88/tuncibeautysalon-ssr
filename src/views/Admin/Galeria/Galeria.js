@@ -24,26 +24,26 @@ const defaultGaleriaObj = {
 };
 
 const paginationOptions = {
-    count: 5,
-    color: "primary",
-    rowPerPageOptions: [
-        {
-            value: 5,
-            text: "5",
-        },
-        {
-            value: 10,
-            text: "10",
-        },
-        {
-            value: 25,
-            text: "25",
-        },
-        {
-            value: 50,
-            text: "50",
-        },
-    ],
+  count: 5,
+  color: "primary",
+  rowPerPageOptions: [
+    {
+      value: 5,
+      text: "5",
+    },
+    {
+      value: 10,
+      text: "10",
+    },
+    {
+      value: 25,
+      text: "25",
+    },
+    {
+      value: 50,
+      text: "50",
+    },
+  ],
 };
 
 const Galeria = (props) => {
@@ -295,7 +295,13 @@ const Galeria = (props) => {
       },
     ];
 
-    return <DataTable columns={columns} datas={galeriaJson} paginationOptions={paginationOptions} />;
+    return (
+      <DataTable
+        columns={columns}
+        datas={galeriaJson}
+        paginationOptions={paginationOptions}
+      />
+    );
   };
 
   const Kepek = () => {
