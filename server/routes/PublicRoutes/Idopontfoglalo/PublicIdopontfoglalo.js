@@ -68,12 +68,23 @@ router.post("/", async (req, res) => {
   const uresjarat = idotartam + foglalasObj.szolgaltatasok.length > 1 ? 15 : 10;
   const totalVege = moment(foglalasObj.vege).add(uresjarat, 'minutes').format('YYYY-MM-DD HH:mm:ss');
 
+  const isFoglalasOnSzabadnapSql = `
+    SELECT kezdete, vege
+    FROM szabadnapok
+    WHERE ('${moment(foglalasObj.kezdete).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege) AND 
+        ('${moment(foglalasObj.vege).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege);
+  `;
   const isSzabadQsl = `SELECT * FROM idopontok WHERE((vege > '${foglalasObj.kezdete}') AND (kezdete < '${totalVege}'));`
   const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
   const overLappedAppointments = await UseQuery(isSzabadQsl, '/api/idopontok POST');
-
+  const foglalasOverlapWithFreeday = await UseQuery(isFoglalasOnSzabadnapSql, '/api/idopontok POST');
+  // console.log("isFoglalasOnSzabadnapSql: ", isFoglalasOnSzabadnapSql);
+  // console.log("foglalasOverlapWithFreeday: ", foglalasOverlapWithFreeday);
+  //
+  // console.log("overLappedAppointments: ", overLappedAppointments);
   const nyitva = await UseQuery(getnyitavtartasSql, "GET /api/idopontok");
   const isSzabad = overLappedAppointments.length === 0;
+  const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
   let nyitvatartas = nyitva[0].nyitvatartas;
   nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
   const dayname = moment(foglalasObj.kezdete).format("dddd");
@@ -88,9 +99,8 @@ router.post("/", async (req, res) => {
   ).format("YYYY-MM-DD HH:mm");
   const isNyitva = foglalasObj.kezdete && moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
       foglalasObj.vege && moment(foglalasObj.vege).isSameOrBefore(uzletzar);
-  console.log("foglalasObj.kezdete, foglalasObj.vege: ", foglalasObj.kezdete, foglalasObj.vege);
-  console.log("uzletnyit, uzletzar, isNyitva: ", uzletnyit, uzletzar, isNyitva);
-  if (isSzabad && isNyitva) {
+  // console.log("isNyitva: ", isNyitva);
+  if (isSzabad && isNyitva && isFoglalasNotOverlapWithFreeday) {
     const createSql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL);`;
   
     idopontok.query(createSql, async (err) => {

@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
                     }
                 });
             } else {
-                const sql = `SELECT * FROM szabadnapok;`;
+                const sql = `SELECT * FROM szabadnapok ORDER BY kezdete DESC;`;
                 szabadnapok.query(sql, (error, ress) => {
                     if (error) {
                         res.status(500).send({ err: 'Hiba történt a felhasználók lekérdezésekor!' });
