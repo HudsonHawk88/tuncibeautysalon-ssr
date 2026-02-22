@@ -158,6 +158,7 @@ router.post("/", async (req, res) => {
               </ul>
               <li>Név: ${foglalasObj.ugyfelnev}</li>
               <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
+              <li>E-mail: ${foglalasObj.ugyfelemail}.</li>
               <li>Időpont: <a href="${addToGoogleCalendarUrl}">${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</a></li></ul><br>
               Tisztelettel:<br>
               Tünci Beauty Salon<br>`;
