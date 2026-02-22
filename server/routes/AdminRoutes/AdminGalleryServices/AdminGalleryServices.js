@@ -1,4 +1,4 @@
-import { jwtparams, pool, validateToken, hasRole, getJSONfromLongtext } from '../../../common/QueryHelpers.js';
+import {jwtparams, pool, validateToken, hasRole, getJSONfromLongtext, log} from '../../../common/QueryHelpers.js';
 import express from 'express';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'fs';
 import multer from 'multer';
@@ -122,6 +122,7 @@ router.post('/', upload.array('kepek'), async (req, res) => {
                                                 }
                                                 writeFileSync(`${dir}/${fname}.jpg`, buff);
                                             } else {
+                                                log('POST /api/admin/galeria', err);
                                                 console.log(err);
                                             }
                                         });
@@ -223,6 +224,7 @@ router.put('/', upload.array('uj_kepek'), async (req, res) => {
                                                 }
                                                 writeFileSync(`${dir}/${fname}.jpg`, buff);
                                             } else {
+                                                log('PUT /api/admin/galeria', err);
                                                 console.log(err);
                                             }
                                         });
