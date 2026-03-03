@@ -1,4 +1,7 @@
-import { jwtparams, pool, validateToken, hasRole, isTableExists, getNumberFromBoolean, getBooleanFromNumber, UseQuery } from '../../../common/QueryHelpers.js';
+import {
+    jwtparams, pool, validateToken, hasRole, isTableExists, getNumberFromBoolean, getBooleanFromNumber, UseQuery,
+    log
+} from '../../../common/QueryHelpers.js';
 import express from 'express';
 const router = express.Router();
 const szolgaltatasok = pool;
@@ -83,11 +86,25 @@ router.post('/', async (req, res) => {
                 const sql = `CREATE TABLE IF NOT EXISTS szolgaltatasok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, szolgkategoria text NOT NULL, magyarszolgkategoria text NOT NULL, szolgrovidnev text NOT NULL, magyarszolgrovidnev text NOT NULL, szolgreszletek text DEFAULT NULL, magyarszolgreszletek text DEFAULT NULL, ar text NOT NULL, magyarar text NOT NULL, penznem VARCHAR(10) NOT NULL DEFAULT 'CHF', magyarpenznem VARCHAR(10) NOT NULL DEFAULT 'HUF', idotartam INT NOT NULL, isAktiv BOOLEAN);`;
                 szolgaltatasok.query(sql, async (err) => {
                     if (!err) {
-                        const maxSorrend = await UseQuery(`SELECT (MAX(sorrend) + 1) as next from szolgaltatasok WHERE szolgkategoria = '${felvitelObj.szolgkategoria}';`);
+                        const maxSorrendSql = `SELECT (MAX(sorrend) + 1) AS next FROM szolgaltatasok WHERE szolgkategoria = (SELECT kategorianev FROM szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}');`;
+                        const maxSorrend = await UseQuery(maxSorrendSql);
+                        log('POST /api/admin/szolgaltatasok', "maxSorrendSql: " + maxSorrendSql, "INFO");
+                        console.log("maxSorrendSql", maxSorrendSql);
                         const sorrend = parseInt(maxSorrend[0].next, 10);
-                        const sql = `INSERT INTO szolgaltatasok (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam, isAktiv, sorrend) VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', '${felvitelObj.idotartam}', '${felvitelObj.isAktiv}', '${sorrend}');`;
+                        const sql = `
+                            INSERT INTO szolgaltatasok 
+                                (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, 
+                                 magyarszolgreszletek, ar, magyarar, penznem, magyarpenznem, idotartam, isAktiv, uresjarat, sorrend) 
+                            VALUES ((SELECT kategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'), 
+                                    (SELECT magyarkategorianev from szolgaltataskategoriak WHERE id = '${felvitelObj.szolgkategoria}'),
+                                    '${felvitelObj.szolgrovidnev}', '${felvitelObj.magyarszolgrovidnev}', 
+                                    '${felvitelObj.szolgreszletek}', '${felvitelObj.magyarszolgreszletek}', '${felvitelObj.ar}', 
+                                    '${felvitelObj.magyarar}', '${felvitelObj.penznem}', '${felvitelObj.magyarpenznem}', 
+                                    '${felvitelObj.idotartam}', '${felvitelObj.isAktiv}', 10, '${sorrend}');
+                        `;
+                        log('POST /api/admin/szolgaltatasok', "insertSql: " + sql, "INFO");
                         szolgaltatasok.query(sql, (error) => {
-                            if (!err) {
+                            if (!error) {
                                 res.status(200).send({
                                     msg: 'Szolgáltatás sikeresen hozzáadva!'
                                 });

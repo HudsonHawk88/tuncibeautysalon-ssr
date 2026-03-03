@@ -42,7 +42,7 @@ const pool = createPool(db_params);
         }
     }); */
 
-const log = (endPoint, error) => {
+const log = (endPoint, msg, type = "ERROR") => {
     const date = new Date().toLocaleDateString(hungarian);
     const time = moment(moment.now()).format('YYYY-MM-DD HH:mm:ss');
     let filePath = `${process.env.REACT_APP_logDir}/${date}_error.log`;
@@ -53,7 +53,7 @@ const log = (endPoint, error) => {
         mkdirSync(process.env.REACT_APP_logDir);
     }
 
-    logger.write(`ERROR: ${endPoint}: ${time} - ${error}\n`);
+    logger.write(`${type}: ${endPoint}: ${time} - ${msg}\n`);
 };
 
 const fetchOwnEndpoint = (url, options, fnDone) => {
