@@ -141,7 +141,7 @@ const Kapcsolat = (props) => {
       <div className="row">
         <div className="col-md-6">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2720.1973884781146!2d7.4800742763598125!3d47.016730371141776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478e3a828e8621c9%3A0xc6bc0cbce711a227!2sKirchgasse%203%2C%203302%20Moosseedorf%2C%20Sv%C3%A1jc!5e0!3m2!1shu!2shu!4v1705273684948!5m2!1shu!2shu"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10880.847355715301!2d7.483058979971047!3d47.01644670583593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478e30788141c03d%3A0x9bd1fbe2d74b2e6!2sEvang.-ref.%20Kirchgemeinde%20M%C3%BCnchenbuchsee-Moosseedorf%2C%20Sekretariat%20Moosseedorf!5e0!3m2!1shu!2shu!4v1777207266610!5m2!1shu!2shu"
             width="100%"
             height="450px"
             style={{ border: 0 }}
@@ -157,8 +157,8 @@ const Kapcsolat = (props) => {
       <div className="row">
         <div className="col-md-12">
           {lang === "hu"
-            ? "A parkoló a másik helyen van!"
-            : "Der Parkplatz ist an der anderen Stelle!"}
+            ? "A Tünci Beauty Salon vendégei számára a parkolás a Moosseedorf-i Kirchgemeinde ház parkolójában, az utca túloldalán biztosított."
+            : "Für die Gäste des Tünci Beauty Salon stehen Parkplätze gegenüber im Parkplatz des Kirchgemeindehauses in Moosseedorf zur Verfügung."}
         </div>
       </div>
     </div>
