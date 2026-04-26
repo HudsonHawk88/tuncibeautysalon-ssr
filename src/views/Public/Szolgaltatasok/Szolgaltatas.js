@@ -45,7 +45,7 @@ const Szolgaltatas = (props) => {
     return (
       <div className="szolgkat">
         <div className="szolgkat_logo">
-          <img src={kategoria.logo} alt={kategoria.katnev} />
+          <img src={kategoria.logo} alt={kategoria.katnev} style={{ borderRadius: '50%' }} />
         </div>
         <h2>{kategoria.katnev}</h2>
         <div className="szolgkat_leiras">{kategoria.katleiras}</div>
