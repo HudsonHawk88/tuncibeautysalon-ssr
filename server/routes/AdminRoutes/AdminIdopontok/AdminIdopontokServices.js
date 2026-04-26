@@ -1,6 +1,5 @@
 import express from "express";
 import nodemailer from 'nodemailer';
-const router = express.Router();
 import {
   jwtparams,
   validateToken,
@@ -12,8 +11,9 @@ import {
   log,
   isTableExists
 } from "../../../common/QueryHelpers.js";
-const transporter = nodemailer.createTransport(mailUrl);
 import moment from "moment";
+const router = express.Router();
+const transporter = nodemailer.createTransport(mailUrl);
 const idopontok = pool;
 
 router.get("/", async (req, res) => {
@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
   } else {
     const tableExists = await isTableExists('idopontok');
     if (tableExists) {
-      const sql = `SELECT * FROM idopontok;`;
+      const sql = `SELECT * FROM idopontok ORDER BY kezdete DESC;`;
       idopontok.query(sql, (err, result) => {
         if (!err) {
           let newRes = [];

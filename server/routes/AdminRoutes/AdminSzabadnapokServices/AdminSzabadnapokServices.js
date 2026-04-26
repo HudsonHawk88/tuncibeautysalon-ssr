@@ -1,5 +1,6 @@
 import { jwtparams, pool, validateToken, hasRole } from '../../../common/QueryHelpers.js';
 import express from 'express';
+import moment from "moment";
 const router = express.Router();
 const szabadnapok = pool;
 
@@ -67,8 +68,10 @@ router.post('/', async (req, res) => {
                   ) ENGINE=InnoDB;`;
                     szabadnapok.query(sql, async (error) => {
                         if (!error) {
+                            const kezd = moment(felvitelObj.kezdete).format('YYYY-MM-DD');
+                            const veg = moment(felvitelObj.vege).format('YYYY-MM-DD');
                             const sql = `INSERT INTO szabadnapok (megnevezes, kezdete, vege)
-                            VALUES ('${felvitelObj.megnevezes}', '${felvitelObj.kezdete}', '${felvitelObj.vege}');`;
+                            VALUES ('${felvitelObj.megnevezes}', '${kezd}', '${veg}');`;
                                 szabadnapok.query(sql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
@@ -83,7 +86,7 @@ router.post('/', async (req, res) => {
                         } else {
                             res.status(500).send({
                                 err: 'Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!',
-                                msg: err
+                                msg: error
                             });
                         }
                     });
