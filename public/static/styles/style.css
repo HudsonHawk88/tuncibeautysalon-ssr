@@ -28,15 +28,18 @@ html body::-webkit-scrollbar {
 }
 
 html body.accessibility::-webkit-scrollbar-thumb {
-  background-color: white !important; /* Set thumb color for Chrome and Safari */
+  background-color: white !important;
+  /* Set thumb color for Chrome and Safari */
 }
 
 html body::-webkit-scrollbar-thumb {
-  background-color: #333; /* Set thumb color for Chrome and Safari */
+  background-color: #333;
+  /* Set thumb color for Chrome and Safari */
 }
 
 html body::-webkit-scrollbar-track {
-  background-color: #e0c9cc; /* Set track color for Chrome and Safari */
+  background-color: #e0c9cc;
+  /* Set track color for Chrome and Safari */
 }
 
 table,
@@ -48,7 +51,7 @@ tr {
 }
 
 .modal-open {
-  color: rgb(0, 0, 0) !important;
+  color: black !important;
 }
 
 .bio {
@@ -344,7 +347,7 @@ html body::-webkit-scrollbar {
   }
 }
 .plus_nav .nav-link {
-  color: rgb(240, 3, 3);
+  color: #f00303;
   cursor: pointer;
   font-size: 0.8em;
   padding: 5px;
@@ -425,7 +428,7 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-facebook-square:hover {
-  color: rgb(8, 122, 234);
+  color: #087aea;
 }
 
 .kozossegi .fa-tiktok {
@@ -435,8 +438,8 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-tiktok:hover {
-  color: rgb(0, 0, 0);
-  text-shadow: 2px 2px rgb(247, 0, 78);
+  color: black;
+  text-shadow: 2px 2px #f7004e;
 }
 
 .kozossegi .fa-instagram {
@@ -444,7 +447,7 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-instagram:hover {
-  background: -webkit-linear-gradient(69deg, rgb(221, 242, 6) 39%, rgb(240, 3, 3) 72%, rgb(255, 0, 215) 100%);
+  background: -webkit-linear-gradient(69deg, #ddf206 39%, #f00303 72%, #ff00d7 100%);
   background-clip: "text";
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -459,7 +462,7 @@ html body::-webkit-scrollbar {
 }
 
 .kozossegi .fa-whatsapp:hover {
-  color: rgb(0, 163, 86);
+  color: #00a356;
 }
 
 .admin_full {
@@ -498,11 +501,13 @@ html body::-webkit-scrollbar {
 }
 
 .tartalom::-webkit-scrollbar-thumb {
-  background-color: #333; /* Set thumb color for Chrome and Safari */
+  background-color: #333;
+  /* Set thumb color for Chrome and Safari */
 }
 
 .tartalom::-webkit-scrollbar-track {
-  background-color: #e0c9cc; /* Set track color for Chrome and Safari */
+  background-color: #e0c9cc;
+  /* Set track color for Chrome and Safari */
 }
 
 .tartalom.accessibility {
@@ -800,27 +805,27 @@ html body::-webkit-scrollbar {
   max-height: inherit;
   background-color: white;
   padding: 10px;
-  color: rgb(0, 0, 0) !important;
+  color: black !important;
 }
 .tartalom-admin .react-data-table-pagination-buttons .btn.btn-outline-primary {
   border-color: #333;
   color: #000;
 }
 .tartalom-admin .react-data-table-pagination-buttons .btn.btn-outline-primary:hover, .tartalom-admin .react-data-table-pagination-buttons .btn.btn-outline-primary:active, .tartalom-admin .react-data-table-pagination-buttons .btn.btn-outline-primary:focus {
-  border-color: rgb(58, 214, 197);
-  background-color: rgb(58, 214, 197);
+  border-color: #3ad6c5;
+  background-color: #3ad6c5;
 }
 .tartalom-admin .react-data-table-pagination-buttons .btn.btn-primary {
   border-color: #333;
   color: #000;
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
 }
 .tartalom-admin .react-data-table-pagination-buttons .btn.btn-primary:hover, .tartalom-admin .react-data-table-pagination-buttons .btn.btn-primary:active, .tartalom-admin .react-data-table-pagination-buttons .btn.btn-primary:focus {
-  border-color: rgb(58, 214, 197);
-  background-color: rgb(58, 214, 197);
+  border-color: #3ad6c5;
+  background-color: #3ad6c5;
 }
 .tartalom-admin .btn.btn-link {
-  color: rgb(0, 0, 0);
+  color: black;
   font-size: 1.2rem;
 }
 .tartalom-admin .fas.fa-eye {
@@ -834,7 +839,7 @@ html body::-webkit-scrollbar {
   color: orange;
 }
 .tartalom-admin .fas.fa-trash {
-  color: rgb(111, 114, 114);
+  color: #6f7272;
 }
 .tartalom-admin .fa.fa-facebook-square {
   color: #4267b2;
@@ -914,7 +919,7 @@ html body::-webkit-scrollbar {
 
 .public-sidebar {
   margin-top: 10px;
-  background-color: rgb(120, 212, 223);
+  background-color: #78d4df;
   min-width: 100%;
   border-radius: 0px;
 }
@@ -1122,7 +1127,8 @@ html body::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  flex: 0 1 calc(33.3% - 12px); /*  No stretching: */
+  flex: 0 1 calc(33.3% - 12px);
+  /*  No stretching: */
   max-height: 300px;
   margin: 6px !important;
   text-align: center;
@@ -1132,19 +1138,22 @@ html body::-webkit-scrollbar {
 }
 @media screen and (min-width: 768px) {
   .public-inner-content .card {
-    flex: 0 1 calc(33.3% - 12px); /*  No stretching: */
+    flex: 0 1 calc(33.3% - 12px);
+    /*  No stretching: */
     max-height: 300px;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 1200px) {
   .public-inner-content .card {
-    flex: 0 1 calc(33.3% - 12px); /*  No stretching: */
+    flex: 0 1 calc(33.3% - 12px);
+    /*  No stretching: */
     max-height: 300px;
   }
 }
 @media screen and (min-width: 1201px) {
   .public-inner-content .card {
-    flex: 0 1 calc(33.3% - 12px); /*  No stretching: */
+    flex: 0 1 calc(33.3% - 12px);
+    /*  No stretching: */
     max-height: 300px;
   }
 }
@@ -1196,7 +1205,8 @@ html body::-webkit-scrollbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1 1 300px; /*  Stretching: */
+  flex: 1 1 300px;
+  /*  Stretching: */
   max-height: 480px;
   margin: 6px !important;
   text-align: center;
@@ -1449,13 +1459,13 @@ body.accessibility #cookieConsent button {
 }
 
 body.accessibility .idopontfoglalo__ido {
-  border: 2px solid rgb(255, 255, 255);
+  border: 2px solid white;
   background-color: black;
-  color: rgb(255, 255, 255);
+  color: white;
 }
 body.accessibility .idopontfoglalo__ido.active {
-  border: 2px solid rgb(255, 255, 255);
-  background-color: rgb(255, 255, 255);
+  border: 2px solid white;
+  background-color: white;
   color: black;
 }
 body.accessibility .szolgbuborek {
@@ -1500,13 +1510,13 @@ body.accessibility .szolgbuborek .torles {
   padding: 20px 20px;
   margin: 5px;
   cursor: pointer;
-  border: 2px solid rgb(241, 24, 24);
+  border: 2px solid #f11818;
   background-color: black;
-  color: rgb(241, 24, 24);
+  color: #f11818;
 }
 .idopontfoglalo__idopontok .idopontfoglalo__ido.active {
-  border: 2px solid rgb(241, 24, 24);
-  background-color: rgb(241, 24, 24);
+  border: 2px solid #f11818;
+  background-color: #f11818;
   color: black;
 }
 
@@ -1517,7 +1527,7 @@ body.accessibility .szolgbuborek .torles {
 }
 
 body.accessibility .nav-link {
-  color: rgb(255, 255, 255) !important;
+  color: white !important;
   /*             border: unset;
         text-shadow: 1px 1px var(themes-public-navlinktextshadow); */
   /*           @media screen and (min-width: 992px) {
@@ -1674,7 +1684,7 @@ body.accessibility .nav-link.active {
   height: 30px;
 }
 .public-navbar__nav .fa-brands.fa-accessible-icon.active {
-  color: rgb(0, 255, 0);
+  color: lime;
 }
 .public-navbar__nav-item:hover {
   border-bottom: 0px;
@@ -1790,7 +1800,7 @@ body.accessibility .nav-link.active {
   padding: 0px !important;
   margin: 0px !important;
   border-radius: 15px;
-  background-color: rgb(57, 214, 197);
+  background-color: #39d6c5;
 }
 @media screen and (min-width: 992px) {
   .undernav__carousel {
@@ -1976,6 +1986,7 @@ body.accessibility .nav-link.active {
 .szolgkat_logo {
   display: flex;
   justify-content: center;
+  height: 230px;
 }
 .szolgkat_logo img {
   width: 30vw;
@@ -1993,13 +2004,13 @@ body.accessibility .nav-link.active {
 }
 
 body.accessibility .idopont_button {
-  background-color: rgb(255, 255, 255) !important;
+  background-color: white !important;
   color: black;
-  border: 2px solid rgb(255, 255, 255) !important;
+  border: 2px solid white !important;
 }
 body.accessibility .idopont_button:hover {
-  color: rgb(0, 0, 0) !important;
-  background-color: rgb(255, 255, 255) !important;
+  color: black !important;
+  background-color: white !important;
 }
 
 .fooldalszolgok {
@@ -2107,7 +2118,7 @@ body.accessibility .galeria_buttongroup {
 }
 body.accessibility .galeria_buttongroup .galeria_kategoriabutton {
   background: black !important;
-  color: rgb(255, 255, 255) !important;
+  color: white !important;
 }
 body.accessibility .galeria_buttongroup .galeria_kategoriabutton:hover {
   background: white !important;
@@ -2289,18 +2300,18 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 }
 .ingat_card__card__megtekgomb button {
   color: black;
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   width: 100%;
   height: 170px;
   border: none;
   box-shadow: none;
 }
 .ingat_card__card__megtekgomb button:hover {
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   color: black;
 }
 .ingat_card__card__megtekgomb button:active {
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   color: black;
 }
 
@@ -2341,10 +2352,10 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   }
 }
 .ingatlan_card .ingatlan_adatok .galeria .image-gallery-slides {
-  background-color: rgb(0, 0, 0);
+  background-color: black;
 }
 .ingatlan_card .ingatlan_adatok .galeria .image-gallery-thumbnails {
-  background-color: rgb(0, 0, 0);
+  background-color: black;
 }
 .ingatlan_card .ingatlan_adatok .galeria .image-gallery-thumbnail-image {
   height: 65px;
@@ -2757,11 +2768,11 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   min-width: 60%;
   max-width: 60%;
   padding: 10px;
-  border-right: 10px solid rgb(58, 214, 197);
+  border-right: 10px solid #3ad6c5;
 }
 @media screen and (min-width: 720px) {
   .public_rolunk__baloldal {
-    border-right: 30px solid rgb(58, 214, 197);
+    border-right: 30px solid #3ad6c5;
     min-width: 65%;
     max-width: 65%;
   }
@@ -2793,7 +2804,7 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 }
 .public_rolunk__fejlec .public_rolunk__beosztas,
 .public_rolunk__fejlec .public_rolunk__cegnev2 {
-  color: rgb(58, 214, 197);
+  color: #3ad6c5;
 }
 .public_rolunk__fejlec .public_rolunk__cegnev1 {
   color: #006266;
@@ -3027,7 +3038,7 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 .admin-navbar {
   min-height: 100px;
   padding: 0px !important;
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
 }
 .admin-navbar__collapse {
   display: flex !important;
@@ -3056,12 +3067,12 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
   right: 15px;
 }
 .admin-navbar .show .btn-secondary.dropdown-toggle {
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   color: black;
   /*    color: rgba(240, 3, 3, 1); */
 }
 .admin-navbar .dropdown-toggle {
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   border: none;
   color: black;
   /* color: rgba(240, 3, 3, 1); */
@@ -3077,12 +3088,12 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 .admin-navbar .dropdown-toggle:hover {
   box-shadow: none !important;
   border: none !important;
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   color: black;
   /* color: rgba(240, 3, 3, 1); */
 }
 .admin-navbar .dropdown-menu {
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   border: none !important;
   transform: translate(15px, 71px) !important;
 }
@@ -3165,7 +3176,7 @@ body.accessibility .galeria_buttongroup .galeria_kategoriabutton.active {
 }
 
 body.accessibility .linkek a {
-  color: rgb(255, 255, 255);
+  color: white;
 }
 
 .public-footer {
@@ -3244,7 +3255,7 @@ body.accessibility .linkek a {
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color: rgb(58, 214, 197);
+  background-color: #3ad6c5;
   color: black;
 }
 
