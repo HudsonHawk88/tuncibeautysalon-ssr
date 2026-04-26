@@ -59,8 +59,8 @@ const Preisliste = (props) => {
                 lang === "ch"
                   ? szolg.szolgreszletek
                   : szolg.magyarszolgreszletek,
-              ar: lang === "ch" ? szolg.ar : szolg.magyarar,
-              penznem: lang === "ch" ? szolg.penznem : szolg.magyarpenznem,
+              ar: szolg.ar,
+              penznem: szolg.penznem,
               idotartam: szolg.idotartam,
               kategorianev: szolg.szolgkategoria,
               magyarkategorianev: szolg.magyarszolgkategoria,

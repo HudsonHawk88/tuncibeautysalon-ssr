@@ -123,7 +123,7 @@ const SzolgaltatasokForm = (props) => {
           />
         </Col>
         <Col>
-          <Label>{"Német pénznem: *"}</Label>
+          <Label>{"Pénznem: *"}</Label>
           <RVInput
             type="select"
             name="penznem"
@@ -135,41 +135,8 @@ const SzolgaltatasokForm = (props) => {
             required
           >
             <option key="chf">CHF</option>
-            <option key="huf">HUF</option>
-          </RVInput>
-        </Col>
-      </Row>
-      <Row style={{ margin: "10px 0px" }}>
-        <Col>
-          <Label>{"Magyar ár: *"}</Label>
-          <RVInput
-            name="magyarar"
-            id="magyarar"
-            pattern="[0-9]+"
-            value={szolgaltatasObj.magyarar}
-            onChange={(e) =>
-              handleInputChange(e, szolgaltatasObj, setSzolgaltatasObj)
-            }
-            required
-          />
-        </Col>
-        <Col>
-          <Label>{"Magyar pénznem: *"}</Label>
-          <RVInput
-            type="select"
-            name="magyarpenznem"
-            id="magyarpenznem"
-            value={
-              szolgaltatasObj.magyarpenznem &&
-              szolgaltatasObj.magyarpenznem.value
-            }
-            onChange={(e) =>
-              handleInputChange(e, szolgaltatasObj, setSzolgaltatasObj)
-            }
-            required
-          >
-            <option key="huf">HUF</option>
-            <option key="chf">CHF</option>
+            <option key="chf/ml">CHF / ml</option>
+            {/* <option key="huf">HUF</option> */}
           </RVInput>
         </Col>
       </Row>

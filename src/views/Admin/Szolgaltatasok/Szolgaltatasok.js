@@ -25,16 +25,14 @@ const defaultSzolgaltatasObj = {
   szolgreszletek: "",
   magyarszolgreszletek: "",
   ar: "",
-  magyarar: "",
   penznem: "",
-  magyarpenznem: "",
   idotartam: "",
   isAktiv: false,
 };
 
 const penznemek = [
   { id: 0, label: "CHF", value: "CHF" },
-  { id: 1, label: "HUF", value: "HUF" },
+  { id: 1, label: "CHF / ml", value: "CHF / ml" },
 ];
 
 const paginationOptions = {
@@ -96,8 +94,7 @@ const Szolgaltatasok = (props) => {
   const setDefaultPenznem = () => {
     setSzolgaltatasObj({
       ...szolgaltatasObj,
-      penznem: { id: 0, label: "CHF", value: "CHF" },
-      magyarpenznem: { id: 1, label: "HUF", value: "HUF" },
+      penznem: { id: 0, label: "CHF", value: "CHF" }
     });
   };
 
@@ -120,9 +117,6 @@ const Szolgaltatasok = (props) => {
             ).id
           : null;
         res.penznem = penznemek.find((pn) => res.penznem === pn.value);
-        res.magyarpenznem = penznemek.find(
-          (pn) => res.magyarpenznem === pn.value
-        );
         setSzolgaltatasObj(res);
       }
     });
@@ -130,10 +124,6 @@ const Szolgaltatasok = (props) => {
 
   const arFormatter = (cell, row) => {
     return `${row.ar} ${row.penznem}`;
-  };
-
-  const arMagyarFormatter = (cell, row) => {
-    return `${row.magyarar} ${row.magyarpenznem}`;
   };
 
   const handleViewClick = (cell) => {
@@ -176,11 +166,6 @@ const Szolgaltatasok = (props) => {
     const columns = [
       { text: "Megnevezés", dataField: "szolgrovidnev" },
       { text: "Német ár", dataField: "ar", formatter: arFormatter },
-      {
-        text: "Magyar ár",
-        dataField: "magyarar",
-        formatter: arMagyarFormatter,
-      },
       { text: "Műveletek", dataField: "id", formatter: tableIconFormatter },
     ];
 
@@ -218,9 +203,6 @@ const Szolgaltatasok = (props) => {
     submitObj.penznem = submitObj.penznem.value
       ? submitObj.penznem.value
       : submitObj.penznem;
-    submitObj.magyarpenznem = submitObj.magyarpenznem.value
-      ? submitObj.magyarpenznem.value
-      : submitObj.magyarpenznem;
 
     /* console.log("submitObj: ", submitObj) */
     if (currentId === undefined) {
