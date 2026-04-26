@@ -8,12 +8,12 @@
   &_logo {
     display: flex;
     justify-content: center;
-    height: 230px;
 
     img {
       width: 30vw;
-
+      height: 30vw;
       @media screen and (min-width: 992px) {
+        height: 20vw;
         width: 20vw;
       }
     }

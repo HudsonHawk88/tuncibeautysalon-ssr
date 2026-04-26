@@ -1986,13 +1986,14 @@ body.accessibility .nav-link.active {
 .szolgkat_logo {
   display: flex;
   justify-content: center;
-  height: 230px;
 }
 .szolgkat_logo img {
   width: 30vw;
+  height: 30vw;
 }
 @media screen and (min-width: 992px) {
   .szolgkat_logo img {
+    height: 20vw;
     width: 20vw;
   }
 }
