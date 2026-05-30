@@ -230,15 +230,28 @@ const Feliratkozok = (props) => {
   const renderTable = () => {
     const columns = [
       {
-        dataField: "feliratkozoNev",
+        dataField: "feliratkozonev",
         text: "Feliratkozó neve",
         filter: true,
         filterType: "textFilter",
         filterDefaultValue: "Keresés...",
       },
       {
-        dataField: "feliratkozoEmail",
+        dataField: "feliratkozoemail",
         text: "Feliratkozó e-mail",
+        filterType: "textFilter",
+        filterDefaultValue: "Keresés...",
+      },
+      {
+        dataField: "feliratkozonyelv",
+        text: "Feliratkozó nyelve",
+        filterType: "textFilter",
+        filterDefaultValue: "Keresés...",
+        formatter: (cell, row) => return row.feliratkozonyelv == "hu" ? "Magyar" : "Svájc"
+      },
+      {
+        dataField: "feliratkozasmod",
+        text: "Feliratkozás módja",
         filterType: "textFilter",
         filterDefaultValue: "Keresés...",
       },
