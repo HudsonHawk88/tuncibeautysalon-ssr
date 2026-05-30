@@ -32,7 +32,7 @@ import publicFeliratkozasServices from './routes/PublicRoutes/Feliratkozas/Publi
 import orszagokService from './routes/common/OrszagokService/OrszagokService.js';
 import telepulesekService from './routes/common/TelepulesekService/TelepulesekService.js';
 import mailerService from './routes/common/MailerService/MailerService.js';
-import OptionServices from './routes/common/OptionsService/OptionsServices.js';
+// import OptionServices from './routes/common/OptionsService/OptionsServices.js';
 import RecaptchaServices from './routes/common/Recaptcha/RecaptchaService.js';
 import serverRender from './common/serverRender.js';
 
@@ -119,8 +119,8 @@ app.use(['/api/orszagok'], orszagokService);
 app.use(['/api/telepulesek'], telepulesekService);
 // MAIL
 app.use(['/api/contactmail'], mailerService);
-// OPTIONS
-app.use(['/api/options'], OptionServices);
+// // OPTIONS
+// app.use(['/api/options'], OptionServices);
 // RECAPTCHA
 app.use(['/api/recaptcha'], RecaptchaServices);
 // IDOPONTOK
