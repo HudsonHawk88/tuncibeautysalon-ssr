@@ -442,31 +442,19 @@ const renderValtozatasok = (valtozasok) => {
     });
 };
 
-const UseQuery = async (sql, logEndPoint) => {
-    return new Promise((data) => {
-        pool.query(sql, function (error, result) {
-            // change db->connection for your code
-            if (error) {
-                if (logEndPoint) {
-                    log(logEndPoint, error);
-                } else {
-                    log(sql, error);
-                }
+const UseQuery = async (sql, params = [], logEndPoint = null) => {
+    // Ha a második paraméter nem tömb, hanem a log szövege (a régi hívásaid miatt)
+    const actualParams = Array.isArray(params) ? params : [];
+    const actualLog = Array.isArray(params) ? logEndPoint : params;
 
-                throw error;
-            } else {
-                try {
-                    data(result);
-                } catch (error) {
-                    data([]);
-                    if (logEndPoint) {
-                        log(logEndPoint, error);
-                    } else {
-                        log(sql, error);
-                    }
-                    throw error;
-                }
+    return new Promise((resolve, reject) => {
+        // Átadjuk az actualParams tömböt a pool.query-nek
+        pool.query(sql, actualParams, function (error, result) {
+            if (error) {
+                log(actualLog || sql, error);
+                return reject(error); // Fontos: a Promise-t rejectelni kell hiba esetén
             }
+            resolve(result);
         });
     });
 };

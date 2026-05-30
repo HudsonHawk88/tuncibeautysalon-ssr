@@ -1,17 +1,10 @@
 import express from "express";
 import nodemailer from 'nodemailer';
-const router = express.Router();
-import {
-  UseQuery,
-  getNumberFromBoolean,
-  pool,
-  mailUrl,
-  log,
-  isTableExists
-} from "../../../common/QueryHelpers.js";
-const transporter = nodemailer.createTransport(mailUrl);
+import {getNumberFromBoolean, isTableExists, log, mailUrl, pool, UseQuery} from "../../../common/QueryHelpers.js";
 import moment from "moment";
-import { Microservices } from "../../../../shared/MicroServices.js";
+
+const router = express.Router();
+const transporter = nodemailer.createTransport(mailUrl);
 const idopontok = pool;
 
 // IDOPONTOK START
@@ -51,186 +44,377 @@ router.get("/", async (req, res) => {
   }
 })
 
+/**
+ * Segédfüggvény a tulajdonosi és ügyfél e-mail sablonok legenerálásához.
+ *
+ * @param {string} lang - A választott nyelv ('hu' vagy 'de')
+ * @param {object} r - Az adatbázis beszúrás eredménye (tartalmazza az insertId-t)
+ * @param {object} foglalasObj - A foglalási adatok (név, telefon, email, kezdete)
+ * @param {number} idotartam - A szolgáltatások összesített időtartama percekben
+ * @param {string} szolgok - A HTML <li> elemek listája a szolgáltatások neveivel
+ * @param {string} addToGoogleCalendarUrl - A legenerált Google Naptár link
+ * @returns {object} Egy objektum a tulaj, hu, és de HTML sablonokkal
+ */
+const generateEmailHtml = (lang, r, foglalasObj, idotartam, szolgok, addToGoogleCalendarUrl) => {
+  const cancelUrl = `${process.env.REACT_APP_mainUrl}/terminstreichung?terminId=${r.insertId}`;
+  const idopontStr = `${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm')} - ${moment(foglalasObj.kezdete).add(idotartam, 'minutes').format('HH:mm')}`;
+
+  return {
+    // 1. Értesítés a szalon tulajdonosának (TüncineK)
+    tulaj: `
+      <b>Kedves Tünci!</b><br><br>
+      Új foglalás érkezett:<br>
+      <ul>
+        <li>Szolgáltatás(ok):
+          <ul>${szolgok}</ul>
+        </li>
+        <li>Név: ${foglalasObj.ugyfelnev}</li>
+        <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
+        <li>E-mail: ${foglalasObj.ugyfelemail}.</li>
+        <li>Időpont: <a href="${addToGoogleCalendarUrl}">${idopontStr}</a></li>
+      </ul><br>
+      Tisztelettel:<br>
+      Tünci Beauty Salon<br>
+    `.trim(),
+
+    // 2. Magyar nyelvű visszaigazolás az ügyfélnek
+    hu: `
+      <b>Kedves ${foglalasObj.ugyfelnev}!</b><br><br>
+      A lefoglalt időpont adatai:<br>
+      <ul>
+        <li>Név: ${foglalasObj.ugyfelnev}</li>
+        <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
+        <li>Szolgáltatás(ok):
+          <ul>${szolgok}</ul>
+        </li>
+        <li>Időpont: ${idopontStr}</li>
+      </ul><br>
+      Lemondani az alábbi linken tudja:<br>
+      <a href='${cancelUrl}' target='_blank'>${cancelUrl}</a><br><br>
+      <strong>Amennyiben nem érkezik meg a foglalt időpontra és legalább 2 nappal előbb nem törli az időpontot, úgy a következő alkalommal felszámolásra kerül az elmulasztott kezelés is!</strong><br><br>
+      Tisztelettel:<br>
+      Tünci Beauty Salon<br>
+    `.trim(),
+
+    // 3. Német nyelvű visszaigazolás az ügyfélnek
+    de: `
+      <b>Liebe ${foglalasObj.ugyfelnev},</b><br><br>
+      Angaben zum gebuchten Termin:<br>
+      <ul>
+        <li>Dienstleistungen:
+          <ul>${szolgok}</ul>
+        </li>
+        <li>Name: ${foglalasObj.ugyfelnev}</li>
+        <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
+        <li>Termin: ${idopontStr}</li>
+      </ul><br>
+      Sie können über den folgenden Link kündigen:<br>
+      <a href='${cancelUrl}' target='_blank'>${cancelUrl}</a><br><br>
+      <strong>Sollten Sie nicht zum gebuchten Zeitpunkt erscheinen und den Termin nicht mindestens 2 Tage vorher absagen, wird die versäumte Behandlung auch beim nächsten Mal in Rechnung gestellt!</strong><br><br>
+      Aufrichtig:<br>
+      Tünci Beauty Salon<br>
+    `.trim()
+  };
+};
+
+// A tiszta express végpont
 router.post("/", async (req, res) => {
-  let foglalasObj = req.body;
-  foglalasObj.ugyfelelfogad = getNumberFromBoolean(foglalasObj.ugyfelelfogad);
-  const lang = req.headers.lang;
+  try {
+    const lang = req.headers.lang || 'hu';
+    const foglalasObj = { ...req.body, ugyfelelfogad: getNumberFromBoolean(req.body.ugyfelelfogad) };
+    const kezdeteNap = moment(foglalasObj.kezdete).format('YYYY-MM-DD');
 
-  let idotartam = 0;
-  const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
-  if (totalQuery && totalQuery.length > 0) {
-    totalQuery.forEach((sz) => {
-      idotartam += sz.idotartam;
-    })
+    // 1. Időtartam és szolgáltatások lekérdezése biztonságosan (paraméterezve)
+    const totalQuery = await UseQuery(
+        "SELECT idotartam, magyarszolgrovidnev, szolgrovidnev FROM szolgaltatasok WHERE id IN (?)",
+        [foglalasObj.szolgaltatasok],
+        "/api/idopontok POST"
+    );
+
+    let idotartam = 0;
+    let szolgok = '';
+    if (totalQuery?.length > 0) {
+      totalQuery.forEach(sz => {
+        idotartam += sz.idotartam;
+        szolgok += `<li>${lang === 'hu' ? sz.magyarszolgrovidnev : sz.szolgrovidnev}</li>`;
+      });
+    }
+
+    foglalasObj.vege = moment(foglalasObj.kezdete).add(idotartam, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+    const uresjarat = idotartam + foglalasObj.szolgaltatasok.length > 1 ? 15 : 10;
+    const totalVege = moment(foglalasObj.vege).add(uresjarat, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+
+    // 2. Szabadnapok, átfedések és nyitvatartási JSON lekérdezése
+    const isFoglalasOnSzabadnapSql = "SELECT id FROM szabadnapok WHERE ? BETWEEN kezdete AND vege AND ? BETWEEN kezdete AND vege";
+    const isSzabadSql = "SELECT id FROM idopontok WHERE vege > ? AND kezdete < ?";
+
+    const [overLappedAppointments, foglalasOverlapWithFreeday, nyitvaResult] = await Promise.all([
+      UseQuery(isSzabadSql, [foglalasObj.kezdete, totalVege], "/api/idopontok POST"),
+      UseQuery(isFoglalasOnSzabadnapSql, [kezdeteNap, moment(foglalasObj.vege).format('YYYY-MM-DD')], "/api/idopontok POST"),
+      UseQuery("SELECT nyitvatartas FROM kapcsolatok LIMIT 1", [], "/api/idopontok POST")
+    ]);
+
+    const nyitvaAdat = nyitvaResult?.[0] || {};
+
+    // 3. Nyitvatartási adatok ellenőrzése az új JSON struktúra alapján
+    let nyitvatartas = typeof nyitvaAdat.nyitvatartas === 'string' ? JSON.parse(nyitvaAdat.nyitvatartas) : nyitvaAdat.nyitvatartas;
+
+    // Lekérjük a nap angol nevét kisbetűvel (pl.: 'monday')
+    const dayName = moment(foglalasObj.kezdete).locale('hu').format("dddd").toLowerCase();
+
+    // Összerakjuk az aktív nap kulcsát (pl.: 'isMonday')
+    const activeKey = `is${dayName.charAt(0).toUpperCase()}${dayName.slice(1)}`;
+
+    // Ellenőrizzük, hogy az adott napon nyitva van-e a szalon, és mik a határok
+    const isAzAdottNaponNyitva = nyitvatartas?.[activeKey] === true;
+    const { tol, ig } = nyitvatartas?.[dayName] || { tol: "00:00", ig: "00:00" };
+
+    const uzletnyit = `${kezdeteNap} ${tol}`;
+    const uzletzar = `${kezdeteNap} ${ig}`;
+
+    // 4. Logikai feltételek összegzése
+    const isSzabad = overLappedAppointments.length === 0;
+    const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
+    const isNyitva = isAzAdottNaponNyitva &&
+        moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
+        moment(foglalasObj.vege).isSameOrBefore(uzletzar);
+
+    if (!isSzabad || !isFoglalasNotOverlapWithFreeday || !isNyitva) {
+      return res.status(400).json({
+        success: false,
+        message: "Az időpont már nem elérhető, vagy az üzlet zárva van az adott napon."
+      });
+    }
+
+    // 5. Adatbázis tábla ellenőrzése és az új időpont beszúrása biztonságosan
+    await UseQuery("CREATE TABLE IF NOT EXISTS idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL)", [], "/api/idopontok POST");
+
+    const insertSql = "INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipusok, nyelv) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
+    const insertParams = [
+      foglalasObj.kezdete,
+      foglalasObj.vege,
+      foglalasObj.ugyfelnev,
+      foglalasObj.ugyfelemail,
+      foglalasObj.ugyfeltelefon,
+      foglalasObj.ugyfelelfogad,
+      JSON.stringify(foglalasObj.szolgaltatasok),
+      lang
+    ];
+
+    const r = await UseQuery(insertSql, insertParams, "/api/idopontok POST");
+
+    // 6. Google Calendar link generálása
+    const gCalKezd = moment(foglalasObj.kezdete).format('YYYYMMDDTHHmmss');
+    const gCalVeg = moment(foglalasObj.vege).format('YYYYMMDDTHHmmss');
+    const addToGoogleCalendarUrl = `https://google.com{encodeURIComponent(foglalasObj.ugyfelnev + ' időpontja (ID: ' + r.insertId + ')')}&dates=${gCalKezd}/${gCalVeg}&ctz=Europe/Budapest&sf=true&output=xml`;
+
+    // 7. E-mailek legenerálása és kiküldése
+    const emailek = generateEmailHtml(lang, r, foglalasObj, idotartam, szolgok, addToGoogleCalendarUrl);
+
+    await transporter.sendMail({
+      from: process.env.REACT_APP_noreplyemail,
+      to: process.env.foEmail,
+      subject: `Új foglalás érkezett`,
+      html: emailek.tulaj
+    });
+
+    await transporter.sendMail({
+      from: process.env.REACT_APP_noreplyemail,
+      to: foglalasObj.ugyfelemail,
+      subject: lang === 'hu' ? `Új időpontfoglalás a Tünci Beauty Salon-ba` : `Neue Terminbuchung im Tünci Beauty Salon`,
+      html: lang === 'hu' ? emailek.hu : emailek.de
+    });
+
+    return res.status(200).json({ success: true, insertId: r.insertId });
+
+  } catch (error) {
+    console.error("Hiba az időpont mentése során:", error);
+    return res.status(500).json({ success: false, message: "Szerveroldali hiba történt." });
   }
+});
 
-  foglalasObj.vege = moment(foglalasObj.kezdete).add(idotartam, 'minutes').format('YYYY-MM-DD HH:mm:ss');
-  const uresjarat = idotartam + foglalasObj.szolgaltatasok.length > 1 ? 15 : 10;
-  const totalVege = moment(foglalasObj.vege).add(uresjarat, 'minutes').format('YYYY-MM-DD HH:mm:ss');
 
-  const isFoglalasOnSzabadnapSql = `
-    SELECT kezdete, vege
-    FROM szabadnapok
-    WHERE ('${moment(foglalasObj.kezdete).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege) AND 
-        ('${moment(foglalasObj.vege).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege);
-  `;
-  const isSzabadQsl = `SELECT * FROM idopontok WHERE((vege > '${foglalasObj.kezdete}') AND (kezdete < '${totalVege}'));`
-  const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
-  const overLappedAppointments = await UseQuery(isSzabadQsl, '/api/idopontok POST');
-  const foglalasOverlapWithFreeday = await UseQuery(isFoglalasOnSzabadnapSql, '/api/idopontok POST');
-  const nyitva = await UseQuery(getnyitavtartasSql, "GET /api/idopontok");
-  const isSzabad = overLappedAppointments.length === 0;
-  const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
-  let nyitvatartas = nyitva[0].nyitvatartas;
-  nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
-  const dayname = moment(foglalasObj.kezdete).format("dddd");
-  const capitalized = "is" + dayname;
-  const kezdo = nyitvatartas[(dayname + "").toLowerCase()].tol;
-  const zaro = nyitvatartas[(dayname + "").toLowerCase()].ig;
-  const uzletnyit = moment(
-      moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + kezdo
-  ).format("YYYY-MM-DD HH:mm");
-  const uzletzar = moment(
-      moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + zaro
-  ).format("YYYY-MM-DD HH:mm");
-  const isNyitva = foglalasObj.kezdete && moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
-      foglalasObj.vege && moment(foglalasObj.vege).isSameOrBefore(uzletzar);
-  if (isSzabad && isNyitva && isFoglalasNotOverlapWithFreeday) {
-    const createSql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL);`;
-  
-    idopontok.query(createSql, async (err) => {
-      if (!err) {
-        
-        const insertSql = `INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipusok, nyelv) VALUES ('${foglalasObj.kezdete}', date_add('${foglalasObj.kezdete}', interval ${(idotartam + (foglalasObj.szolgaltatasok.length > 1 ? 15 : 10))} minute), '${foglalasObj.ugyfelnev}', '${foglalasObj.ugyfelemail}', '${foglalasObj.ugyfeltelefon}', '${foglalasObj.ugyfelelfogad}', NOW(), '${JSON.stringify(foglalasObj.szolgaltatasok)}', '${lang}');`;  
-        let szolgok = '';
-        if (totalQuery && totalQuery.length > 0) {
-          totalQuery.forEach((sz) => {
-            szolgok += `<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`;
-          })
-        }
 
-        idopontok.query(insertSql, (e, r) => {
-          if (!e) {
-              const kezdete = moment(foglalasObj.kezdete).format('YYYYMMDDTHHmmSS');
-              const vege = moment(foglalasObj.vege).format('YYYYMMDDTHHmmSS');
-              const addToGoogleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${foglalasObj.ugyfelnev + ' időpontja (ID: ' + r.insertId + ')'}&dates=${kezdete}/${vege}&ctz=Europe/Budapest&sf=true&output=xml`;
-              const ugyfeluzenetmagyar = `<b>Kedves ${foglalasObj.ugyfelnev}!</b><br><br>
-              A lefoglalt időpont adatai: <br>
-              <ul><li>Név: ${foglalasObj.ugyfelnev}</li>
-              <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
-              <li>Szolgáltatás(ok): 
-              <ul>
-              ${szolgok}
-              </ul>
-              <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
-              Lemondani az alábbi linken tudja: <br>
-              <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
-              <strong>Amennyiben nem érkezik meg a foglalt időpontra és legalább 2 nappal előbb nem törli az időpontot, úgy a következő alkalommal felszámolásra kerül az elmulasztott kezelés is!</strong><br> 
-              Tisztelettel:<br>
-              Tünci Beauty Salon<br>`;
-              const ugyfeluzenetnemet = `<b>Liebe ${foglalasObj.ugyfelnev},</b><br><br>
-              Angaben zum gebuchten Termin: <br>
-              <ul>
-              <li>Dienstleistungen: 
-              <ul>
-              ${szolgok}
-              </ul>
-              </li>
-              <li>Name: ${foglalasObj.ugyfelnev}</li>
-              <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
-              <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
-              Sie können über den folgenden Link kündigen:<br>
-              <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
-              <strong>Sollten Sie nicht zum gebuchten Zeitpunkt erscheinen und den Termin nicht mindestens 2 Tage vorher absagen, wird die versäumte Behandlung auch beim nächsten Mal in Rechnung gestellt!</strong><br><br>
-              Aufrichtig:<br>
-              Tünci Beauty Salon<br>`;
-              const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
-              Új foglalás érkezett: <br>
-              <ul>
-              <li>Szolgáltatás(ok): 
-              <ul>
-              ${szolgok}
-              </ul>
-              <li>Név: ${foglalasObj.ugyfelnev}</li>
-              <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
-              <li>E-mail: ${foglalasObj.ugyfelemail}.</li>
-              <li>Időpont: <a href="${addToGoogleCalendarUrl}">${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</a></li></ul><br>
-              Tisztelettel:<br>
-              Tünci Beauty Salon<br>`;
-              transporter.sendMail({
-                  from: process.env.REACT_APP_noreplyemail, // sender address
-                  to: `${process.env.foEmail}`, // list of receivers
-                  subject: `Új foglalás érkezett`, // Subject line
-                  html: tulajuzenet // html body
-              }, (error) => {
-                  if (!error) {
-                      const targy = lang === 'hu' ? `Új időpontfoglalás a Tünci Beauty Salon-ba` : `Neue Terminbuchung im Tünci Beauty Salon`;
-                      transporter.sendMail({
-                          from: process.env.REACT_APP_noreplyemail, // sender address
-                          to: `${foglalasObj.ugyfelemail}`, // list of receivers
-                          subject: targy,
-                          html: lang === 'hu' ? ugyfeluzenetmagyar : ugyfeluzenetnemet // html body
-                          
-                      }, async (errrrrr) => {
-                          if (!errrrrr) {
-                            if (foglalasObj.hirlevelFeliratkozas) {
-                              const ressss = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/feliratkozas`, {
-                                method: 'POST',
-                                mode: "cors",
-                                cache: "no-cache",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
-                                  "belsoleg": "true"
-                                },
-                                body: JSON.stringify({ 
-                                  feliratkozoNyelv: foglalasObj.feliratkozoNyelv,
-                                  feliratkozoNev: foglalasObj.ugyfelnev,
-                                  feliratkozoEmail: foglalasObj.ugyfelemail,
-                                  feliratkozasMod: 'Időpontfoglaló'
-                                })
-                              });
-                              if (!ressss.err) {
-                                log('/api/feliratkozas', res.err)
-                              }
-                            }
-                            
-                          } else {
-                            log('POST /api/idopontok tulajmail', errrrrr)
-                          }
-                      })
-                  } else {
-                      log('POST /api/idopontok tulajmail', error)
-                  }
-              })
-            res.status(200).send({
-              msg:
-                lang === "hu"
-                  ? "Időpont sikeresen hozzáadva! E-mail-ben értesítjük a továbbiakról!"
-                  : "Datum erfolgreich hinzugefügt! Über weitere Informationen informieren wir Sie per E-Mail!",
-              err: null
-            });
-          } else {
-              // res.status(500).send({ err: e, msg: JSON.stringify(e) })
-              res.status(500).send({ err: e, msg: lang === 'hu' ? 'Hiba az időpont hozzáadaásakor' : 'Fehler beim Hinzufügen des Datums' })
-          }
-        })
-             
-      } else {
-        res.status(500).send({
-          err: err,
-          msg:
-            lang === "hu"
-              ? "Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!"
-              : "Beim Hinzufügen des Dienstes ist ein Fehler aufgetreten! Benachrichtigen Sie den Website-Administrator!",
-        });
-      }
-    })
-  } else {
-    res.status(409).send({ err: { ok: 'OVERLAP' }, msg: lang === 'hu' ? 'A fogalásakor a rendszerbe került egy másik foglalás is vagy az időpont a nyitvatartási időn kívül van. Kérjük válasszon másik időpontot!' : 'Zum Zeitpunkt der Buchung wurde dem System eine weitere Reservierung hinzugefügt oder der gewünschte Zeitpunkt liegt außerhalb unserer Öffnungszeiten.. Bitte wählen Sie einen anderen Termin!' })
-  }
-  
-})
+// router.post("/", async (req, res) => {
+//   let foglalasObj = req.body;
+//   foglalasObj.ugyfelelfogad = getNumberFromBoolean(foglalasObj.ugyfelelfogad);
+//   const lang = req.headers.lang;
+//
+//   let idotartam = 0;
+//   const totalQuery = await UseQuery(`SELECT idotartam, magyarszolgrovidnev as magyarszolg, szolgrovidnev as nemetszolg FROM szolgaltatasok WHERE id IN(${foglalasObj.szolgaltatasok})`);
+//   if (totalQuery && totalQuery.length > 0) {
+//     totalQuery.forEach((sz) => {
+//       idotartam += sz.idotartam;
+//     })
+//   }
+//
+//   foglalasObj.vege = moment(foglalasObj.kezdete).add(idotartam, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+//   const uresjarat = idotartam + foglalasObj.szolgaltatasok.length > 1 ? 15 : 10;
+//   const totalVege = moment(foglalasObj.vege).add(uresjarat, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+//
+//   const isFoglalasOnSzabadnapSql = `
+//     SELECT kezdete, vege
+//     FROM szabadnapok
+//     WHERE ('${moment(foglalasObj.kezdete).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege) AND 
+//         ('${moment(foglalasObj.vege).format('YYYY-MM-DD')}' BETWEEN kezdete AND vege);
+//   `;
+//   const isSzabadQsl = `SELECT * FROM idopontok WHERE((vege > '${foglalasObj.kezdete}') AND (kezdete < '${totalVege}'));`
+//   const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
+//   const overLappedAppointments = await UseQuery(isSzabadQsl, '/api/idopontok POST');
+//   const foglalasOverlapWithFreeday = await UseQuery(isFoglalasOnSzabadnapSql, '/api/idopontok POST');
+//   const nyitva = await UseQuery(getnyitavtartasSql, "GET /api/idopontok");
+//   const isSzabad = overLappedAppointments.length === 0;
+//   const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
+//   let nyitvatartas = nyitva[0].nyitvatartas;
+//   nyitvatartas = typeof nyitvatartas === 'string' ? JSON.parse(nyitvatartas) : nyitvatartas;
+//   const dayname = moment(foglalasObj.kezdete).format("dddd");
+//   const capitalized = "is" + dayname;
+//   const kezdo = nyitvatartas[(dayname + "").toLowerCase()].tol;
+//   const zaro = nyitvatartas[(dayname + "").toLowerCase()].ig;
+//   const uzletnyit = moment(
+//       moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + kezdo
+//   ).format("YYYY-MM-DD HH:mm");
+//   const uzletzar = moment(
+//       moment(foglalasObj.kezdete).format("YYYY-MM-DD") + " " + zaro
+//   ).format("YYYY-MM-DD HH:mm");
+//   const isNyitva = foglalasObj.kezdete && moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
+//       foglalasObj.vege && moment(foglalasObj.vege).isSameOrBefore(uzletzar);
+//   if (isSzabad && isNyitva && isFoglalasNotOverlapWithFreeday) {
+//     const createSql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL);`;
+//  
+//     idopontok.query(createSql, async (err) => {
+//       if (!err) {
+//        
+//         const insertSql = `INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipusok, nyelv) VALUES ('${foglalasObj.kezdete}', date_add('${foglalasObj.kezdete}', interval ${(idotartam + (foglalasObj.szolgaltatasok.length > 1 ? 15 : 10))} minute), '${foglalasObj.ugyfelnev}', '${foglalasObj.ugyfelemail}', '${foglalasObj.ugyfeltelefon}', '${foglalasObj.ugyfelelfogad}', NOW(), '${JSON.stringify(foglalasObj.szolgaltatasok)}', '${lang}');`;  
+//         let szolgok = '';
+//         if (totalQuery && totalQuery.length > 0) {
+//           totalQuery.forEach((sz) => {
+//             szolgok += `<li>${lang === 'hu' ? sz.magyarszolg : sz.nemetszolg}</li>`;
+//           })
+//         }
+//
+//         idopontok.query(insertSql, (e, r) => {
+//           if (!e) {
+//               const kezdete = moment(foglalasObj.kezdete).format('YYYYMMDDTHHmmSS');
+//               const vege = moment(foglalasObj.vege).format('YYYYMMDDTHHmmSS');
+//               const addToGoogleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${foglalasObj.ugyfelnev + ' időpontja (ID: ' + r.insertId + ')'}&dates=${kezdete}/${vege}&ctz=Europe/Budapest&sf=true&output=xml`;
+//               const ugyfeluzenetmagyar = `<b>Kedves ${foglalasObj.ugyfelnev}!</b><br><br>
+//               A lefoglalt időpont adatai: <br>
+//               <ul><li>Név: ${foglalasObj.ugyfelnev}</li>
+//               <li>Telefonszám: ${foglalasObj.ugyfeltelefon}</li>
+//               <li>Szolgáltatás(ok): 
+//               <ul>
+//               ${szolgok}
+//               </ul>
+//               <li>Időpont: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
+//               Lemondani az alábbi linken tudja: <br>
+//               <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
+//               <strong>Amennyiben nem érkezik meg a foglalt időpontra és legalább 2 nappal előbb nem törli az időpontot, úgy a következő alkalommal felszámolásra kerül az elmulasztott kezelés is!</strong><br> 
+//               Tisztelettel:<br>
+//               Tünci Beauty Salon<br>`;
+//               const ugyfeluzenetnemet = `<b>Liebe ${foglalasObj.ugyfelnev},</b><br><br>
+//               Angaben zum gebuchten Termin: <br>
+//               <ul>
+//               <li>Dienstleistungen: 
+//               <ul>
+//               ${szolgok}
+//               </ul>
+//               </li>
+//               <li>Name: ${foglalasObj.ugyfelnev}</li>
+//               <li>Telefonnummer: ${foglalasObj.ugyfeltelefon}</li>
+//               <li>Termin: ${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</li></ul><br>
+//               Sie können über den folgenden Link kündigen:<br>
+//               <a href='${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}' target='_blank'>${process.env.REACT_APP_mainUrl + `/terminstreichung?terminId=${r.insertId}`}</a><br>
+//               <strong>Sollten Sie nicht zum gebuchten Zeitpunkt erscheinen und den Termin nicht mindestens 2 Tage vorher absagen, wird die versäumte Behandlung auch beim nächsten Mal in Rechnung gestellt!</strong><br><br>
+//               Aufrichtig:<br>
+//               Tünci Beauty Salon<br>`;
+//               const tulajuzenet = `<b>Kedves Tünci!</b><br><br>
+//               Új foglalás érkezett: <br>
+//               <ul>
+//               <li>Szolgáltatás(ok): 
+//               <ul>
+//               ${szolgok}
+//               </ul>
+//               <li>Név: ${foglalasObj.ugyfelnev}</li>
+//               <li>Telefonszám: ${foglalasObj.ugyfeltelefon}.</li>
+//               <li>E-mail: ${foglalasObj.ugyfelemail}.</li>
+//               <li>Időpont: <a href="${addToGoogleCalendarUrl}">${moment(foglalasObj.kezdete).format('YYYY-MM-DD HH:mm') + ' - ' + moment(moment(foglalasObj.kezdete).add(idotartam, 'minutes')).format('HH:mm')}</a></li></ul><br>
+//               Tisztelettel:<br>
+//               Tünci Beauty Salon<br>`;
+//               transporter.sendMail({
+//                   from: process.env.REACT_APP_noreplyemail, // sender address
+//                   to: `${process.env.foEmail}`, // list of receivers
+//                   subject: `Új foglalás érkezett`, // Subject line
+//                   html: tulajuzenet // html body
+//               }, (error) => {
+//                   if (!error) {
+//                       const targy = lang === 'hu' ? `Új időpontfoglalás a Tünci Beauty Salon-ba` : `Neue Terminbuchung im Tünci Beauty Salon`;
+//                       transporter.sendMail({
+//                           from: process.env.REACT_APP_noreplyemail, // sender address
+//                           to: `${foglalasObj.ugyfelemail}`, // list of receivers
+//                           subject: targy,
+//                           html: lang === 'hu' ? ugyfeluzenetmagyar : ugyfeluzenetnemet // html body
+//                          
+//                       }, async (errrrrr) => {
+//                           if (!errrrrr) {
+//                             if (foglalasObj.hirlevelFeliratkozas) {
+//                               const ressss = await Microservices.fetchApi(`${process.env.REACT_APP_mainUrl}/api/feliratkozas`, {
+//                                 method: 'POST',
+//                                 mode: "cors",
+//                                 cache: "no-cache",
+//                                 headers: {
+//                                   "Content-Type": "application/json",
+//                                   "Access-Control-Allow-Origin": "http://192.168.11.64:3000",
+//                                   "belsoleg": "true"
+//                                 },
+//                                 body: JSON.stringify({ 
+//                                   feliratkozoNyelv: foglalasObj.feliratkozoNyelv,
+//                                   feliratkozoNev: foglalasObj.ugyfelnev,
+//                                   feliratkozoEmail: foglalasObj.ugyfelemail,
+//                                   feliratkozasMod: 'Időpontfoglaló'
+//                                 })
+//                               });
+//                               if (!ressss.err) {
+//                                 log('/api/feliratkozas', res.err)
+//                               }
+//                             }
+//                            
+//                           } else {
+//                             log('POST /api/idopontok tulajmail', errrrrr)
+//                           }
+//                       })
+//                   } else {
+//                       log('POST /api/idopontok tulajmail', error)
+//                   }
+//               })
+//             res.status(200).send({
+//               msg:
+//                 lang === "hu"
+//                   ? "Időpont sikeresen hozzáadva! E-mail-ben értesítjük a továbbiakról!"
+//                   : "Datum erfolgreich hinzugefügt! Über weitere Informationen informieren wir Sie per E-Mail!",
+//               err: null
+//             });
+//           } else {
+//               // res.status(500).send({ err: e, msg: JSON.stringify(e) })
+//               res.status(500).send({ err: e, msg: lang === 'hu' ? 'Hiba az időpont hozzáadaásakor' : 'Fehler beim Hinzufügen des Datums' })
+//           }
+//         })
+//             
+//       } else {
+//         res.status(500).send({
+//           err: err,
+//           msg:
+//             lang === "hu"
+//               ? "Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!"
+//               : "Beim Hinzufügen des Dienstes ist ein Fehler aufgetreten! Benachrichtigen Sie den Website-Administrator!",
+//         });
+//       }
+//     })
+//   } else {
+//     res.status(409).send({ err: { ok: 'OVERLAP' }, msg: lang === 'hu' ? 'A fogalásakor a rendszerbe került egy másik foglalás is vagy az időpont a nyitvatartási időn kívül van. Kérjük válasszon másik időpontot!' : 'Zum Zeitpunkt der Buchung wurde dem System eine weitere Reservierung hinzugefügt oder der gewünschte Zeitpunkt liegt außerhalb unserer Öffnungszeiten.. Bitte wählen Sie einen anderen Termin!' })
+//   }
+//  
+// })
 
 router.delete("/", async (req, res) => {
   const id = req.headers.id;
