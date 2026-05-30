@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Navbar,
   Collapse,
@@ -12,9 +12,11 @@ import {
 import { NavLink } from "react-router-dom";
 import { HU, CH } from "country-flag-icons/react/3x2";
 import PropTypes from "prop-types";
+import Services from "../../views/Public/Szolgaltatasok/Services"
 
 const PublicHeader = (props) => {
   const { setLang, lang, accessibility, toggleAccessibility } = props;
+  const [szolgKategoriak, setSzolgKategoriak] = React.useState([]);
 
   const toggleNavbar = (id) => {
     const collapse = document.getElementById(id);
@@ -22,6 +24,18 @@ const PublicHeader = (props) => {
       collapse.classList.toggle("show");
     }
   };
+
+  const getSzolgaltatasKategoriak = () => {
+    Services.getSzolgaltatasKategoriak((err, res) => {
+      if (!err) {
+        setSzolgKategoriak(res);
+      }
+    });
+  }
+
+  useEffect(() => {
+    getSzolgaltatasKategoriak()
+  }, [])
 
   return (
     <React.Fragment>
@@ -68,52 +82,21 @@ const PublicHeader = (props) => {
                 &nbsp; {lang === "hu" ? "Szolgáltatások" : "Dienstleistungen"}
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>
-                  <NavLink
-                    className="nav-link public-navbar__nav-link"
-                    to="/service/1"
-                    end
-                  >
-                    <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; {lang === "hu" ? "Kozmetika" : "Kosmetik"}
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="nav-link public-navbar__nav-link"
-                    to="/service/2"
-                    end
-                  >
-                    <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp;{" "}
-                    {lang === "hu"
-                      ? "Manikűr / Pedikűr"
-                      : "Maniküre / Pediküre"}
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="nav-link public-navbar__nav-link"
-                    to="/service/3"
-                    end
-                  >
-                    <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp; {lang === "hu" ? "Smink" : "Make-Up"}
-                  </NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink
-                    className="nav-link public-navbar__nav-link"
-                    to="/service/4"
-                    end
-                  >
-                    <i aria-hidden className="fas fa-handshake"></i>
-                    &nbsp;{" "}
-                    {lang === "hu"
-                      ? "Szempilla / Szemöldök"
-                      : "Wimpern / Augenbrauen"}
-                  </NavLink>
-                </DropdownItem>
+                {szolgKategoriak && szolgKategoriak.length && szolgKategoriak.map(szolgkat => {
+                  const to = "/service/" + szolgkat.id;
+                  return (
+                      <DropdownItem>
+                        <NavLink
+                            className="nav-link public-navbar__nav-link"
+                            to={to}
+                            end
+                        >
+                          <i aria-hidden className="fas fa-handshake"></i>
+                          &nbsp; {lang === "hu" ? szolgkat.magyarkategorianev : szolgkat.kategorianev}
+                        </NavLink>
+                      </DropdownItem>
+                  )
+                })}
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
@@ -125,15 +108,6 @@ const PublicHeader = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            {/* <NavItem className="nav-item public-navbar__nav-item">
-              <NavLink
-                className="nav-link public-navbar__nav-link"
-                to="/preisliste"
-              >
-                <i className="fa-solid fa-money-bill" />
-                &nbsp; {lang === "hu" ? "Árlista" : "Preisliste"}
-              </NavLink>
-            </NavItem> */}
             <NavItem className="nav-item public-navbar__nav-item">
               <NavLink
                 className="nav-link public-navbar__nav-link"

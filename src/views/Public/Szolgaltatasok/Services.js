@@ -46,6 +46,24 @@ export default class Services {
 
   // SZOLGKATEGORIAK START
 
+  static getSzolgaltatasKategoriak = (fnDone) => {
+    let result = Microservices.fetchApi(
+      szolgKategoriakUrl,
+        {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "http://192.168.11.64:3000"
+            },
+        },
+        fnDone
+    );
+
+    return result;
+  };
+
   static getSzolgaltatasKategoria = (id, fnDone) => {
     let result = Microservices.fetchApi(
       szolgKategoriakUrl,
