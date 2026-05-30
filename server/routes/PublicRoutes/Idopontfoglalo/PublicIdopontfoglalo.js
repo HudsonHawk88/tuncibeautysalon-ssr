@@ -209,9 +209,9 @@ router.post("/", async (req, res) => {
 
     // 6. Adatbázis tábla ellenőrzése és az új időpont beszúrása biztonságosan
     await UseQuery("CREATE TABLE IF NOT EXISTS idopontok (" +
-        "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, " +
+        "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, vege TIMESTAMP NOT NULL, " +
         "ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, " +
-        "ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, " +
+        "ugyfelelfogad tinyint(1) NOT NULL DEFAULT 0, elfogadido TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
         "foglalasmod VARCHAR(25) NOT NULL DEFAULT 'Publikus felület', nyelv text NOT NULL)",
         [],
         "/api/idopontok POST"
