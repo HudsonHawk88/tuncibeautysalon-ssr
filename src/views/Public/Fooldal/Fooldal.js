@@ -57,7 +57,6 @@ const Fooldal = (props) => {
     }
   }, [lang]);
 
-
   const renderSzolgaltatasok = () => {
     return (
       <div className="szolgkatblokk">
