@@ -227,7 +227,7 @@ const Feliratkozok = (props) => {
     );
   };
 
-  formatFeliratkozoNyelv = (cell, row) => {
+  const formatFeliratkozoNyelv = (cell, row) => {
     return row.feliratkozonyelv == "hu" ? "Magyar" : "Svájc";
   }
 
