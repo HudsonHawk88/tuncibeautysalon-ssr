@@ -84,7 +84,7 @@ router.post('/', async (req, res) => {
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
                                 const insertSql = `INSERT INTO feliratkozok (feliratkozoNyelv, feliratkozoNev, feliratkozoEmail, feliratkozasMod)
-                          VALUES ('${felvitelObj.feliratkozoNyelv}', '${felvitelObj.feliratkozoNev}', '${felvitelObj.feliratkozoEmail}', '${felvitelObj.feliratkozasMod}');`;
+                          VALUES ('${felvitelObj.feliratkozoNyelv}', '${felvitelObj.feliratkozoNev}', '${felvitelObj.feliratkozoEmail}', 'Admin felület');`;
                                 pool.query(insertSql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
