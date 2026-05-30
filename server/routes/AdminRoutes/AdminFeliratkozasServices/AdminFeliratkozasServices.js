@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
                 if (felvitelObj) {
                     //store user, password and role
                         const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.feliratkozok (
-                            id varchar(32) DEFAULT (uuid()) NOT NULL PRIMARY KEY,
+                            id varchar(36) DEFAULT (uuid()) NOT NULL PRIMARY KEY,
                             feliratkozoNyelv varchar(2) DEFAULT 'ch',
                             feliratkozoNev text DEFAULT NULL,
                             feliratkozoEmail text DEFAULT NULL,
