@@ -1,4 +1,4 @@
-import { jwtparams, UseQuery, pool, validateToken, hasRole, getJSONfromLongtext } from '../../../common/QueryHelpers.js';
+import { jwtparams, UseQuery, pool, validateToken, hasRole, getJSONfromLongtext, log } from '../../../common/QueryHelpers.js';
 import express from 'express';
 const router = express.Router();
 
@@ -79,6 +79,7 @@ router.post('/', async (req, res) => {
                     pool.query(sql, async (error) => {
                         if (!error) {
                             const hirlevelSql = `SELECT feliratkozoEmail FROM feliratkozok WHERE feliratkozoEmail = '${felvitelObj.feliratkozoEmail}';`;
+                            // LOG HELYE
                             const result = await UseQuery(hirlevelSql);
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
@@ -101,6 +102,8 @@ router.post('/', async (req, res) => {
                                 });
                             }
                         } else {
+                            log('POST AdminFeliratkók SQL: ', sql);
+                            log('POST AdminFeliratkók error: ', error);
                             res.status(500).send({
                                 err: 'Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!',
                                 msg: err
