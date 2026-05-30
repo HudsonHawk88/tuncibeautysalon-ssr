@@ -13,9 +13,6 @@ const Sortable = (props) => {
     szolgSorrendekClone[dragItem.current] =
       szolgSorrendekClone[draggedOverItem.current];
     szolgSorrendekClone[draggedOverItem.current] = temp;
-    console.log(dragItem.current, draggedOverItem.current);
-
-    console.log(setItems);
     dragItem.current = 0;
     draggedOverItem.current = 0;
     szolgSorrendekClone.forEach((s, idx) => (s.sorrend = idx + 1));

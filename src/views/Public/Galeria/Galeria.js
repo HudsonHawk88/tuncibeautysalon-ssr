@@ -119,8 +119,6 @@ const Galeria = (props) => {
   };
 
   const renderGaleria = () => {
-    // console.log("selectedGaleria: ", selectedGaleria);
-    // console.log("buttonDivHeight: ", buttonDivHeight);
     return (
       <div
         style={{

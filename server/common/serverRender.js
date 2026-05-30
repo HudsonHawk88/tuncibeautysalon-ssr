@@ -101,6 +101,6 @@ export default () => (req, res) => {
 
                 return resx;
             })
-            .catch((error) => console.log('errrrrr: ', error));
+            .catch((error) => console.error('errrrrr: ', error));
     });
 };

@@ -30,7 +30,6 @@ const IdopontokForm = (props) => {
     nyelvOptions,
   } = props;
 
-  console.log("nyelvOptions: ", nyelvOptions);
 
   useEffect(() => {
     const nap = idopont.nap;

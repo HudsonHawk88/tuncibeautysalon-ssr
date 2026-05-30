@@ -137,7 +137,7 @@ router.post('/', async (req, res) => {
                         } else {
                             res.status(500).send({
                                 err: 'Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!',
-                                msg: err
+                                msg: error
                             });
                         }
                     });
@@ -258,7 +258,6 @@ router.get('/addcron', async (req, res) => {
     const token = req.headers.token;
     const id = req.headers.id;
     const secret = req.headers.secret;
-    console.log("ADDCRON")
 
     if (token) {
         const user = await validateToken(token, jwtparams.secret);
@@ -280,7 +279,6 @@ router.get('/addcron', async (req, res) => {
                             timezone: 'Europe/Budapest'
                         }, () => {
                             const url = `${process.env.belsoApiUrl}/api/admin/hirlevel/send?id=${id}`;
-                            console.log("URL: ", url);
                             Microservices.fetchApi(url, {
                                 method: 'POST',
                                 mode: "no-cors",
@@ -289,7 +287,7 @@ router.get('/addcron', async (req, res) => {
                                     "Content-Type": "application/json",
                                     secret: secret
                                 }
-                            }).then((res,rej) => console.log(res, rej)).catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); console.log("CATCH CA: ", ca); });
+                            }).catch(ca => { log(`${process.env.REACT_APP_mainUrl}/api/admin/hirlevel/send?id=${id}`, ca); });
                                
                             
                                

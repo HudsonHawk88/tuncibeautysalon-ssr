@@ -49,7 +49,6 @@ const Bio = (props) => {
         let obj = res;
         const leiras = serializeValue("de", res.leiras);
         const magyarleiras = serializeValue("de", res.magyarleiras);
-        // console.log("Editor1, Editor2: ", Editor1, Editor2);
         if (Editor1 && Editor2 && Editor1.current && Editor2.current) {
           setEditorValue(leiras, Editor1);
           setEditorValue(magyarleiras, Editor2);

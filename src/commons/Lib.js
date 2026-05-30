@@ -63,7 +63,6 @@ function makeFormData(dataObj, kepKey, isMod) {
       data.append(key, dataObj[key]);
     }
   }
-  /*     console.log('FormData: ', data.getAll('leiras')); */
   return data;
 }
 

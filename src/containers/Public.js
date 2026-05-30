@@ -12,8 +12,6 @@ const Public = (props) => {
   const [loading] = useState(false);
   const location = useLocation();
 
-  /*  console.log('PUBLICING: ', data); */
-
   return location.pathname === "/login" && !isAdmin ? (
     <React.Fragment>{children}</React.Fragment>
   ) : (

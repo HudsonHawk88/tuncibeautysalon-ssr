@@ -62,21 +62,6 @@ const PublicHeaderCarousel = (props) => {
   const getItems = () => {
     let items = [];
     const kepSrc = "/static/images/slideweb.jpg";
-    /*     console.log(ingatlanok) */
-    /* ingatlanok &&
-            ingatlanok.forEach((ingatlan, index) => {
-                let kep = ingatlan && ingatlan.kepek && ingatlan.kepek.length !== 0 && JSON.parse(JSON.stringify(ingatlan.kepek[0]));
-                if (kep) {
-                    items.push({
-                        original: kep.src,
-                        thumbnail: kep.src,
-                        originalHeight: '600px',
-                        originalWidth: '200px',
-                        renderItem: () => item(ingatlan, kep, index),
-                        thumbnailWidth: '500px'
-                    });
-                }
-            }); */
     items.push({
       original: kepSrc,
       thumbnail: kepSrc,

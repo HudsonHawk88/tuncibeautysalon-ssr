@@ -222,7 +222,6 @@ const Galeria = (props) => {
     };
 
     submitObj = makeFormData(galeriaObj, ["kepek"], modosit);
-    // console.log("SUBMITOBJ: ", submitObj);
 
     if (modosit) {
       // submitObj = makeFormData(galeriaObj, ['kepek']);

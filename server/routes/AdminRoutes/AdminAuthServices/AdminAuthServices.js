@@ -8,8 +8,6 @@ const router = express.Router();
 router.post('/token', async (req, res) => {
     const token = req.headers.refreshtoken;
     const user = await validateToken(token, jwtparams.refresh);
-    // console.log("TOKEN: ", token);
-    // console.log("USER: ", user);
     if (user === null) {
         const sql = `UPDATE adminusers SET token=NULL WHERE token='${token}';`;
         adminusers.query(sql, (error, result) => {
@@ -61,9 +59,7 @@ router.post('/token', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    /* try { */
     let userObj = req.body;
-    // userObj = JSON.parse(userObj);
     if (userObj) {
         const sql = `SELECT username, password, roles, avatar, nev, telefon, email FROM adminusers WHERE email = '${userObj.email}'`;
 
@@ -117,9 +113,6 @@ router.post('/login', async (req, res) => {
     } else {
         res.status(400).send({ err: 'Email cím és jelszó megadása kötelező' });
     }
-    /* } catch (ex) {
-        console.error(ex);
-    } */
 });
 
 router.post('/logout', (req, res) => {

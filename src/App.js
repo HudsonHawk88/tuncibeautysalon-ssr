@@ -68,7 +68,6 @@ function App() {
     const language = localStorage.getItem("lang")
       ? localStorage.getItem("lang")
       : "ch";
-    console.log(language);
     if (!localStorage.getItem("lang")) {
       localStorage.setItem("lang", language);
     }
@@ -97,7 +96,6 @@ function App() {
   const refreshToken = () => {
     const token = localStorage ? localStorage.getItem("refreshToken") : "";
     Services.refreshToken(token, isAdmin, (err, res) => {
-      console.log(err, res);
       if (!err) {
         setUser(res.user);
         localStorage.setItem("token", res.token);

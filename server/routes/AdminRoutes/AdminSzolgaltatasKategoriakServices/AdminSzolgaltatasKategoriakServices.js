@@ -1,4 +1,13 @@
-import { jwtparams, pool, validateToken, hasRole, isTableExists, getJSONfromLongtext, UseQuery } from '../../../common/QueryHelpers.js';
+import {
+    jwtparams,
+    pool,
+    validateToken,
+    hasRole,
+    isTableExists,
+    getJSONfromLongtext,
+    UseQuery,
+    getNumberFromBoolean
+} from '../../../common/QueryHelpers.js';
 import express from 'express';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import multer from 'multer';
@@ -82,7 +91,7 @@ router.post('/', upload.array('kep'), async (req, res) => {
             });
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
-                const felvitelObj = req.body;
+                const felvitelObj = getJSONfromLongtext(req.body, "toNumber");
                 const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltataskategoriak (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kategorianev text NOT NULL, magyarkategorianev text NOT NULL, kategorialeiras text NOT NULL, magyarkategorialeiras text DEFAULT NULL, kep longtext DEFAULT NULL);`;
                 szolgaltataskategoriak.query(sql, async (err) => {
                     if (!err) {
@@ -147,7 +156,7 @@ router.post('/', upload.array('kep'), async (req, res) => {
                         }
 
                         felvitelObj.kep = kepek;
-                        const sql = `INSERT INTO szolgaltataskategoriak (id, kategorianev, magyarkategorianev, kategorialeiras, magyarkategorialeiras, kep) VALUES ('${newId}', '${felvitelObj.kategorianev}', '${felvitelObj.magyarkategorianev}', '${felvitelObj.kategorialeiras}', '${felvitelObj.magyarkategorialeiras}', '${JSON.stringify(felvitelObj.kep)}');`;
+                        const sql = `INSERT INTO szolgaltataskategoriak (id, kategorianev, magyarkategorianev, kategorialeiras, magyarkategorialeiras, kep, isAktiv) VALUES ('${newId}', '${felvitelObj.kategorianev}', '${felvitelObj.magyarkategorianev}', '${felvitelObj.kategorialeiras}', '${felvitelObj.magyarkategorialeiras}', '${JSON.stringify(felvitelObj.kep)}', '${getNumberFromBoolean(felvitelObj.isAktiv)}');`;
                         szolgaltataskategoriak.query(sql, (error) => {
                             if (!err) {
                                 res.status(200).send({
@@ -261,7 +270,7 @@ router.put('/', upload.array('uj_kep'), async (req, res) => {
                             });
                         }
                         modositoObj.kep = kepek;
-                        const sql = `UPDATE szolgaltataskategoriak SET kategorianev = '${modositoObj.kategorianev}', magyarkategorianev = '${modositoObj.magyarkategorianev}', kategorialeiras = '${modositoObj.kategorialeiras}', magyarkategorialeiras = '${modositoObj.magyarkategorialeiras}', kep='${JSON.stringify(modositoObj.kep)}' WHERE id = '${id}';`;
+                        const sql = `UPDATE szolgaltataskategoriak SET kategorianev = '${modositoObj.kategorianev}', magyarkategorianev = '${modositoObj.magyarkategorianev}', kategorialeiras = '${modositoObj.kategorialeiras}', magyarkategorialeiras = '${modositoObj.magyarkategorialeiras}', kep='${JSON.stringify(modositoObj.kep)}', isAktiv='${getNumberFromBoolean(modositoObj.isAktiv)}' WHERE id = '${id}';`;
                         szolgaltataskategoriak.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({

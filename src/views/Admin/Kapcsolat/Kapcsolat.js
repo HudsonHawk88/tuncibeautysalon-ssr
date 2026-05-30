@@ -145,7 +145,6 @@ const Kapcsolat = (props) => {
   };
 
   const helysegFormatter = (cell, row) => {
-    console.log(row);
     const { helyseg } = row;
     const { orszag, irszam, telepules, cim } = helyseg;
 

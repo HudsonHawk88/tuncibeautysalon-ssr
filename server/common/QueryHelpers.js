@@ -247,11 +247,8 @@ const getJSONfromLongtext = (object, direction = 'toBool') => {
                 }
                 return newObj[key];
             } else {
-                console.log()
                 if (verifyJson(object[key])) {
-                    console.log(object[key])
                     newObj[key] = JSON.parse(object[key]);
-                    console.log(typeof newObj[key])
                 } else {
                     newObj[key] = object[key];
                 }
@@ -429,10 +426,6 @@ const getChangedField = (newObject, oldObject) => {
             oldValue = parseInt(oldObject[key], 10);
             newValue = parseInt(oldObject[key], 10);
         }
-
-        console.log('OLD VALUE: ', oldValue);
-        console.log('NEW VALUE: ', newValue);
-        console.log(typeof newObject, Array.isArray(newObject));
         const isObjects = isObject(newValue) && isObject(oldValue);
 
         if (!isObjects && newValue !== oldValue) {
@@ -445,18 +438,15 @@ const getChangedField = (newObject, oldObject) => {
 
 const renderValtozatasok = (valtozasok) => {
     return valtozasok.map((item) => {
-        console.log('ITEM: ', item);
         return `<li>${item.fieldName}: Régi érték: ${item.regiErtek} Új érték: ${item.ujErtek}</li>`;
     });
 };
 
 const UseQuery = async (sql, logEndPoint) => {
     return new Promise((data) => {
-        // console.log(pool)
         pool.query(sql, function (error, result) {
             // change db->connection for your code
             if (error) {
-                // console.log(error);
                 if (logEndPoint) {
                     log(logEndPoint, error);
                 } else {
@@ -528,7 +518,6 @@ const hasRole = (userRoles, minRoles) => {
 const isTableExists = async (tableName) => {
     const isExistSql = `SHOW TABLES LIKE "${tableName}";`;
     const isExist = await UseQuery(isExistSql);
-    console.log(isExist)
     if (isExist.length !== 0) {
         return true;
     } else {

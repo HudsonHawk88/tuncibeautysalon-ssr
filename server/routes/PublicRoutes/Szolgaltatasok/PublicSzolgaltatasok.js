@@ -1,6 +1,6 @@
 import express from 'express';
-const router = express.Router();
 import { getBooleanFromNumber, pool } from '../../../common/QueryHelpers.js';
+const router = express.Router();
 const szolgaltatasok = pool;
 
 // SZOLGALTATASOK START
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
             }
         });
     } else {
-        const sql = `SELECT * FROM szolgaltatasok WHERE isAktiv = 1;`;
+        const sql = `SELECT sz.* FROM szolgaltatasok sz JOIN szolgaltataskategoriak szk ON sz.szolgkategoria = szk.kategorianev WHERE szk.isAktiv = 1 AND sz.isAktiv = 1;`;
         szolgaltatasok.query(sql, (err, result) => {
             if (!err) {
                 const newResults = [];

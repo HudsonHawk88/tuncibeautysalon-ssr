@@ -1,6 +1,6 @@
 import express from 'express';
-const router = express.Router();
 import { getJSONfromLongtext, pool } from '../../../common/QueryHelpers.js';
+const router = express.Router();
 const szolgaltataskategoriak = pool;
 
 // SZOLGALTATASKATEGORIAK START
@@ -8,7 +8,7 @@ const szolgaltataskategoriak = pool;
 router.get('/', (req, res) => {
     const id = req.headers.id;
     if (id) {
-        const sql = `SELECT * FROM szolgaltataskategoriak WHERE id='${id}';`;
+        const sql = `SELECT * FROM szolgaltataskategoriak WHERE isAktiv = 1 AND id='${id}';`;
         szolgaltataskategoriak.query(sql, (err, result) => {
             if (!err) {
                 const newRes = getJSONfromLongtext(result[0], 'toBool')
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
             }
         });
     } else {
-        const sql = `SELECT * FROM szolgaltataskategoriak;`;
+        const sql = `SELECT * FROM szolgaltataskategoriak WHERE isAktiv = 1;`;
         szolgaltataskategoriak.query(sql, (err, result) => {
             if (!err) {
                 let newRes = result;

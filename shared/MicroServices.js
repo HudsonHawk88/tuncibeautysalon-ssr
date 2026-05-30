@@ -16,7 +16,7 @@ function handleResponse(response, isFnDone) {
     } else {
         if (!response.ok) {
             err = response.err;
-            console.log(err)
+            console.error(err)
             data = { err: err, msg: response.msg }
                 .json()
                 .catch(() => {

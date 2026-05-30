@@ -103,8 +103,6 @@ const KepCard = ({ list, property, setList, services, ...rest }) => {
             width: '100%'
         }; */
 
-    /* console.log('NEWLLL: ', lll); */
-
     const divStyle = {
       display: "flex",
       flexWrap: "wrap",

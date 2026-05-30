@@ -78,10 +78,6 @@ router.post("/", async (req, res) => {
   const getnyitavtartasSql = `SELECT nyitvatartas FROM kapcsolatok;`;
   const overLappedAppointments = await UseQuery(isSzabadQsl, '/api/idopontok POST');
   const foglalasOverlapWithFreeday = await UseQuery(isFoglalasOnSzabadnapSql, '/api/idopontok POST');
-  // console.log("isFoglalasOnSzabadnapSql: ", isFoglalasOnSzabadnapSql);
-  // console.log("foglalasOverlapWithFreeday: ", foglalasOverlapWithFreeday);
-  //
-  // console.log("overLappedAppointments: ", overLappedAppointments);
   const nyitva = await UseQuery(getnyitavtartasSql, "GET /api/idopontok");
   const isSzabad = overLappedAppointments.length === 0;
   const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
@@ -99,7 +95,6 @@ router.post("/", async (req, res) => {
   ).format("YYYY-MM-DD HH:mm");
   const isNyitva = foglalasObj.kezdete && moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
       foglalasObj.vege && moment(foglalasObj.vege).isSameOrBefore(uzletzar);
-  // console.log("isNyitva: ", isNyitva);
   if (isSzabad && isNyitva && isFoglalasNotOverlapWithFreeday) {
     const createSql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL);`;
   
@@ -732,7 +727,7 @@ router.get("/szabadIdopontok", async (req, res) => {
                 ],
               },
             }; */
-  /* 
+            /*
             addEvent(event); */
             /* const evs = await listEvents();
             console.log(evs); */

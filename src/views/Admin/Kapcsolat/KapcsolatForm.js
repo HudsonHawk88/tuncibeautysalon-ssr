@@ -127,11 +127,6 @@ const KapcsolatForm = (props) => {
           />
         </Col>
       </Row>
-      {console.log(
-        moment().isoWeekday(1) === moment().format("dddd"),
-        moment().isoWeekday(1).format("dddd"),
-        moment().format("dddd")
-      )}
       <Row style={{ margin: "10px 0px 0px 0px" }}>
         <Col>
           <Label htmlFor="isMonday">Hétfő</Label>&nbsp;
@@ -187,7 +182,6 @@ const KapcsolatForm = (props) => {
               }
             />
           </Col>
-          {console.log(nyitvatartas)}
         </Row>
       )}
       <Row style={{ margin: "10px 0px 0px 0px" }}>

@@ -57,17 +57,6 @@ const Fooldal = (props) => {
     }
   }, [lang]);
 
-  /* const getSzolgok = (szolg, szolgIdx, groupIdx) => {
-    console.log(szolgIdx + "_szolgId_ " + szolg.id);
-    return (
-      <SzolgaltatasCard
-        groupId={groupIdx + 1}
-        data={szolg}
-        key={szolgIdx + "_szolgId_ " + szolg.id}
-        {...props}
-      />
-    );
-  }; */
 
   const renderSzolgaltatasok = () => {
     return (

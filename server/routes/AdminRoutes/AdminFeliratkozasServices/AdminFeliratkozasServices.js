@@ -31,7 +31,6 @@ router.get('/', async (req, res) => {
             } else {
                 const sql = `SELECT * FROM feliratkozok;`;
                 pool.query(sql, (error, ress) => {
-                    console.log(error)
                     if (error) {
                         res.status(200).send([]);
                     } else {

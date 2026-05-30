@@ -33,12 +33,6 @@ const handleInputChange = (e, obj, setObj) => {
     value = checked;
   }
 
-  console.log(
-    "VALUE: ",
-    typeof value,
-    verifyJson(value) ? JSON.parse(value) : value
-  );
-
   setObj({
     ...obj,
     [name]: value,

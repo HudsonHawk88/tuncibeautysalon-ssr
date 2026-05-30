@@ -85,7 +85,7 @@ router.post('/', upload.array('kepek'), async (req, res) => {
                         }
                         let kepek = [];
                         if (req.files) {
-                            req.files.forEach( async (kep) => {
+                            for (const kep of req.files) {
                                 let extIndex = kep.originalname.lastIndexOf('.');
                                 let fname = kep.originalname.substring(0, extIndex);
                                 const felvitelKepek = JSON.parse(felvitelObj.kepek);
@@ -123,13 +123,12 @@ router.post('/', upload.array('kepek'), async (req, res) => {
                                                 writeFileSync(`${dir}/${fname}.jpg`, buff);
                                             } else {
                                                 log('POST /api/admin/galeria', err);
-                                                console.log(err);
                                             }
                                         });
                                     } )
 
-                                
-                            });
+
+                            }
                         }
                         felvitelObj.kepek = kepek;
 
@@ -225,7 +224,6 @@ router.put('/', upload.array('uj_kepek'), async (req, res) => {
                                                 writeFileSync(`${dir}/${fname}.jpg`, buff);
                                             } else {
                                                 log('PUT /api/admin/galeria', err);
-                                                console.log(err);
                                             }
                                         });
                                     } )
