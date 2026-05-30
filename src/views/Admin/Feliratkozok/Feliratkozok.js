@@ -227,6 +227,10 @@ const Feliratkozok = (props) => {
     );
   };
 
+  formatFeliratkozoNyelv = (cell, row) => {
+    return row.feliratkozonyelv == "hu" ? "Magyar" : "Svájc";
+  }
+
   const renderTable = () => {
     const columns = [
       {
@@ -247,7 +251,7 @@ const Feliratkozok = (props) => {
         text: "Feliratkozó nyelve",
         filterType: "textFilter",
         filterDefaultValue: "Keresés...",
-        formatter: (cell, row) => return row.feliratkozonyelv == "hu" ? "Magyar" : "Svájc"
+        formatter: formatFeliratkozoNyelv
       },
       {
         dataField: "feliratkozasmod",
