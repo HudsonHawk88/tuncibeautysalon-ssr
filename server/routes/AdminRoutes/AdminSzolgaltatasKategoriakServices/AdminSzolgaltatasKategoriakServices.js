@@ -92,7 +92,7 @@ router.post('/', upload.array('kep'), async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 const felvitelObj = getJSONfromLongtext(req.body, "toNumber");
-                const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltataskategoriak (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kategorianev text NOT NULL, magyarkategorianev text NOT NULL, kategorialeiras text NOT NULL, magyarkategorialeiras text DEFAULT NULL, kep longtext DEFAULT NULL);`;
+                const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.szolgaltataskategoriak (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kategorianev text NOT NULL, magyarkategorianev text NOT NULL, kategorialeiras text NOT NULL, magyarkategorialeiras text DEFAULT NULL, kep longtext DEFAULT NULL, isAktiv tinyint(4));`;
                 szolgaltataskategoriak.query(sql, async (err) => {
                     if (!err) {
                         if (!existsSync(process.env.szolgkategoriadir)) {
