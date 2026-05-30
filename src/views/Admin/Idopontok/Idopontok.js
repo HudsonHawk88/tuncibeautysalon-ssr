@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import Services from "./Services.js";
 import { RVInput } from "@inftechsol/reactstrap-form-validation";
 import IdopontokForm from "./IdopontokForm.js";
+import IdopontFoglalo from "../../Public/Idopontfoglalo/Idopontfoglalo";
 
 const defaultIdopont = {
   szolgaltatasok: [],
@@ -318,51 +319,31 @@ const Idopontok = (props) => {
           {!currentId ? "Időpont hozzáadása" : "Időpont módosítása"}
         </ModalHeader>
         <ModalBody>
-          <IdopontokForm
-            idopont={idopont}
-            lang={lang}
-            nyelv={nyelv}
-            setNyelv={setNyelv}
-            nyelvOptions={nyelvOptions}
-            setIdopont={setIdopont}
-            getSzabadIdopontok={getSzabadIdopontok}
-            selectedSzolgaltatas={selectedSzolgaltatas}
-            filteredSzolgaltatasok={filteredSzolgaltatasok}
-            setFilteredSzolgaltatasok={setFilteredSzolgaltatasok}
-            setSelectedSzolgaltatas={setSelectedSzolgaltatas}
-            setSzabadIdopontok={setSzabadIdopontok}
-            szabadIdopontok={szabadIdopontok}
-            groups={groups}
-            getOpts={getOpts}
-            szolgaltatasok={szolgaltatasok}
-            deleteSzolgaltatas={deleteSzolgaltatas}
-            message={message}
-            setActive={setActive}
-          />
+          <IdopontFoglalo {...props} />
+          {/*<IdopontokForm*/}
+          {/*  idopont={idopont}*/}
+          {/*  lang={lang}*/}
+          {/*  nyelv={nyelv}*/}
+          {/*  setNyelv={setNyelv}*/}
+          {/*  nyelvOptions={nyelvOptions}*/}
+          {/*  setIdopont={setIdopont}*/}
+          {/*  getSzabadIdopontok={getSzabadIdopontok}*/}
+          {/*  selectedSzolgaltatas={selectedSzolgaltatas}*/}
+          {/*  filteredSzolgaltatasok={filteredSzolgaltatasok}*/}
+          {/*  setFilteredSzolgaltatasok={setFilteredSzolgaltatasok}*/}
+          {/*  setSelectedSzolgaltatas={setSelectedSzolgaltatas}*/}
+          {/*  setSzabadIdopontok={setSzabadIdopontok}*/}
+          {/*  szabadIdopontok={szabadIdopontok}*/}
+          {/*  groups={groups}*/}
+          {/*  getOpts={getOpts}*/}
+          {/*  szolgaltatasok={szolgaltatasok}*/}
+          {/*  deleteSzolgaltatas={deleteSzolgaltatas}*/}
+          {/*  message={message}*/}
+          {/*  setActive={setActive}*/}
+          {/*/>*/}
         </ModalBody>
         <ModalFooter>
           <div>
-            <Button
-              disabled={
-                idopont.szolgaltatasok.length === 0 ||
-                !idopont.nap ||
-                !idopont.kezdete ||
-                !idopont.ugyfelnev ||
-                !idopont.ugyfelemail ||
-                !idopont.ugyfeltelefon
-              }
-              color="success"
-              style={{
-                marginRight: "10px",
-              }}
-              onClick={() => onSave()}
-            >
-              <span>
-                <strong>
-                  {lang === "hu" ? "Időpont foglalása" : "Termin buchen"}
-                </strong>
-              </span>
-            </Button>
             <Button onClick={toggleModal}>Mégsem</Button>
           </div>
         </ModalFooter>
