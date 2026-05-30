@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
         } else {
             if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
                 let felvitelObj = req.body;
-                log('POST AdminFeliratkozók felvitelObj: ', felvitelObj);
+                log('POST AdminFeliratkozók felvitelObj: ', JSON.stringify(felvitelObj));
                 if (felvitelObj) {
                     //store user, password and role
                         const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.feliratkozok (
