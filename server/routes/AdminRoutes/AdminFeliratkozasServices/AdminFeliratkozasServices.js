@@ -83,14 +83,16 @@ router.post('/', async (req, res) => {
                             const result = await UseQuery(hirlevelSql);
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
-                                const sql = `INSERT INTO feliratkozok (feliratkozoNyelv, feliratkozoNev, feliratkozoEmail, feliratkozasMod)
+                                const insertSql = `INSERT INTO feliratkozok (feliratkozoNyelv, feliratkozoNev, feliratkozoEmail, feliratkozasMod)
                           VALUES ('${felvitelObj.feliratkozoNyelv}', '${felvitelObj.feliratkozoNev}', '${felvitelObj.feliratkozoEmail}', '${felvitelObj.feliratkozasMod}');`;
-                                pool.query(sql, (err) => {
+                                pool.query(insertSql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
                                             msg: 'Feliratkozás sikeresen megtörtént!'
                                         });
                                     } else {
+                                        log('POST AdminFeliratkók insertSql: ', insertSql);
+                                        log('POST AdminFeliratkók error: ', err);
                                         res.status(500).send({
                                             err: err
                                         });
