@@ -186,6 +186,7 @@
         moment(`${submitObj.nap} ${idopont.kezdete}:00`)
       ).format("YYYY-MM-DD HH:mm:ss");
       submitObj.kezdete = kezdete;
+      submitObj.foglalasmod = props.user ? 'Admin felület' : 'Publikus felület';
       const language = props.user ? "hu" : lang;
 
       // console.log("submitObj: ", submitObj);
