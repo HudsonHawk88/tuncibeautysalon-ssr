@@ -90,7 +90,7 @@ router.post('/', async (req, res) => {
                         const maxSorrend = await UseQuery(maxSorrendSql);
                         log('POST /api/admin/szolgaltatasok', "maxSorrendSql: " + maxSorrendSql, "INFO");
                         console.log("maxSorrendSql", maxSorrendSql);
-                        const sorrend = parseInt(maxSorrend[0].next, 10);
+                        const sorrend = maxSorrend[0].next ? parseInt(maxSorrend[0].next, 10) : 1;
                         const sql = `
                             INSERT INTO szolgaltatasok 
                                 (szolgkategoria, magyarszolgkategoria, szolgrovidnev, magyarszolgrovidnev, szolgreszletek, 
