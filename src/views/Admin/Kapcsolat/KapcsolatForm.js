@@ -320,17 +320,17 @@ const KapcsolatForm = (props) => {
           <Col>
             <RVInput
               type="time"
-              name="thurdaytol"
-              id="thurdaytol"
+              name="thursdaytol"
+              id="thursdaytol"
               value={
-                nyitvatartas.thurday && nyitvatartas.thurday.tol
-                  ? nyitvatartas.thurday.tol
+                nyitvatartas.thursday && nyitvatartas.thursday.tol
+                  ? nyitvatartas.thursday.tol
                   : null
               }
               onChange={(e) =>
                 setNyitvatartas({
                   ...nyitvatartas,
-                  thurday: { ...nyitvatartas.thurday, tol: e.target.value },
+                  thursday: { ...nyitvatartas.thursday, tol: e.target.value },
                 })
               }
             />
@@ -338,17 +338,17 @@ const KapcsolatForm = (props) => {
           <Col>
             <RVInput
               type="time"
-              name="thurdayig"
-              id="thurdayig"
+              name="thursdayig"
+              id="thursdayig"
               value={
-                nyitvatartas.thurday && nyitvatartas.thurday.ig
-                  ? nyitvatartas.thurday.ig
+                nyitvatartas.thursday && nyitvatartas.thursday.ig
+                  ? nyitvatartas.thursday.ig
                   : null
               }
               onChange={(e) =>
                 setNyitvatartas({
                   ...nyitvatartas,
-                  thurday: { ...nyitvatartas.thurday, ig: e.target.value },
+                  thursday: { ...nyitvatartas.thursday, ig: e.target.value },
                 })
               }
             />
