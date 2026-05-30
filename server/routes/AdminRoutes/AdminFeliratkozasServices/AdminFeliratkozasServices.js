@@ -107,7 +107,7 @@ router.post('/', async (req, res) => {
                             log('POST AdminFeliratkók error: ', error);
                             res.status(500).send({
                                 err: 'Hiba történt az adatbázis létrehozásakor! Értesítse a weboldal rendszergazdáját!',
-                                msg: err
+                                msg: error
                             });
                         }
                     });

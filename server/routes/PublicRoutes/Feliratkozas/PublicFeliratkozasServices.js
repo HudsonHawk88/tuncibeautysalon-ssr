@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
         ) ENGINE=InnoDB;`;
         pool.query(sql, async (error) => {
             if (!error) {
-                const feliratkozoSql = `SELECT feliratkozoemail FROM faliratkozok WHERE feliratkozoemail = '${felvitelObj.feliratkozoEmail}';`;
+                const feliratkozoSql = `SELECT feliratkozoemail FROM feliratkozok WHERE feliratkozoemail = '${felvitelObj.feliratkozoEmail}';`;
                 const result = await isTableExists('faliratkozok') ? await UseQuery(feliratkozoSql) : [];
                 // if (resultEmail.rowCount === 0) {
                 if (result.length === 0) {
@@ -168,7 +168,7 @@ router.get('/', async (req, res) => {
     const id = req.query.id;
     const lang = req.query.lang;
     if (id) {
-        const sql = `DELETE FROM faliratkozok WHERE id='${id}';`;
+        const sql = `DELETE FROM feliratkozok WHERE id='${id}';`;
         pool.query(sql, (err) => {
             if (!err) {
                 res.status(200).send({

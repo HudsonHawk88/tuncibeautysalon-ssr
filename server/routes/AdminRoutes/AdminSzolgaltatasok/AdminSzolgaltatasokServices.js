@@ -219,7 +219,7 @@ router.put('/tomeges', async (req, res) => {
                             });
                         } else {
                             res.status(500).send({
-                                err: err,
+                                err: 'Nincsenek szolgáltatások kijelölve!',
                                 msg: 'Nincsenek szolgáltatások kijelölve!'
                             });
                         }

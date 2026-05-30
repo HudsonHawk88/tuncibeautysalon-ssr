@@ -1,6 +1,6 @@
 import express from 'express';
-const router = express.Router();
 import { pool } from '../../../common/QueryHelpers.js';
+const router = express.Router();
 const szabadnapok = pool;
 
 // SZABADNAPOK START

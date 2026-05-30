@@ -11,14 +11,8 @@ router.get('/', async (req, res) => {
         const sql = `SELECT * FROM bio WHERE id='${id}';`;
         bio.query(sql, (err, result) => {
             if (!err) {
-                if (hasRole(JSON.parse(user.roles), ['SZUPER_ADMIN'])) {
-                    let resss = result[0];
-                    res.status(200).send(resss);
-                } else {
-                    res.status(403).send({
-                        err: 'Nincs jogosultsága az adott művelethez!'
-                    });
-                }
+                let resss = result[0];
+                res.status(200).send(resss);
             }
         });
     } else {

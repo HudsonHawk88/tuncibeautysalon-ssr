@@ -1,7 +1,7 @@
 import { jwtparams, UseQuery, pool, validateToken, hasRole, getId, getJSONfromLongtext } from '../../../common/QueryHelpers.js';
 import express from 'express';
 import bcrypt from 'bcrypt';
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import multer from 'multer';
 import sharp from 'sharp';
 

@@ -119,12 +119,12 @@ const generateEmailHtml = (lang, r, foglalasObj, idotartam, szolgok, addToGoogle
 
 // A tiszta express végpont
 router.post("/", async (req, res) => {
+  const lang = req.headers.lang || 'hu';
   try {
-    const lang = req.headers.lang || 'hu';
     const foglalasObj = { ...req.body, ugyfelelfogad: getNumberFromBoolean(req.body.ugyfelelfogad) };
     const kezdeteNap = moment(foglalasObj.kezdete).format('YYYY-MM-DD');
 
-    // 1. Időtartam és szolgáltatások lekérdezése biztonságosan (paraméterezve)
+    // 1. Időtartam és szolgáltatások lekérdezése biztonságosan
     const totalQuery = await UseQuery(
         "SELECT idotartam, magyarszolgrovidnev, szolgrovidnev FROM szolgaltatasok WHERE id IN (?)",
         [foglalasObj.szolgaltatasok],
@@ -160,36 +160,65 @@ router.post("/", async (req, res) => {
     let nyitvatartas = typeof nyitvaAdat.nyitvatartas === 'string' ? JSON.parse(nyitvaAdat.nyitvatartas) : nyitvaAdat.nyitvatartas;
 
     // Lekérjük a nap angol nevét kisbetűvel (pl.: 'monday')
-    const dayName = moment(foglalasObj.kezdete).locale('hu').format("dddd").toLowerCase();
+    const dayName = moment(foglalasObj.kezdete).locale('en').format("dddd").toLowerCase();
+
+    // Kezeljük a JSON-ban lévő esetleges elírást (thursday / thurday)
+    const dayKey = dayName === 'thursday' && !nyitvatartas['thursday'] ? 'thurday' : dayName;
 
     // Összerakjuk az aktív nap kulcsát (pl.: 'isMonday')
-    const activeKey = `is${dayName.charAt(0).toUpperCase()}${dayName.slice(1)}`;
+    const activeKey = `is${dayKey.charAt(0).toUpperCase()}${dayKey.slice(1)}`;
 
-    // Ellenőrizzük, hogy az adott napon nyitva van-e a szalon, és mik a határok
+    // Ellenőrizzük, hogy az adott napon nyitva van-e a szalon, és mik a munkaidő határai
     const isAzAdottNaponNyitva = nyitvatartas?.[activeKey] === true;
-    const { tol, ig } = nyitvatartas?.[dayName] || { tol: "00:00", ig: "00:00" };
+    const napAdatok = nyitvatartas?.[dayKey] || { tol: "00:00", ig: "00:00", szunetek: [] };
 
-    const uzletnyit = `${kezdeteNap} ${tol}`;
-    const uzletzar = `${kezdeteNap} ${ig}`;
+    const uzletnyit = `${kezdeteNap} ${napAdatok.tol}`;
+    const uzletzar = `${kezdeteNap} ${napAdatok.ig}`;
 
-    // 4. Logikai feltételek összegzése
+    // 4. ÚJ: Napon belüli szünetek ellenőrzése
+    const fKezd = moment(foglalasObj.kezdete);
+    const fVeg = moment(foglalasObj.vege);
+    const szuneteklista = napAdatok.szunetek || [];
+
+    // Megnézzük, hogy a foglalás átfedésben van-e bármelyik szünettel ezen a napon
+    const utkozikSzunettel = szuneteklista && szuneteklista.length ? szuneteklista.some(szunet => {
+      const szunetKezdet = moment(`${kezdeteNap} ${szunet.tol}`);
+      const szunetVeg = moment(`${kezdeteNap} ${szunet.ig}`);
+
+      // Átfedés matematikai szabálya: a foglalás vége a szünet kezdete után van ÉS a foglalás kezdete a szünet vége előtt van
+      return fVeg.isAfter(szunetKezdet) && fKezd.isBefore(szunetVeg);
+    }) : false;
+
+    // 5. Logikai feltételek összegzése
     const isSzabad = overLappedAppointments.length === 0;
     const isFoglalasNotOverlapWithFreeday = foglalasOverlapWithFreeday.length === 0;
-    const isNyitva = isAzAdottNaponNyitva &&
-        moment(foglalasObj.kezdete).isSameOrAfter(uzletnyit) &&
-        moment(foglalasObj.vege).isSameOrBefore(uzletzar);
+    const isNyitva = isAzAdottNaponNyitva && fKezd.isSameOrAfter(uzletnyit) && fVeg.isSameOrBefore(uzletzar);
+    const isNincsSzunetUtkozes = !utkozikSzunettel;
 
-    if (!isSzabad || !isFoglalasNotOverlapWithFreeday || !isNyitva) {
+    // Ha bármelyik feltétel sérül, elutasítjuk a foglalást
+    if (!isSzabad || !isFoglalasNotOverlapWithFreeday || !isNyitva || !isNincsSzunetUtkozes) {
       return res.status(400).json({
-        success: false,
-        message: "Az időpont már nem elérhető, vagy az üzlet zárva van az adott napon."
+        err: { ok: 'OVERLAP' },
+        msg: lang === 'hu' ?
+            `A fogalásakor a rendszerbe került egy másik foglalás is vagy az időpont a nyitvatartási időn kívül van, vagy
+            az időpont a napi szünet időpontjával ütközik! Kérjük válasszon másik időpontot!` :
+            `Zum Zeitpunkt der Buchung war bereits eine andere Buchung im System, oder die Uhrzeit liegt außerhalb der 
+            Öffnungszeiten, oder die Uhrzeit überschneidet sich mit der täglichen Pause! Bitte wählen Sie eine andere Uhrzeit!`
       });
     }
 
-    // 5. Adatbázis tábla ellenőrzése és az új időpont beszúrása biztonságosan
-    await UseQuery("CREATE TABLE IF NOT EXISTS idopontok (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, nyelv text NOT NULL)", [], "/api/idopontok POST");
+    // 6. Adatbázis tábla ellenőrzése és az új időpont beszúrása biztonságosan
+    await UseQuery("CREATE TABLE IF NOT EXISTS idopontok (" +
+        "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, kezdete TIMESTAMP NOT NULL, vege TIMESTAMP NOT NULL, " +
+        "ugyfelnev text NOT NULL, ugyfelemail text NOT NULL, ugyfeltelefon VARCHAR(15) NOT NULL, szolgtipusok json NOT NULL, " +
+        "ugyfelelfogad tinyint(1) NOT NULL, elfogadido TIMESTAMP NOT NULL, " +
+        "foglalasmod VARCHAR(25) NOT NULL DEFAULT 'Publikus felület', nyelv text NOT NULL)",
+        [],
+        "/api/idopontok POST"
+    );
 
-    const insertSql = "INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, elfogadido, szolgtipusok, nyelv) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
+    const insertSql = "INSERT INTO idopontok (kezdete, vege, ugyfelnev, ugyfelemail, ugyfeltelefon, ugyfelelfogad, " +
+        "elfogadido, szolgtipusok, foglalasmod, nyelv) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
     const insertParams = [
       foglalasObj.kezdete,
       foglalasObj.vege,
@@ -198,17 +227,18 @@ router.post("/", async (req, res) => {
       foglalasObj.ugyfeltelefon,
       foglalasObj.ugyfelelfogad,
       JSON.stringify(foglalasObj.szolgaltatasok),
+      foglalasObj.foglalasmod,
       lang
     ];
 
     const r = await UseQuery(insertSql, insertParams, "/api/idopontok POST");
 
-    // 6. Google Calendar link generálása
+    // 7. Google Calendar link generálása
     const gCalKezd = moment(foglalasObj.kezdete).format('YYYYMMDDTHHmmss');
     const gCalVeg = moment(foglalasObj.vege).format('YYYYMMDDTHHmmss');
     const addToGoogleCalendarUrl = `https://google.com{encodeURIComponent(foglalasObj.ugyfelnev + ' időpontja (ID: ' + r.insertId + ')')}&dates=${gCalKezd}/${gCalVeg}&ctz=Europe/Budapest&sf=true&output=xml`;
 
-    // 7. E-mailek legenerálása és kiküldése
+    // 8. E-mailek legenerálása és kiküldése
     const emailek = generateEmailHtml(lang, r, foglalasObj, idotartam, szolgok, addToGoogleCalendarUrl);
 
     await transporter.sendMail({
@@ -225,15 +255,15 @@ router.post("/", async (req, res) => {
       html: lang === 'hu' ? emailek.hu : emailek.de
     });
 
-    return res.status(200).json({ success: true, insertId: r.insertId });
+    return res.status(200).json({ insertId: r.insertId });
 
   } catch (error) {
     console.error("Hiba az időpont mentése során:", error);
-    return res.status(500).json({ success: false, message: "Szerveroldali hiba történt." });
+    return res.status(500).json({
+      err: error,
+      msg: lang === 'hu' ? 'Hiba az időpont hozzáadaásakor' : 'Fehler beim Hinzufügen des Datums' });
   }
 });
-
-
 
 // router.post("/", async (req, res) => {
 //   let foglalasObj = req.body;
