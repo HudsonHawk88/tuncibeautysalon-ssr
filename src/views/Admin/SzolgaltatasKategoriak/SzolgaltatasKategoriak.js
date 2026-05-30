@@ -13,6 +13,7 @@ const defaultKategoriaObj = {
   magyarkategorianev: "",
   kategorialeiras: "",
   magyarkategorialeiras: "",
+  isAktiv: true,
   kepek: [],
 };
 
@@ -68,7 +69,6 @@ const SzolgaltatasKategoriak = (props) => {
   };
 
   const handleViewClick = (cell) => {
-    console.log(cell);
     setCurrentId(cell);
     getKategoria(cell);
   };
@@ -191,7 +191,6 @@ const SzolgaltatasKategoriak = (props) => {
   };
 
   const renderSzolgaltatasokModal = () => {
-    console.log(currentId);
     return (
       <Modal
         isOpen={kategoriaModal}

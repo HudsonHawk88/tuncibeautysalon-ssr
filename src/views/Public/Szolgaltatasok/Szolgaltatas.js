@@ -11,7 +11,6 @@ const Szolgaltatas = (props) => {
   const [kategoria, setKategoria] = useState(null);
 
   const translateKategoria = (kateg) => {
-    console.log(kateg);
     const newKat = Object.assign(kateg, {
       katnev: lang === "hu" ? kateg.magyarkategorianev : kateg.kategorianev,
       katleiras:
@@ -45,7 +44,11 @@ const Szolgaltatas = (props) => {
     return (
       <div className="szolgkat">
         <div className="szolgkat_logo">
-          <img src={kategoria.logo} alt={kategoria.katnev} style={{ borderRadius: '50%' }} />
+          <img
+            src={kategoria.logo}
+            alt={kategoria.katnev}
+            style={{ borderRadius: "50%" }}
+          />
         </div>
         <h2>{kategoria.katnev}</h2>
         <div className="szolgkat_leiras">{kategoria.katleiras}</div>

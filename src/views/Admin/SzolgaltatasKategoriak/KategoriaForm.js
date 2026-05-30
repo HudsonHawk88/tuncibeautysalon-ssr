@@ -144,6 +144,20 @@ const KategoriaForm = (props) => {
       </Row>
       <Row style={{ margin: "10px 0px" }}>
         <Col>
+          <Label>{"Aktív?: "}</Label>&nbsp;
+          <RVInput
+            type="checkbox"
+            name="isAktiv"
+            id="isAKtiv"
+            checked={kategoriaObj.isAktiv}
+            onChange={(e) =>
+              handleInputChange(e, kategoriaObj, setKategoriaObj)
+            }
+          />
+        </Col>
+      </Row>
+      <Row style={{ margin: "10px 0px" }}>
+        <Col>
           <Label>{"Kategóriakép: *"}</Label>
           <MyDropzone />
         </Col>

@@ -94,7 +94,7 @@ const Szolgaltatasok = (props) => {
   const setDefaultPenznem = () => {
     setSzolgaltatasObj({
       ...szolgaltatasObj,
-      penznem: { id: 0, label: "CHF", value: "CHF" }
+      penznem: { id: 0, label: "CHF", value: "CHF" },
     });
   };
 
