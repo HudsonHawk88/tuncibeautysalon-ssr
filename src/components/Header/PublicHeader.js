@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -12,7 +12,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { HU, CH } from "country-flag-icons/react/3x2";
 import PropTypes from "prop-types";
-import Services from "../../views/Public/Szolgaltatasok/Services"
+import Services from "../../views/Public/Szolgaltatasok/Services";
 
 const PublicHeader = (props) => {
   const { setLang, lang, accessibility, toggleAccessibility } = props;
@@ -31,11 +31,11 @@ const PublicHeader = (props) => {
         setSzolgKategoriak(res);
       }
     });
-  }
+  };
 
   useEffect(() => {
-    getSzolgaltatasKategoriak()
-  }, [])
+    getSzolgaltatasKategoriak();
+  }, []);
 
   return (
     <React.Fragment>
@@ -82,21 +82,26 @@ const PublicHeader = (props) => {
                 &nbsp; {lang === "hu" ? "Szolgáltatások" : "Dienstleistungen"}
               </DropdownToggle>
               <DropdownMenu>
-                {szolgKategoriak && szolgKategoriak.length && szolgKategoriak.map(szolgkat => {
-                  const to = "/service/" + szolgkat.id;
-                  return (
+                {szolgKategoriak &&
+                  szolgKategoriak.length &&
+                  szolgKategoriak.map((szolgkat) => {
+                    const to = "/service/" + szolgkat.id;
+                    return (
                       <DropdownItem>
                         <NavLink
-                            className="nav-link public-navbar__nav-link"
-                            to={to}
-                            end
+                          className="nav-link public-navbar__nav-link"
+                          to={to}
+                          end
                         >
                           <i aria-hidden className="fas fa-handshake"></i>
-                          &nbsp; {lang === "hu" ? szolgkat.magyarkategorianev : szolgkat.kategorianev}
+                          &nbsp;{" "}
+                          {lang === "hu"
+                            ? szolgkat.magyarkategorianev
+                            : szolgkat.kategorianev}
                         </NavLink>
                       </DropdownItem>
-                  )
-                })}
+                    );
+                  })}
                 <DropdownItem>
                   <NavLink
                     className="nav-link public-navbar__nav-link"
