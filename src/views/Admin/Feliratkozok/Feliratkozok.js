@@ -174,7 +174,7 @@ const Feliratkozok = (props) => {
   };
 
   const onDelete = () => {
-    Services.deleteRole(currentId, (err, res) => {
+    Services.deleteFeliratkozo(currentId, (err, res) => {
       if (!err) {
         listRoles();
         toggleDeleteModal();
