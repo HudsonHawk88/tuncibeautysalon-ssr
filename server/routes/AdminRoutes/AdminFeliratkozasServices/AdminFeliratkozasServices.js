@@ -70,21 +70,21 @@ router.post('/', async (req, res) => {
                     //store user, password and role
                         const sql = `CREATE TABLE IF NOT EXISTS tuncibeautysalon.feliratkozok (
                             id varchar(36) DEFAULT (uuid()) NOT NULL PRIMARY KEY,
-                            feliratkozoNyelv varchar(2) DEFAULT 'ch',
-                            feliratkozoNev text DEFAULT NULL,
-                            feliratkozoEmail text DEFAULT NULL,
-                            feliratkozasMod text DEFAULT NULL,
-                            feliratkozasIdo TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                            feliratkozonyelv varchar(2) DEFAULT 'ch',
+                            feliratkozonev text DEFAULT NULL,
+                            feliratkozoemail text DEFAULT NULL,
+                            feliratkozasmod text DEFAULT NULL,
+                            feliratkozasido TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
                             ) ENGINE=InnoDB;`;
                     pool.query(sql, async (error) => {
                         if (!error) {
-                            const hirlevelSql = `SELECT feliratkozoEmail FROM feliratkozok WHERE feliratkozoEmail = '${felvitelObj.feliratkozoEmail}';`;
+                            const hirlevelSql = `SELECT feliratkozoemail FROM feliratkozok WHERE feliratkozoemail = '${felvitelObj.feliratkozoemail}';`;
                             // LOG HELYE
                             const result = await UseQuery(hirlevelSql);
                             // if (resultEmail.rowCount === 0) {
                             if (result.length === 0) {
-                                const insertSql = `INSERT INTO feliratkozok (feliratkozoNyelv, feliratkozoNev, feliratkozoEmail, feliratkozasMod)
-                          VALUES ('${felvitelObj.feliratkozoNyelv}', '${felvitelObj.feliratkozoNev}', '${felvitelObj.feliratkozoEmail}', 'Admin felület');`;
+                                const insertSql = `INSERT INTO feliratkozok (feliratkozonyelv, feliratkozonev, feliratkozoemail, feliratkozasmod)
+                          VALUES ('${felvitelObj.feliratkozonyelv}', '${felvitelObj.feliratkozonev}', '${felvitelObj.feliratkozoemail}', 'Admin felület');`;
                                 pool.query(insertSql, (err) => {
                                     if (!err) {
                                         res.status(200).send({
@@ -147,8 +147,7 @@ router.put('/', async (req, res) => {
                 // if (user.roles && user.roles.length !== 0 && hasRole(JSON.parse(user.roles), ["SZUPER_ADMIN"])) {
                 if (user.roles && user.roles.length !== 0 && hasRole(user.roles, ['SZUPER_ADMIN'])) {
                     if (id) {
-                        modositoObj = JSON.parse(JSON.stringify(modositoObj));
-                        const sql = `UPDATE feliratkozok SET feliratkozoNev='${modositoObj.feliratkozoNev}', feliratkozoEmail='${modositoObj.feliratkozoEmail}', feliratkozoNyelv='${modositoObj.feliratkozoNyelv}' WHERE id = '${id}';`;
+                        const sql = `UPDATE feliratkozok SET feliratkozonev='${modositoObj.feliratkozonev}', feliratkozoemail='${modositoObj.feliratkozoemail}', feliratkozonyelv='${modositoObj.feliratkozonyelv}' WHERE id = '${id}';`;
                         pool.query(sql, (err) => {
                             if (!err) {
                                 res.status(200).send({

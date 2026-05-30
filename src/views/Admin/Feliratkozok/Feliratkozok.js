@@ -16,10 +16,10 @@ import Services from "./Services.js";
 
 const Feliratkozok = (props) => {
   const defaultFeliratkozo = {
-    feliratkozoNyelv: "ch",
-    feliratkozoNev: "",
-    feliratkozoEmail: "",
-    feliratkozasMod: "Adminui",
+    feliratkozonyelv: "ch",
+    feliratkozonev: "",
+    feliratkozoemail: "",
+    feliratkozasmod: "Admin felület",
   };
 
   const [feliratkozokJson, setFeliratkozokJson] = useState([]);
@@ -114,37 +114,37 @@ const Feliratkozok = (props) => {
             <div className="col-md-4">
               <Label>Feliratkozó neve: *</Label>
               <RVInput
-                name="feliratkozoNev"
-                id="feliratkozoNev"
+                name="feliratkozonev"
+                id="feliratkozonev"
                 type="text"
                 onChange={(e) =>
                   handleInputChange(e, feliratkozo, setFeliratkozo)
                 }
-                value={feliratkozo.feliratkozoNev}
+                value={feliratkozo.feliratkozonev}
               />
             </div>
             <div className="col-md-4">
               <Label>Feliratkozó e-mail címe: </Label>
               <RVInput
-                name="feliratkozoEmail"
-                id="feliratkozoEmail"
+                name="feliratkozoemail"
+                id="feliratkozoemail"
                 type="text"
                 onChange={(e) =>
                   handleInputChange(e, feliratkozo, setFeliratkozo)
                 }
-                value={feliratkozo.feliratkozoEmail}
+                value={feliratkozo.feliratkozoemail}
               />
             </div>
             <div className="col-md-4">
               <Label>Feliratkozó nyelve: *</Label>
               <RVInput
                 type="select"
-                name="feliratkozoNyelv"
-                id="valfeliratkozoNyelvue"
+                name="feliratkozonyelv"
+                id="valfeliratkozonyelvue"
                 onChange={(e) =>
                   handleInputChange(e, feliratkozo, setFeliratkozo)
                 }
-                value={feliratkozo.feliratkozoNyelv}
+                value={feliratkozo.feliratkozonyelv}
               >
                 <option key="opt_ch" value="ch">
                   svájci
