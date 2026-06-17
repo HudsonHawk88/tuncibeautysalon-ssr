@@ -468,6 +468,10 @@ const Idopontok = (props) => {
         formatter: idopontFormatter,
       },
       {
+        dataField: "foglalasmod",
+        text: "Foglalás módja"
+      },
+      {
         dataField: "id",
         text: "Műveletek",
         formatter: tableIconFormatter,
